@@ -1,2 +1,2 @@
-# maeve
-Player piano controller mobile web application
+# piano-controller
+NodeJS project to control a player piano.
