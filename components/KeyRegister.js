@@ -1,18 +1,13 @@
-//import rpio from 'rpio';
-//import isPi from 'detect-rpi';
 const rpio = require('rpio');
 const isPi = require('detect-rpi');
 
 // Set up Raspberry Pi
-//const numModules = 11;
-//const registerSize = 8;
-const SER_PIN = 11;   // Serial Input SER (18 on chip)
-const RCK_PIN = 13;   // Register Clock (RCLK, 7 on chip) - Latch pin
-const SRCK_PIN = 15;   // Shift-Register Clock (SRCLK, 8 on chip) - Clock pin
-const SRCLR_PIN = 16; // Shift_Register clear (SRCLR - 3 on chip) - Set to high to enable storage transfer
+const SER_PIN = 29;    // Serial Input SER (5 on chip)
+const RCK_PIN = 33;    // Register Clock (RCLK, 13 on chip) - Latch pin
+const SRCK_PIN = 32;   // Shift-Register Clock (SRCLK, 12 on chip) - Clock pin
+const SRCLR_PIN = 31;  // Shift_Register clear (SRCLR - 6 on chip) - Set to high to enable storage transfer
 
 class KeyRegister {
-    //constructor(data, clock, latch, clear) {
     constructor(registerSize, moduleCount) {
 
         // If running on another OS, then just mock the RaspberryPi
@@ -80,8 +75,6 @@ class KeyRegister {
     // If this has a measurable impact on performance, then will address in hardware.
     reorderKeyData(original_data) {
         let data = Buffer.from(original_data);
-        //let numModules = data.length / 8; // Get the number of modules. Each module has 8 keys
-        //console.log("NumModules: " + numModules);
         let i, j, offset, temp;
 
         // Loop through each module and swap the order

@@ -8,7 +8,7 @@ const PianoServer = require('./components/PianoServer');
 const VacuumController = require('./components/VacuumController');
 
 // Set up client browser
-const port = process.env.PORT || "8000";
+const port = process.env.PORT || "80";
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set up Raspberry Pi

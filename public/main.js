@@ -29,9 +29,6 @@ function ScaleContentToDevice(){
 }
 // =======================================================
 
-//let songlist, playlist, currentSong;
-//let isPlaying = false;
-
 $("#songlist").listview({
     autodividers: true,
 
