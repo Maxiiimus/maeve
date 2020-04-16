@@ -377,6 +377,13 @@ const songList = {
             artist: "TOTO",
             path: "midis/Toto/Africa.mid",
             image: "images/artists/TOTO - TOTO IV.jpg"
+        },
+        {
+            id: 54,
+            title: "Get Lucky",
+            artist: "Daft Punk",
+            path: "midis/Daft Punk/Get Lucky.mid",
+            image: "images/artists/Daft Punk - Get Lucky.jpg"
         }
     ]
 };

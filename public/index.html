@@ -3,120 +3,11 @@
 <head>
     <title>Maeve</title>
     <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="stylesheet" href="styles.css">
     <link href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type='text/javascript' src='knockout-latest.js'></script>
-    <style id="full-width-slider">
-        /* Hide the number input */
-        .full-width-slider input {
-            display: none;
-        }
-
-        .full-width-slider .ui-slider-track {
-            margin-left: 15px;
-        }
-
-        .box {
-            position: fixed;
-            bottom: -100%;
-            left: 0%;
-            height: 100%;
-            background-color: rgb(42, 42, 42);
-            width: 100%;
-            display: block;
-            z-index: 999999;
-        }
-
-        .box-inner {
-            position: absolute;
-            width: 100%;
-            top: 0px;
-            bottom: 0px;
-            overflow: scroll;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .ui-icon-play:after {
-            background-image: url("images/play.png");
-            background-size: 18px 18px;
-        }
-
-        .ui-icon-pause:after {
-            background-image: url("images/pause.png");
-            background-size: 18px 18px;
-        }
-
-        .ui-icon-shuffle:after {
-            background-image: url("images/shuffle.png");
-            background-size: 18px 18px;
-        }
-
-        .ui-btn {
-            border: none !important;
-            background-color: black !important;
-            box-shadow: none !important;
-        }
-
-        div.ui-slider-bg.ui-btn-active {
-            background-color: white !important;
-        }
-
-        div.ui-slider-track {
-            background-color: #555555 !important;
-        }
-
-        .ui-page-theme-b {
-            background-color: black !important;
-        }
-
-        .ui-slider-handle {
-            background-color: #bbbbbb !important;
-        }
-
-        .ui-panel-inner {
-            padding: 4px !important;
-        }
-
-        .ui-listview>li {
-            padding-left: 5px;
-            padding-right: 5px;
-        }
-
-        .ui-li-divider {
-            padding-left: 0px !important;
-            padding-right: 0px !important;
-            color: beige !important;
-        }
-
-        #songlist {
-            overflow-y: scroll !important;
-        }
-
-        #timeremaining, #timeplayed {
-            color: #555555;
-        }
-
-    </style>
-    <script>
-        /*
-        $(function () {
-            $('#openplaylist').click(function () {
-                $('#box').animate({'bottom': '0'}, 300);
-            });
-
-            $('#close').click(function () {
-                $('#box').animate({'bottom': '-100%'}, 300)
-            });
-
-            $("#timeslider").on("slidestop", function(e) {
-                let val =  $("#timeslider").val();
-                console.log ("slidestop = " + val);
-            });
-        });
-        */
-
-    </script>
 </head>
 <body>
 
@@ -129,10 +20,10 @@
             data-autodividers="true" data-inset="true" data-role="listview" data-bind="foreach: library">
             <li>
                 <a style="padding: .3em;" href="#">
-                    <div style="display: flex">
+                    <div style="display: flex" data-bind="click: $root.playSong">
                         <img height="30" width="30" data-bind="attr: { 'src': image }">
                         <div>
-                            <p data-bind="text: title, click: $root.playSong" style="font-weight: bold; padding: 3px"></p>
+                            <p data-bind="text: title" style="font-weight: bold; padding: 3px"></p>
                             <p data-bind="text: artist, visible: false"></p>
                         </div>
                     </div>
@@ -156,10 +47,10 @@
             <ul id="playlist" data-role="listview" data-bind="foreach: playlist">
                 <li>
                     <a style="padding: .3em;" href="#">
-                        <div style="display: flex">
+                        <div style="display: flex" data-bind="click: $root.playPlaylist.bind($data, $index())">
                             <div><img height="40" width="40" data-bind="attr: { 'src': image }"></div>
                             <div>
-                                <p data-bind="text: title, click: $root.playPlaylist.bind($data, $index())" style="font-weight: bold; margin: 3px"></p>
+                                <p data-bind="text: title" style="font-weight: bold; margin: 3px"></p>
                                 <p data-bind="text: artist" style="margin: 3px"></p>
                             </div>
                         </div>
@@ -198,9 +89,8 @@
         <div style="text-align: center">
             <img height="200" id="artistImage" data-bind="attr: { 'src': currentSong().image }">
             <form class="full-width-slider">
-                <input id="timeslider" max="100" min="0" name="timeslider" type="range" value="0" data-highlight="true"
-                     data-mini="true">
-                <div align="left"><label id="sliderlabel" for="timeslider"></label></div>
+                <input id="timeslider" name="timeslider" type="range" max="100" min="0" value="0" data-highlight="true"
+                     data-mini="true" class="ui-hidden-accessible">
                 <div id="timeplayed" data-bind="text: $root.timePlayedString()" align="left" style="float:left"></div>
                 <div id="timeremaining" data-bind="text: $root.timeRemainingString()" align="right" style="float:right"></div>
             </form>

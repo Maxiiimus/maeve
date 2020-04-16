@@ -1,16 +1,13 @@
 let socket = io();
 //let ac = new AudioContext();
-let audioOn = false;
-let songtime = 100;
+//let audioOn = false;
+//let songtime = 100;
 
 // This is used to hear audio playing on the client. Useful for testing, but doesn't sound great
 //let piano = null;
 //Soundfont.instrument(ac, 'acoustic_grand_piano').then(function (p) {
 //    piano = p;
 //});
-
-//let screen = $.mobile.getScreenHeight();
-//console.log("screen height = " + screen);
 
 // =======================================================
 // Resize to get the footer to stick to the bottom
@@ -28,11 +25,12 @@ function ScaleContentToDevice(){
     let content = $.mobile.getScreenHeight() - $(".ui-header").outerHeight() - $(".ui-footer").outerHeight() - $(".ui-content").outerHeight() + $(".ui-content").height();
     $(".ui-content").height(content);
     $("#songlist").height(content - $("#closeSearchPanel").outerHeight());
+    $("#playlist").height(content - $("#closeSearchPanel").outerHeight());
 }
 // =======================================================
 
-let songlist, playlist, currentSong;
-let isPlaying = false;
+//let songlist, playlist, currentSong;
+//let isPlaying = false;
 
 $("#songlist").listview({
     autodividers: true,
@@ -78,17 +76,5 @@ $(function () {
     $('#close').click(function () {
         $('#box').animate({'bottom': '-100%'}, 300)
     });
-
-    // Implement event hanlder for when the timeslider stops
-    // This way we only call the server after the drag is done.
-    $("#timeslider").on("slidestop", function(e) {
-        let val =  $("#timeslider").val();
-        setSongTime(val);
-    });
 });
 
-function setSongTime(val) {
-    //let val =  $("#timeslider").val();
-    console.log ("slider = " + val);
-    socket.emit("set time", val);
-}

@@ -3,21 +3,11 @@ const songLibrary = require('../midis/song-list');
 const fs = require('fs');
 
 const CLIENT_INTERVAL = 250; // milliseconds between updates to client if needed
-//const SONG_PAUSE = 2000; // How long to pause before starting the next song
 const KEY_TEST_DELAY = 250; // The delay between playing each key during the tests
-
-// This is used by the 'endOfFile' MidiPlayer event
-let songEnded = false;
 
 class PianoServer {
     constructor() {
-        //this.app = express();
-        //this.server = http.createServer(this.app);
 
-        //this.register = register; //new KeyRegister(SER_Pin, SRCK_Pin, RCK_Pin, SRCLR_PIN);
-        //this.keys = Buffer.alloc(NUM_MODULES * REGISTER_SIZE).fill(0);
-        //this.numKeys = register.moduleCount * register.registerSize;
-        //this.keys = Buffer.alloc(this.numKeys).fill(0);
         this.keyIndex = 0;
 
         this.currentSong = {
@@ -36,22 +26,21 @@ class PianoServer {
         // It is randomized if shuffle is enabled. It is also recreated if repeat is enabled.
         // If a song is added to the queue while playing, it is added to this list too
         this.internalPlaylist = [];
-        //this.randomizedPlaylist = [];
         this.playlistChanged = false;
         this.playlistMode = false;
-        //this.isPlaying = false;
         this.playlistIndex = 0;
 
         this.currentSongTime = 0;
         this.currentSongTimeRemaining = 0;
         this.currentSongTotalTicks = 0;
         this.songLoaded = false;
-        //this.songEnded = false;
+        this.songEnded = false;
         this.clientsConnected = false;
     }
 
-    start (http, io, port, register) {
+    start (http, io, port, register, vacuumController) {
         this.register = register;
+        this.vacuumController = vacuumController;
         this.numKeys = register.moduleCount * register.registerSize;
         this.keys = Buffer.alloc(this.numKeys).fill(0);
 
@@ -94,10 +83,9 @@ class PianoServer {
         });
 
         // Listen for the end of a file
-        p.on('endOfFile', function() {
-            console.log("End of file reached");
-            songEnded = true;
-            //io.emit('song over');
+        p.on('endOfFile', () => {
+            console.log("End of file reached: " + this.currentSong.title);
+            this.songEnded = true;
         });
 
         return (p);
@@ -117,9 +105,6 @@ class PianoServer {
 
             socket.on("test all keys", () => {
                 this.runAllKeysTest();
-            });
-
-            socket.on("stop tests", () => {
             });
 
             socket.on("set song", (song) => {
@@ -200,10 +185,14 @@ class PianoServer {
     // Set an interval to update all connected clients
     updateClients() {
         // If a song has ended and we're playing a playlist, then play the next song
-        //if (songEnded && this.isPlaying && this.playlistMode) {
-        if (songEnded && this.playlistMode) {
+        if (this.songEnded && this.playlistMode) {
             this.playNextSong();
-            //songEnded = false;
+        }
+
+        // If a song isn't playing, then turn off the vacuum pump
+        if (this.player && !this.player.isPlaying() && this.vacuumController.isOn())
+        {
+            this.vacuumController.turnOff();
         }
 
         // Only update client playlist if it's changed
@@ -216,13 +205,9 @@ class PianoServer {
 
         // Let the clients know what song is playing, update time and settings
         if (this.clientsConnected) {
-            //this.io.emit("set song", this.currentSong);
-            //this.io.emit("update time", this.currentSongTime, this.currentSongTimeRemaining);
             //console.log("Updating song to clients: " + this.currentSong.title);
-            //this.io.emit("update song", this.currentSong, this.isPlaying,
             this.io.emit("update song", this.currentSong, this.player.isPlaying(),
                 this.currentSongTime, this.currentSongTimeRemaining);
-            //this.io.emit("settings", this.playlistRepeat, this.playlistRandom);
         }
     }
 
@@ -235,22 +220,20 @@ class PianoServer {
 
         // If there is no song loaded, no point in playing or pausing
         if (!this.songLoaded) {
-            //this.isPlaying = false;
             return;
         }
 
         if (shouldPlay) {
-            //if (!this.isPlaying) {
             if (!this.player.isPlaying()) {
+                this.vacuumController.turnOn();
                 this.player.play();
             }
         } else {
-            //if (this.isPlaying) {
             if (this.player.isPlaying()) {
                 this.player.pause();
+                this.vacuumController.turnOff();
             }
         }
-        //this.isPlaying = shouldPlay;
     }
 
     // Called from the client to change current song position
@@ -268,86 +251,10 @@ class PianoServer {
         }
     }
 
-    /*
-    playMusic() {
-        if(!this.isPlaying) {
-            // Check if a song has been loaded, if pick a random song to load
-            if (!this.songLoaded) {
-                let i = Math.floor(Math.random() * Math.floor(songLibrary.songs.length));
-                this.currentSongId = songLibrary.songs[i].id;
-                this.setSong(this.currentSong);
-            }
-            this.player.play();
-        }
-        this.isPlaying = true;
-    }
-
-    pauseMusic() {
-        if (this.myInterval) {
-            clearInterval(this.myInterval);
-        }
-        this.player.pause();
-
-        this.isPlaying = false;
-    }*/
-
     resetKeys() {
         this.keys.fill(0);
         this.register.send(this.keys);
     }
-
-    // If random (shuffle) is enabled, then need to create a random ordered playlist to play from
-    /*createRandomizedPlaylist() {
-        if (!this.playlist || this.playlist.length < 1) return;
-
-        // First, copy the playlist
-        let temp = [...this.playlist];
-        this.randomizedPlaylist = [];
-
-        // Next copy one at a time at random
-        for (let i = 0; i < this.playlist.length; i++) {
-            let j = Math.floor(Math.random() * temp.length);
-            console.log("Pushing position: " + j);
-            this.randomizedPlaylist.push(temp.splice(j,1));
-        }
-
-        if (this.playlistRandom) {
-            // If playing a random playlist, then reset the index to start over.
-            this.currentPlaylistIndex = 0;
-        }
-        console.log("Playlist.length = " + this.playlist.length + " Randomized list length: " + this.randomizedPlaylist.length);
-        console.log("Playlist: " + JSON.stringify(this.playlist));
-        console.log("Randomized: " + JSON.stringify(this.randomizedPlaylist));
-    }*/
-
-    /*
-    updateSettings(playRandom, playRepeat) {
-        // Check if the random setting has changed and if so, create a randomized playlist
-        if (playRandom != this.playlistRandom) {
-            this.playlistRandom = playRandom;
-
-            // Recreate the random playlist
-            if (this.playlistRandom) {
-                this.createRandomizedPlaylist();
-            }
-        }
-        this.playlistRepeat = playRepeat;
-    }*/
-
-    /*
-    updateSettings(settings) {
-        this.settings = JSON.parse(settings);
-        // Check if the random setting has changed and if so, create a randomized playlist
-        if (playRandom != this.playlistRandom) {
-            this.playlistRandom = playRandom;
-
-            // Recreate the random playlist
-            if (this.playlistRandom) {
-                this.createRandomizedPlaylist();
-            }
-        }
-        this.playlistRepeat = playRepeat;
-    }*/
 
     // Plays the next song in the internalPlaylist
     playNextSong() {
@@ -445,9 +352,6 @@ class PianoServer {
         // Reset all keys
         this.resetKeys();
 
-        //let song = songLibrary.songs.find( el => el.id === Number.parseInt(song_id));
-        //console.log("Playing Song: " + song["title"]);
-
         // Load a MIDI file
         if (this.player.isPlaying()) {
             this.player.stop();
@@ -458,7 +362,7 @@ class PianoServer {
             console.log("Received song: " + this.currentSong.title);
             this.player.loadFile(song.path);
             this.songLoaded = true;
-            songEnded = false;
+            this.songEnded = false;
             let lastTick = 0;
             // Try to estimate the song length in ticks by finding the largest tick value
             this.player.tracks.forEach(function(track){
@@ -527,20 +431,6 @@ class PianoServer {
         this.io.emit('update keys', JSON.stringify(this.keys));
         this.keyIndex++;
     }
-
-    stopTests() {
-        if (this.myInterval) {
-            clearInterval(this.myInterval);
-        }
-        this.player.stop();
-
-        this.keys.fill(0);
-        this.register.send(this.keys);
-        this.io.emit('update keys', JSON.stringify(this.keys));
-    }
-    //getApp() {
-    //    return this.app;
-    //}
 }
 
 module.exports = PianoServer;

@@ -47,9 +47,32 @@ function MaeveViewModel() {
         owner: self
     });
 
+    self.pauseSliderMoves = false;
+    $(function () {
+        // Implement event hanlder for when the timeslider stops
+        // This way we only call the server after the drag is done.
+        $("#timeslider").on("slidestop", () => {
+            let val =  $("#timeslider").val();
+            self.setSongTime(val);
+            self.pauseSliderMoves = false;
+        });
+
+        // If the user starts moving the slider, then pause the adjusting from the server
+        // until the user stops sliding
+        $("#timeslider").on("slidestart", () => {
+            self.pauseSliderMoves = true;
+        });
+    });
+
     // =========================================================================
     // Operations
     // =========================================================================
+
+    self.setSongTime = function(val) {
+        //let val =  $("#timeslider").val();
+        console.log ("slider = " + val);
+        socket.emit("set time", val);
+    }
 
     // Adds a song from the library to the current playlist
     self.addSongToPlaylist = function(song) {
@@ -212,10 +235,11 @@ function MaeveViewModel() {
         self.currentSongPercent(percent);
         self.timePlayedString(self.getTimeString(timePlayed));
         self.timeRemainingString("-" + self.getTimeString(timeRemaining));
-        //self.settings(settings);
 
-        $("#timeslider").val(percent); // Could not get binding to the percent to work to change the slider
-        $("#timeslider").slider("refresh"); // Explicitly update the slider
+        if (!self.pauseSliderMoves) {
+            $("#timeslider").val(percent); // Could not get binding to the percent to work to change the slider
+            $("#timeslider").slider("refresh"); // Explicitly update the slider
+        }
     });
 
     // Method: 'update keys'

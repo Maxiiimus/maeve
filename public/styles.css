@@ -1,0 +1,92 @@
+/* Hide the number input */
+.full-width-slider input {
+    display: none;
+}
+
+.full-width-slider .ui-slider-track {
+    margin-left: 15px;
+}
+
+.box {
+    position: fixed;
+    bottom: -100%;
+    left: 0%;
+    height: 100%;
+    background-color: rgb(42, 42, 42);
+    width: 100%;
+    display: block;
+    z-index: 999999;
+}
+
+.box-inner {
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    bottom: 0px;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.ui-icon-play:after {
+    background-image: url("images/play.png");
+    background-size: 18px 18px;
+}
+
+.ui-icon-pause:after {
+    background-image: url("images/pause.png");
+    background-size: 18px 18px;
+}
+
+.ui-icon-shuffle:after {
+    background-image: url("images/shuffle.png");
+    background-size: 18px 18px;
+}
+
+.ui-btn {
+    border: none !important;
+    background-color: black !important;
+    box-shadow: none !important;
+}
+
+div.ui-slider-bg.ui-btn-active {
+    background-color: white !important;
+}
+
+div.ui-slider-track {
+    background-color: #555555 !important;
+}
+
+.ui-page-theme-b {
+    background-color: black !important;
+}
+
+.ui-slider-handle {
+    background-color: #bbbbbb !important;
+}
+
+.ui-panel-inner {
+    padding: 4px !important;
+}
+
+.ui-listview>li {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.ui-li-divider {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    color: beige !important;
+}
+
+#songlist {
+    overflow-y: scroll !important;
+}
+
+#playlist {
+    overflow-y: scroll !important;
+}
+
+#timeremaining, #timeplayed {
+    color: #555555;
+}
