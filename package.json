@@ -4,7 +4,9 @@
   "description": "Piano controller server and web app.",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./index.js"
+    "dev": "sudo nodemon ./index.js",
+    "start": "sudo pm2 start ./index.js --watch --ignore-watch=\"node_modules\"",
+    "monitor": "sudo pm2 monit"
   },
   "keywords": [],
   "author": "",
