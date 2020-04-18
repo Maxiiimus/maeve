@@ -384,6 +384,76 @@ const songList = {
             artist: "Daft Punk",
             path: "midis/Daft Punk/Get Lucky.mid",
             image: "images/artists/Daft Punk - Get Lucky.jpg"
+        },
+        {
+            id: 55,
+            title: "Crazy",
+            artist: "Patsy Cline",
+            path: "midis/Patsy Cline/Crazy.mid",
+            image: "images/artists/Patsy Cline - Showcase.jpg"
+        },
+        {
+            id: 56,
+            title: "Somebody That I Used to Know",
+            artist: "Gotye",
+            path: "midis/Gotye/Somebody That I Used to Know.mid",
+            image: "images/artists/Gotye - Making Mirrors.jpg"
+        },
+        {
+            id: 57,
+            title: "Free Bird",
+            artist: "Lynyrd Skynyrd",
+            path: "midis/Lynyrd Skynyrd/Free Bird.mid",
+            image: "images/artists/Lynyrd Skynyrd.jpg"
+        },
+        {
+            id: 58,
+            title: "She Talks to Angels",
+            artist: "The Black Crows",
+            path: "midis/Black Crows/She Talks To Angels.mid",
+            image: "images/artists/The Black Crows.jpg"
+        },
+        {
+            id: 59,
+            title: "Lean on Me",
+            artist: "Bill Withers",
+            path: "midis/Bill Withers/Lean on Me.mid",
+            image: "images/artists/Bill Withers - Still Bill.jpg"
+        },
+        {
+            id: 60,
+            title: "Lean on Me",
+            artist: "Bill Withers",
+            path: "midis/Bill Withers/Lean on Me.mid",
+            image: "images/artists/Bill Withers - Still Bill.jpg"
+        },
+        {
+            id: 61,
+            title: "Don't Worry Be Happy",
+            artist: "Bobby McFerrin",
+            path: "midis/Bobby McFerrin/Dont Worry Be Happy.mid",
+            image: "images/artists/Bobby McFerrin - Simple Pleasures.jpg"
+        },
+        {
+            id: 62,
+            title: "Escape (The Piña Colada Song)",
+            artist: "Rupert Holmes",
+            path: "midis/Rupert Holmes/Escape The Pina Colada Song.mid",
+            image: "images/artists/Rupert Holmes - Partners in Crime.jpg"
+        },
+        {
+            id: 63,
+            title: "Sweet Child O Mine",
+            artist: "Guns N Roses",
+            path: "midis/Guns N Roses/Sweet Child O Mine.mid",
+            image: "images/artists/Guns N Roses - Appetite for Destruction.jpg"
+        },
+        {
+            id: 64,
+            title: "Welcome to the Jungle",
+            artist: "Guns N Roses",
+            path: "midis/Guns N Roses/Welcome to the Jungle.mid",
+            image: "images/artists/Guns N Roses - Appetite for Destruction.jpg"
         }
     ]
 };
