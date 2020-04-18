@@ -13,7 +13,7 @@ function Song(data) {
 // ========================================================================================================
 function MaeveViewModel() {
     let self = this;
-    let socket = io();
+    self.socket = io();
 
     //let ac = new AudioContext();
     // This is used to hear audio playing on the client. Useful for testing, but doesn't sound great
@@ -71,7 +71,7 @@ function MaeveViewModel() {
     self.setSongTime = function(val) {
         //let val =  $("#timeslider").val();
         console.log ("slider = " + val);
-        socket.emit("set time", val);
+        self.socket.emit("set time", val);
     }
 
     // Adds a song from the library to the current playlist
@@ -81,7 +81,7 @@ function MaeveViewModel() {
         self.playlist.push(songCopy);
         $("#playlist").listview( "refresh" ); // Refresh updates the CSS for the elements
         console.log("Sending playlist to server: " + self.playlist());
-        socket.emit('update playlist', self.playlist());  // Update the server with the playlist change
+        self.socket.emit('update playlist', self.playlist());  // Update the server with the playlist change
         self.toast("\"" + song.title + "\" added to playlist.");
     };
 
@@ -90,17 +90,17 @@ function MaeveViewModel() {
         console.log("Removing song: " + song.id);
         self.toast("\"" + song.title + "\" removed.");
         self.playlist.remove(song);
-        socket.emit('update playlist', self.playlist());  // Update the server with the playlist change
+        self.socket.emit('update playlist', self.playlist());  // Update the server with the playlist change
     };
 
     // Plays a specified song
     self.playSong = function(song) {
         console.log("Playing song: " + song.title);
-        socket.emit('set song', song);
+        self.socket.emit('set song', song);
         self.currentSong(song);
         $("#searchpanel").panel( "close" ); // Songs can played from the search panel, so dismiss it
         console.log("Calling play song: " + song.title);
-        socket.emit('play song', song);
+        self.socket.emit('play song', song);
     };
 
     // Starts playing the playlist. Called by either clicking on song in the playlist (index)
@@ -108,7 +108,7 @@ function MaeveViewModel() {
     self.playPlaylist = function(index) {
         console.log("playPlaylist() called with index = " + index);
         $( "#box").animate({'bottom': '-100%'}, 300) // Dismiss the panel when starting to play
-        socket.emit('play playlist', false, index);
+        self.socket.emit('play playlist', false, index);
     };
 
     // Starts playing the playlist. Called by either clicking on song in the playlist (index)
@@ -116,42 +116,42 @@ function MaeveViewModel() {
     self.shufflePlaylist = function() {
         console.log("shufflePlaylist() called.");
         $( "#box").animate({'bottom': '-100%'}, 300) // Dismiss the panel when starting to play
-        socket.emit('play playlist', true, 0); // Index will be ignored
+        self.socket.emit('play playlist', true, 0); // Index will be ignored
     };
 
     self.previous = function() {
         console.log("Previous song");
-        socket.emit('previous song');
+        self.socket.emit('previous song');
     };
 
     self.play = function() {
         self.isPlaying(true);
         console.log("Playing");
-        socket.emit('toggle play', true);
+        self.socket.emit('toggle play', true);
     };
 
     self.pause = function() {
         self.isPlaying(false);
         console.log("Pausing");
-        socket.emit('toggle play', false);
+        self.socket.emit('toggle play', false);
     };
 
     self.next = function() {
         self.isPlaying(true);
         console.log("Next song");
-        socket.emit('next song');
+        self.socket.emit('next song');
     };
 
     self.testEachKey = function() {
         self.isPlaying(false);
         $("#optionspanel").panel( "close" ); // Songs can played from the search panel, so dismiss it
-        socket.emit('test each key');
+        self.socket.emit('test each key');
     }
 
     self.testAllKeys = function() {
         self.isPlaying(false);
         $("#optionspanel").panel( "close" ); // Songs can played from the search panel, so dismiss it
-        socket.emit('test all keys');
+        self.socket.emit('test all keys');
     }
 
     // =========================================================================
@@ -196,7 +196,7 @@ function MaeveViewModel() {
     // =========================================================================
 
     // "load library" is called when a client connects to provide the library of available songs
-    socket.on('load library', function (allSongs) {
+    self.socket.on('load library', function (allSongs) {
         let sortedSongs = self.sortJSON(allSongs,'artist'); // sort by artist
         //console.log(sortedSongs);
         let mappedSongs = $.map(sortedSongs, function(item) { return new Song(item) });
@@ -206,13 +206,13 @@ function MaeveViewModel() {
     });
 
     // "set song" is called to update the client with the current song that is playing
-    socket.on('set song', function (song) {
+    self.socket.on('set song', function (song) {
         if (song.id === self.currentSong.id) return; // If we're already playing the song, just return
         self.currentSong(song);
     });
 
     // "update playlist" called to update the current playlist
-    socket.on('update playlist', function (playlistSongs) {
+    self.socket.on('update playlist', function (playlistSongs) {
         let playlist = playlistSongs;
         let mappedSongs = $.map(playlist, function(item) { return new Song(item) });
         self.playlist(mappedSongs);
@@ -220,7 +220,7 @@ function MaeveViewModel() {
     });
 
     // "update song" is called to update the total song time and the time left
-    socket.on('update song', function (song, isPlaying, songTime, timeRemaining) {
+    self.socket.on('update song', function (song, isPlaying, songTime, timeRemaining) {
         if (song.id !== self.currentSong.id) {
             self.currentSong(song); // If the song has changed, update currentSong
         }

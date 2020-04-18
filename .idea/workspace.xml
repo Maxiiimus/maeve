@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="cecbee3d-ffb0-4882-b823-be158825c755" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/KeyRegister.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/KeyRegister.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/PianoServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/PianoServer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaeveViewModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/MaeveViewModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,7 +24,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/components" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -48,7 +48,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1586983846082</updated>
-      <workItem from="1586983848420" duration="8676000" />
+      <workItem from="1586983848420" duration="10512000" />
+      <workItem from="1587184198920" duration="2000" />
     </task>
     <servers />
   </component>

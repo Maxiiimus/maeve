@@ -94,9 +94,9 @@ class PianoServer {
     listen(http, port) {
         this.io.on('connection', (socket) => {
             this.clientsConnected = true;
-            console.log('a user connected');
+            console.log('A user connected: ' + JSON.stringify(socket.handshake));
 
-            this.io.emit('load library', songLibrary.songs); //JSON.stringify(songLibrary));
+            this.io.emit('load library', songLibrary.songs);
             this.io.emit('update playlist', this.playlist);
 
             socket.on("test each key", () => {
@@ -164,16 +164,13 @@ class PianoServer {
             */
 
             socket.on('update playlist',  (p) => {
-                console.log('incoming playlist: ' + p);
+                //console.log('incoming playlist: ' + p);
                 this.playlist = p;
                 this.playlistChanged = true; // Update all connected clients' playlist
-                //this.createRandomizedPlaylist();
-                //io.emit('update playlist', JSON.stringify(p));
-                //io.emit('update switches', JSON.stringify(keys));
             });
 
-            socket.on('disconnect', () => {
-                console.log('user disconnected');
+            socket.on('disconnect', (reason) => {
+                console.log('User disconnected: ' + reason);
             });
         });
 
@@ -259,17 +256,23 @@ class PianoServer {
     // Plays the next song in the internalPlaylist
     playNextSong() {
         if (this.playlistMode && this.playlistIndex < this.internalPlaylist.length - 1) {
+            let wasPlaying = this.player.isPlaying();
             this.playlistIndex++;
             console.log("playing next song: " + this.playlistIndex);
             let song = this.internalPlaylist[this.playlistIndex];
             console.log("Playing next song: ", song.title);
             this.setSong(song);
-            this.play(true);
+            if (wasPlaying) {
+                this.play(true);
+            }
         }
     }
 
     playPreviousSong() {
         let song;
+        let wasPlaying = this.player.isPlaying();
+        console.log("Song was playing: " + wasPlaying);
+
         // Check if we're in playlist mode and at the beginning of the current song
         // then we'll go to the previous song.
         // Otherwise, just restart the current song.
@@ -282,9 +285,11 @@ class PianoServer {
             song = this.currentSong;
         }
 
-        console.log("Playing previous song: ", song.title);
+        console.log("Setting previous song: ", song.title);
         this.setSong(song);
-        this.play(true);
+        if (wasPlaying) {
+            this.play(true);
+        }
     }
 
     // This is called when a user starts playing from the playlist

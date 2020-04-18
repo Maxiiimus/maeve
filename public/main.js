@@ -1,4 +1,4 @@
-let socket = io();
+//let socket = io();
 //let ac = new AudioContext();
 //let audioOn = false;
 //let songtime = 100;
