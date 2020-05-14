@@ -84,18 +84,18 @@ class PianoServer {
                 keyIndex = event.noteNumber - 21;
 
                 // Check if the key is already being "played"
-                //if (this.keys[keyIndex] === keyVal && keyVal === 1) {
-                //    console.log("KEY ALREADY ON: " + event.noteNumber);
-                //}
+                if (this.keys[keyIndex].isOn(millis) && keyVal === 1) {
+                    console.log("KEY ALREADY ON: " + event.noteNumber);
+                }
                 //this.keys[keyIndex] = keyVal;
                 //this.register.send(this.keys);
                 //this.io.emit('update keys', JSON.stringify(this.keys));
 
                 // Turn on or off the key
                 if (keyVal === 1) {
-                    this.keys[keyIndex].on(millis);
+                    this.keys[keyIndex].noteOn(millis);
                 } else {
-                    this.keys[keyIndex].off(millis);
+                    this.keys[keyIndex].noteOff(millis);
                 }
 
                 // Calculate time remaining using the current tick
@@ -232,8 +232,12 @@ class PianoServer {
 
     // This method runs on REGISTER_DELAY interval
     updateKeysLoop() {
+        if (!this.player.isPlaying()) {
+            return;
+        }
+
         for (let i = 0; i < this.numKeys; i++) {
-            this.keyBits[i] = this.keys[i].isOn ? 1 : 0;
+            this.keyBits[i] = this.keys[i].isOn(Date.now()) ? 1 : 0;
         }
         this.register.send(this.keyBits);
     }
@@ -282,7 +286,7 @@ class PianoServer {
         //this.keys.fill(0);
         let millis = Date.now();
         for (let i = 0; i < this.numKeys; i++) {
-            this.keys[i].off(millis);
+            this.keys[i].noteOff(millis);
         }
         //this.register.send(this.keys);
     }
