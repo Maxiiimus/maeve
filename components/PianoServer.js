@@ -1,9 +1,11 @@
 const MidiPlayer = require('midi-player-js');
 const songLibrary = require('../midis/song-list');
+const Key = require('./Key.js');
 const fs = require('fs');
 
 const CLIENT_INTERVAL = 250; // milliseconds between updates to client if needed
 const KEY_TEST_DELAY = 250; // The delay between playing each key during the tests
+const REGISTER_DELAY = 20; // The delay between updating the key register
 
 class PianoServer {
     constructor() {
@@ -42,7 +44,12 @@ class PianoServer {
         this.register = register;
         this.vacuumController = vacuumController;
         this.numKeys = register.moduleCount * register.registerSize;
-        this.keys = Buffer.alloc(this.numKeys).fill(0);
+        //this.keys = Buffer.alloc(this.numKeys).fill(0);
+        this.keyBits = Buffer.alloc(this.numKeys).fill(0);
+        this.keys = [];
+        for (let i = 0; i < this.numKeys; i++) {
+            this.keys.push(new Key());
+        }
 
         // Open connection to clients
         this.io = io; //require('socket.io')(server);
@@ -52,7 +59,8 @@ class PianoServer {
         this.player = this.initializePlayer();
 
         // Update the clients every 250ms
-        setInterval(this.updateClients.bind(this), CLIENT_INTERVAL);
+        setInterval(this.updateClientsLoop.bind(this), CLIENT_INTERVAL);
+        setInterval(this.updateKeysLoop.bind(this), REGISTER_DELAY);
     }
 
     initializePlayer() {
@@ -64,17 +72,31 @@ class PianoServer {
             // When we get a "Note on" or "Note off" event, update the values in the shift register
             // Also, update the clients in case they are playing the audio locally
             if (event.name && (event.name.toLowerCase() === "note on" || event.name.toLowerCase() === "note off")) {
+                let millis = Date.now();
 
                 // "Note off" is also represented as a velocity of 0
                 // So, we default to 0, but change the value if velocity is not 0
                 if (event.velocity !== 0) {
                     keyVal = 1;
                 }
-                //console.log(JSON.stringify(event));
-                keyIndex = event.noteNumber - 21; // Piano key midi notes start at 21
-                this.keys[keyIndex] = keyVal;
-                this.register.send(this.keys);
+
+                // Piano key midi notes start at 21
+                keyIndex = event.noteNumber - 21;
+
+                // Check if the key is already being "played"
+                //if (this.keys[keyIndex] === keyVal && keyVal === 1) {
+                //    console.log("KEY ALREADY ON: " + event.noteNumber);
+                //}
+                //this.keys[keyIndex] = keyVal;
+                //this.register.send(this.keys);
                 //this.io.emit('update keys', JSON.stringify(this.keys));
+
+                // Turn on or off the key
+                if (keyVal === 1) {
+                    this.keys[keyIndex].on(millis);
+                } else {
+                    this.keys[keyIndex].off(millis);
+                }
 
                 // Calculate time remaining using the current tick
                 let remainingTicks = this.currentSongTotalTicks - event.tick;
@@ -180,7 +202,7 @@ class PianoServer {
     }
 
     // Set an interval to update all connected clients
-    updateClients() {
+    updateClientsLoop() {
         // If a song has ended and we're playing a playlist, then play the next song
         if (this.songEnded && this.playlistMode) {
             this.playNextSong();
@@ -206,6 +228,14 @@ class PianoServer {
             this.io.emit("update song", this.currentSong, this.player.isPlaying(),
                 this.currentSongTime, this.currentSongTimeRemaining);
         }
+    }
+
+    // This method runs on REGISTER_DELAY interval
+    updateKeysLoop() {
+        for (let i = 0; i < this.numKeys; i++) {
+            this.keyBits[i] = this.keys[i].isOn ? 1 : 0;
+        }
+        this.register.send(this.keyBits);
     }
 
     // play() - plays or pauses the current song
@@ -249,8 +279,12 @@ class PianoServer {
     }
 
     resetKeys() {
-        this.keys.fill(0);
-        this.register.send(this.keys);
+        //this.keys.fill(0);
+        let millis = Date.now();
+        for (let i = 0; i < this.numKeys; i++) {
+            this.keys[i].off(millis);
+        }
+        //this.register.send(this.keys);
     }
 
     // Plays the next song in the internalPlaylist
@@ -394,7 +428,8 @@ class PianoServer {
     // =====================================================
     runEachKeyTest() {
         this.keyIndex = 0;
-        this.keys.fill(0);
+        //this.keys.fill(0);
+        this.resetKeys();
         if (this.myInterval) {
             clearInterval(this.myInterval);
         }
@@ -402,22 +437,26 @@ class PianoServer {
     }
 
     testEachKey() {
-        this.keys[this.keyIndex] = 1;
+        let millis = Date.now();
+        //this.keys[this.keyIndex] = 1;
+        this.keys[this.keyIndex].on(millis);
         if (this.keyIndex > 0) {
-            this.keys[this.keyIndex-1] = 0;
+            //this.keys[this.keyIndex-1] = 0;
+            this.keys[this.keyIndex - 1].off(millis);
         }
         if (this.keyIndex >= this.numKeys) {
             clearInterval(this.myInterval);
         }
-        this.register.send(this.keys);
-        this.io.emit('update keys', JSON.stringify(this.keys));
+        //this.register.send(this.keys);
+        //this.io.emit('update keys', JSON.stringify(this.keys));
         //console.log("Keys: " + JSON.stringify(keys));
         this.keyIndex++;
     }
 
     runAllKeysTest() {
         this.keyIndex = 0;
-        this.keys.fill(0);
+        //this.keys.fill(0);
+        this.resetKeys();
         if (this.myInterval) {
             clearInterval(this.myInterval);
         }
@@ -425,15 +464,15 @@ class PianoServer {
     }
 
     testAllKeys() {
-        this.keys[this.keyIndex] = 1;
-
+        //this.keys[this.keyIndex] = 1;
+        this.keys[this.keyIndex].on(Date.now());
         if (this.keyIndex >= this.numKeys) {
-            this.register.send(this.keys);
-            this.io.emit('update keys', JSON.stringify(this.keys));
+            //this.register.send(this.keys);
+            //this.io.emit('update keys', JSON.stringify(this.keys));
             clearInterval(this.myInterval);
         }
-        this.register.send(this.keys);
-        this.io.emit('update keys', JSON.stringify(this.keys));
+        //this.register.send(this.keys);
+        //this.io.emit('update keys', JSON.stringify(this.keys));
         this.keyIndex++;
     }
 }

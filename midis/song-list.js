@@ -422,10 +422,10 @@ const songList = {
         },
         {
             id: 60,
-            title: "Lean on Me",
-            artist: "Bill Withers",
-            path: "midis/Bill Withers/Lean on Me.mid",
-            image: "images/artists/Bill Withers - Still Bill.jpg"
+            title: "Feeling Good",
+            artist: "Nina Simone",
+            path: "midis/Nina Simone/Feeling Good.mid",
+            image: "images/artists/Nina Simone - Spell on You.jpg"
         },
         {
             id: 61,
@@ -454,6 +454,202 @@ const songList = {
             artist: "Guns N Roses",
             path: "midis/Guns N Roses/Welcome to the Jungle.mid",
             image: "images/artists/Guns N Roses - Appetite for Destruction.jpg"
+        },
+        {
+            id: 65,
+            title: "Cool Water",
+            artist: "Marty Robbins",
+            path: "midis/Marty Robbins/Cool Water.mid",
+            image: "images/artists/Marty Robbins - Gunfighter Ballads.jpg"
+        },
+        {
+            id: 66,
+            title: "Hey Jude",
+            artist: "The Beatles",
+            path: "midis/Beatles/Hey Jude.mid",
+            image: "images/artists/Beatles - Compilation.jpg"
+        },
+        {
+            id: 67,
+            title: "Puttin' on the Ritz",
+            artist: "Fred Astaire",
+            path: "midis/Fred Astaire/Puttin on the Ritz.mid",
+            image: "images/artists/Fred Astaire.jpg"
+        },
+        {
+            id: 68,
+            title: "I'd Like to Teach the World to Sing",
+            artist: "The New Seekers",
+            path: "midis/The New Seekers/Id Like to Teach the World To Sing.mid",
+            image: "images/artists/The New Seekers.jpg"
+        },
+        {
+            id: 69,
+            title: "I Will Survive",
+            artist: "Gloria Gaynor",
+            path: "midis/Gloria Gaynor/I Will Survive.mid",
+            image: "images/artists/Gloria Gaynor.jpg"
+        },
+        {
+            id: 70,
+            title: "Y.M.C.A.",
+            artist: "The Village People",
+            path: "midis/The Village People/YMCA.mid",
+            image: "images/artists/Village People - Cruisin.jpg"
+        },
+        {
+            id: 71,
+            title: "You're So Vain",
+            artist: "Carly Simon",
+            path: "midis/Carly Simon/Youre So Vain.mid",
+            image: "images/artists/Carly Simon.jpg"
+        },
+        {
+            id: 72,
+            title: "Itsy Bitsy Teenie Weenie Yellow Polkadot Bikini",
+            artist: "Brian Hyland",
+            path: "midis/Brian Hyland/Itsy Bitsy Teenie Weenie Yellow Polkadot Bikini.mid",
+            image: "images/artists/Brian Hyland.jpg"
+        },
+        {
+            id: 73,
+            title: "Mr. Bojangles",
+            artist: "Nitty Gritty Dirt Band",
+            path: "midis/Nitty Gritty Dirt Band/Mr. Bojangles.mid",
+            image: "images/artists/Nitty Gritty Dirt Band.jpg"
+        },
+        {
+            id: 74,
+            title: "Aquarius/Let the Sunshine In",
+            artist: "The 5th Dimension",
+            path: "midis/The 5th Dimension/Aquarius.mid",
+            image: "images/artists/The 5th Dimension.jpg"
+        },
+        {
+            id: 75,
+            title: "Just the Way You Are",
+            artist: "Billy Joel",
+            path: "midis/Billy Joel/Just the Way You Are.mid",
+            image: "images/artists/Billy Joel - The Stranger.jpg"
+        },
+        {
+            id: 76,
+            title: "All of Me",
+            artist: "Billy Holiday",
+            path: "midis/Billie Holiday/All of Me.mid",
+            image: "images/artists/Billie Holiday.jpg"
+        },
+        {
+            id: 77,
+            title: "Can't Take My Eyes Off Of You",
+            artist: "Frankie Valli and the Four Seasons",
+            path: "midis/Frankie Valli/Cant Take My Eyes Off Of You.mid",
+            image: "images/artists/Frankie Valli.jpg"
+        },
+        {
+            id: 78,
+            title: "Walk Right In",
+            artist: "The Rooftop Singers",
+            path: "midis/The Rooftop Singers/Walk Right In.mid",
+            image: "images/artists/The Rooftop Singers.jpg"
+        },
+        {
+            id: 79,
+            title: "I Guess That's Why They Call It The Blues",
+            artist: "Elton John",
+            path: "midis/Elton John/I Guess Thats Why They Call It The Blues.mid",
+            image: "images/artists/Elton John - Too Low for Zero.jpg"
+        },
+        {
+            id: 80,
+            title: "Leaving on a Jet Plane",
+            artist: "John Denver",
+            path: "midis/John Denver/Leaving on a Jet Plane.mid",
+            image: "images/artists/John Denver.jpg"
+        },
+        {
+            id: 81,
+            title: "Take Me Home Country Roads",
+            artist: "John Denver",
+            path: "midis/John Denver/Take Me Home Country Roads.mid",
+            image: "images/artists/John Denver.jpg"
+        },
+        {
+            id: 82,
+            title: "Do-Re-Mi",
+            artist: "Julie Andrews",
+            path: "midis/Julie Andrews/Do-Re-Mi.mid",
+            image: "images/artists/Sound of Music.jpg"
+        },
+        {
+            id: 83,
+            title: "Over the Rainbow",
+            artist: "Judy Garland",
+            path: "midis/Judy Garland/Over the Rainbow.mid",
+            image: "images/artists/Judy Garland.jpg"
+        },
+        {
+            id: 84,
+            title: "Beauty and the Beast",
+            artist: "Angela Lansbury",
+            path: "midis/Beauty and the Beast/Beauty and the Beast.mid",
+            image: "images/artists/Beauty and the Beast.jpg"
+        },
+        {
+            id: 85,
+            title: "Eleanor Rigby",
+            artist: "The Beatles",
+            path: "midis/Beatles/Eleanor Rigby.mid",
+            image: "images/artists/Beatles - Revolver.jpg"
+        },
+        {
+            id: 86,
+            title: "Bad Romance",
+            artist: "Lady Gaga",
+            path: "midis/Lady Gaga/Bad Romance.mid",
+            image: "images/artists/Lady Gaga - The Fame Monster.jpg"
+        },
+        {
+            id: 87,
+            title: "Sunday Bloody Sunday",
+            artist: "U2",
+            path: "midis/U2/Sunday Bloody Sunday.mid",
+            image: "images/artists/U2 - War.jpg"
+        },
+        {
+            id: 88,
+            title: "Total Eclipse of the Heart",
+            artist: "Bonnie Tyler",
+            path: "midis/Bonnie Tyler/Total Eclipse of the Heart.mid",
+            image: "images/artists/Bonnie Tyler.jpg"
+        },
+        {
+            id: 89,
+            title: "All Star",
+            artist: "Smash Mouth",
+            path: "midis/Smash Mouth/All Star.mid",
+            image: "images/artists/Smash Mouth.jpg"
+        },
+        {
+            id: 90,
+            title: "Careless Whisper",
+            artist: "George Michael",
+            path: "midis/George Michael/Careless Whisper.mid",
+            image: "images/artists/George Michael.jpg"
+        },
+        {
+            id: 91,
+            title: "Wonderwall",
+            artist: "Oasis",
+            path: "midis/Oasis/Wonderwall.mid",
+            image: "images/artists/Oasis.jpg"
+        },
+        {
+            id: 92,
+            title: "Never Gonna Give You Up",
+            artist: "Rick Astley",
+            path: "midis/Rick Astley/Never Gonna Give You Up.mid",
+            image: "images/artists/Rick Astley.jpg"
         }
     ]
 };
