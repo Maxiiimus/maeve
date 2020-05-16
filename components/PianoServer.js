@@ -445,7 +445,7 @@ class PianoServer {
 
         // The key test interval shouldn't be less than 100ms. It's unlikely the keys can react that quickly.
         // Anything over 1 second is too long
-        let testInterval = delay > 100 && delay <=1000 ? delay : KEY_TEST_DELAY;
+        let testInterval = delay >= 100 && delay <=1000 ? delay : KEY_TEST_DELAY;
 
         // Run the specified test
         switch (keyTest) {
@@ -556,6 +556,10 @@ class PianoServer {
             clearInterval(this.myInterval);
             this.underTest = false;
             return;
+        }
+
+        if (key > 0) {
+            this.keys[key-1].noteOff(millis);
         }
 
         // Turn key on for odd, off for even
