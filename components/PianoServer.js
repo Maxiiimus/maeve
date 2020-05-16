@@ -123,6 +123,7 @@ class PianoServer {
             this.io.emit('load library', songLibrary.songs);
             this.io.emit('update playlist', this.playlist);
 
+            /*
             socket.on("test each key", () => {
                 this.runEachKeyTest();
             });
@@ -130,6 +131,7 @@ class PianoServer {
             socket.on("test all keys", () => {
                 this.runAllKeysTest();
             });
+            */
 
             socket.on("set song", (song) => {
                 this.setSong(song);
@@ -149,6 +151,7 @@ class PianoServer {
 
             socket.on("toggle play", (shouldPlay) => {
                 console.log("Toggling play to: " + shouldPlay);
+                this.stopTests();
                 this.play(shouldPlay);
             });
 
@@ -167,6 +170,7 @@ class PianoServer {
             });
 
             socket.on("run test", (testNumber, key, delay) => {
+                //this.play(false);
                 this.testKey = key; // testKey is used when testing an individual key
                 this.runKeyTest(testNumber, delay); // Delay is used to adjust the speed of the test
             });
@@ -218,6 +222,11 @@ class PianoServer {
 
     // This method runs on REGISTER_DELAY interval
     updateKeysLoop() {
+        // Check to make sure we aren't trying to play a song and test at the same time
+        if (this.player.isPlaying() && this.underTest) {
+            this.stopTests();
+        }
+
         // If a song isn't playing shut off all valves
         if (!this.player.isPlaying() && !this.underTest) {
             this.keyBits.fill(0);
@@ -417,13 +426,17 @@ class PianoServer {
     // =====================================================
     // Key Test Functions
     // =====================================================
-    runKeyTest(keyTest, delay) {
+    stopTests() {
         // Stop anything that is currently playing
         this.resetKeys();
         if (this.myInterval) {
             clearInterval(this.myInterval);
         }
+        this.underTest = false;
+    }
 
+    runKeyTest(keyTest, delay) {
+        this.stopTests();
         this.underTest = true;
 
         console.log("Running Test #" + keyTest + ": delay = " + delay + ", key = " + this.testKey);
