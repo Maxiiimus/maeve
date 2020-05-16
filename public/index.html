@@ -79,8 +79,114 @@
             <label for="audio">Audio</label>
                         -->
             <p></p>
-            <a href="#" class="ui-btn" data-bind="click: $root.testEachKey">Test Each Key</a>
-            <a href="#" class="ui-btn" data-bind="click: $root.testAllKeys">Load Test Keys</a>
+            <label for="text-interval">Key Test Interval:</label>
+            <input type="text" name="text-interval" id="text-interval" value="250">
+            <a href="#" class="ui-btn" data-bind="click: $root.testKeys.bind($data, 0)">Keys In Sequence</a>
+            <a href="#" class="ui-btn" data-bind="click: $root.testKeys.bind($data, 1)">Load Test Keys</a>
+            <a href="#" class="ui-btn" data-bind="click: $root.testKeys.bind($data, 2)">Rapid Key Press</a>
+            <a href="#" class="ui-btn" data-bind="click: $root.testKeys.bind($data, 3)">Overlapping Key Press</a>
+            <div class="ui-field-contain">
+                <label for="select-key">Key:</label>
+                <select name="select-key" id="select-key">
+                    <option value="0">A0</option>
+                    <option value="1">A#0</option>
+                    <option value="2">B0</option>
+
+                    <option value="3">C1</option>
+                    <option value="4">C#1</option>
+                    <option value="5">D1</option>
+                    <option value="6">D#1</option>
+                    <option value="7">E1</option>
+                    <option value="8">F1</option>
+                    <option value="9">F#1</option>
+                    <option value="10">G1</option>
+                    <option value="11">G#1</option>
+                    <option value="12">A1</option>
+                    <option value="13">A#1</option>
+                    <option value="14">B1</option>
+
+                    <option value="15">C2</option>
+                    <option value="16">C#2</option>
+                    <option value="17">D2</option>
+                    <option value="18">D#2</option>
+                    <option value="19">E2</option>
+                    <option value="20">F2</option>
+                    <option value="21">F#2</option>
+                    <option value="22">G2</option>
+                    <option value="23">G#2</option>
+                    <option value="24">A2</option>
+                    <option value="25">A#2</option>
+                    <option value="26">B2</option>
+
+                    <option value="27">C3</option>
+                    <option value="28">C#3</option>
+                    <option value="29">D3</option>
+                    <option value="30">D#3</option>
+                    <option value="31">E3</option>
+                    <option value="32">F3</option>
+                    <option value="33">F#3</option>
+                    <option value="34">G3</option>
+                    <option value="35">G#3</option>
+                    <option value="36">A3</option>
+                    <option value="37">A#3</option>
+                    <option value="38">B3</option>
+
+                    <option value="39">C4</option>
+                    <option value="40">C#4</option>
+                    <option value="41">D4</option>
+                    <option value="42">D#4</option>
+                    <option value="43">E4</option>
+                    <option value="44">F4</option>
+                    <option value="45">F#4</option>
+                    <option value="46">G4</option>
+                    <option value="47">G#4</option>
+                    <option value="48">A4</option>
+                    <option value="49">A#4</option>
+                    <option value="50">B4</option>
+
+                    <option value="51">C5</option>
+                    <option value="52">C#5</option>
+                    <option value="53">D5</option>
+                    <option value="54">D#5</option>
+                    <option value="55">E5</option>
+                    <option value="56">F5</option>
+                    <option value="57">F#5</option>
+                    <option value="58">G5</option>
+                    <option value="59">G#5</option>
+                    <option value="60">A5</option>
+                    <option value="61">A#5</option>
+                    <option value="62">B5</option>
+
+                    <option value="63">C6</option>
+                    <option value="64">C#6</option>
+                    <option value="65">D6</option>
+                    <option value="66">D#6</option>
+                    <option value="67">E6</option>
+                    <option value="68">F6</option>
+                    <option value="69">F#6</option>
+                    <option value="70">G6</option>
+                    <option value="71">G#6</option>
+                    <option value="72">A6</option>
+                    <option value="73">A#6</option>
+                    <option value="74">B6</option>
+
+                    <option value="75">C7</option>
+                    <option value="76">C#7</option>
+                    <option value="77">D7</option>
+                    <option value="78">D#7</option>
+                    <option value="79">E7</option>
+                    <option value="80">F7</option>
+                    <option value="81">F#7</option>
+                    <option value="82">G7</option>
+                    <option value="83">G#7</option>
+                    <option value="84">A7</option>
+                    <option value="85">A#7</option>
+                    <option value="86">B7</option>
+
+                    <option value="87">C8</option>
+                </select>
+            </div>
+            <a href="#" class="ui-btn" data-bind="click: $root.testKeys.bind($data, 4)">Test One Key</a>
         </form>
     </div><!-- /panel -->
 

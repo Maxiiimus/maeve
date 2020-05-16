@@ -11,6 +11,7 @@ class PianoServer {
     constructor() {
 
         this.keyIndex = 0;
+        this.testKey = 0;
 
         this.currentSong = {
             id: -1,
@@ -38,6 +39,7 @@ class PianoServer {
         this.songLoaded = false;
         this.songEnded = false;
         this.clientsConnected = false;
+        this.underTest = false;
     }
 
     start (http, io, port, register, vacuumController) {
@@ -116,7 +118,7 @@ class PianoServer {
     listen(http, port) {
         this.io.on('connection', (socket) => {
             this.clientsConnected = true;
-            console.log('A user connected: ' + JSON.stringify(socket.handshake));
+            console.log('A user connected: ' + JSON.stringify(socket.id));
 
             this.io.emit('load library', songLibrary.songs);
             this.io.emit('update playlist', this.playlist);
@@ -164,26 +166,10 @@ class PianoServer {
                 this.setCurrentSongTime(percent);
             });
 
-            socket.on("test each key", () => {
-                console.log("test each key");
-                this.runEachKeyTest();
+            socket.on("run test", (testNumber, key, delay) => {
+                this.testKey = key; // testKey is used when testing an individual key
+                this.runKeyTest(testNumber, delay); // Delay is used to adjust the speed of the test
             });
-
-            socket.on("test all keys", () => {
-                console.log("test all keys");
-                this.runAllKeysTest();
-            });
-
-            /*
-            socket.on('update key', (id, keyState) => {
-                if (id >= 0 && id <= this.keys.length) {
-                    this.keys[id] = keyState;
-                    this.io.emit('update keys', JSON.stringify(this.keys));
-                    console.log('Updated keys[' + id + ']' + ": " + keyState);
-                    this.register.send(this.keys);
-                }
-            });
-            */
 
             socket.on('update playlist',  (p) => {
                 //console.log('incoming playlist: ' + p);
@@ -232,12 +218,13 @@ class PianoServer {
 
     // This method runs on REGISTER_DELAY interval
     updateKeysLoop() {
-        if (!this.player.isPlaying()) {
-            return;
-        }
-
-        for (let i = 0; i < this.numKeys; i++) {
-            this.keyBits[i] = this.keys[i].isOn(Date.now()) ? 1 : 0;
+        // If a song isn't playing shut off all valves
+        if (!this.player.isPlaying() && !this.underTest) {
+            this.keyBits.fill(0);
+        } else {
+            for (let i = 0; i < this.numKeys; i++) {
+                this.keyBits[i] = this.keys[i].isOn(Date.now()) ? 1 : 0;
+            }
         }
         this.register.send(this.keyBits);
     }
@@ -430,33 +417,169 @@ class PianoServer {
     // =====================================================
     // Key Test Functions
     // =====================================================
+    runKeyTest(keyTest, delay) {
+        // Stop anything that is currently playing
+        this.resetKeys();
+        if (this.myInterval) {
+            clearInterval(this.myInterval);
+        }
+
+        this.underTest = true;
+
+        console.log("Running Test #" + keyTest + ": delay = " + delay + ", key = " + this.testKey);
+
+        this.keyIndex = 0;
+
+        // The key test interval shouldn't be less than 100ms. It's unlikely the keys can react that quickly.
+        // Anything over 1 second is too long
+        let testInterval = delay > 100 && delay <=1000 ? delay : KEY_TEST_DELAY;
+
+        // Run the specified test
+        switch (keyTest) {
+            // All keys pressed and released, one at a time
+            case 0:
+                this.myInterval = setInterval(this.testEachKey.bind(this), testInterval);
+                break;
+
+            // All keys pressed and held, one at a time
+            case 1:
+                this.myInterval = setInterval(this.testAllKeys.bind(this), testInterval);
+                break;
+
+            // Each key pressed 5 times rapidly, one at a time
+            // This helps calibrate and test how quickly each key can recover between presses
+            case 2:
+                this.myInterval = setInterval(this.testEachKeyRapidly.bind(this), testInterval);
+                break;
+
+            // Each key pressed and held, then pressed again while held
+            // This simulates a condition where two tracks are playing and the same key is struck
+            case 3:
+                this.myInterval = setInterval(this.testEachKeyOverlapping.bind(this), testInterval);
+                break;
+
+            // Test one single key
+            // Runs a single key through a variety of tests
+            case 4:
+                this.myInterval = setInterval(this.testSingleKey.bind(this), testInterval);
+                break;
+
+        }
+    }
+
+    /*
     runEachKeyTest() {
         this.keyIndex = 0;
-        //this.keys.fill(0);
         this.resetKeys();
         if (this.myInterval) {
             clearInterval(this.myInterval);
         }
         this.myInterval = setInterval(this.testEachKey.bind(this), KEY_TEST_DELAY);
-    }
+    }*/
 
-    testEachKey() {
+    // Runs a single key (this.testKey) through 3 tests:
+    // 1) Just press and hold (iterations 0-9)
+    // 2) Press in quick succession 5 times (iterations 20 - 29)
+    // 3) Press an hold then press it again 3 times (iterations 40 - 50)
+    testSingleKey() {
         let millis = Date.now();
-        //this.keys[this.keyIndex] = 1;
-        this.keys[this.keyIndex].on(millis);
-        if (this.keyIndex > 0) {
-            //this.keys[this.keyIndex-1] = 0;
-            this.keys[this.keyIndex - 1].off(millis);
-        }
-        if (this.keyIndex >= this.numKeys) {
+
+        if (this.keyIndex > 50 || this.testKey < 0 || this.testKey >= this.numKeys) {
+            this.underTest = false;
             clearInterval(this.myInterval);
+            return;
         }
-        //this.register.send(this.keys);
-        //this.io.emit('update keys', JSON.stringify(this.keys));
-        //console.log("Keys: " + JSON.stringify(keys));
+
+        switch (this.keyIndex) {
+            case 0:       // Start of test #1
+            case 20:      // Start of test #2
+            case 22:
+            case 24:
+            case 26:
+            case 28:
+            case 40:      // Start of test #3
+            case 44:
+            case 46:
+            case 48:
+                this.keys[this.testKey].noteOn(millis);
+                break;
+            case 10:      // End of test #1
+            case 21:
+            case 23:
+            case 25:
+            case 27:
+            case 29:      // End of test #2
+            case 50:      // End of test #3
+                this.keys[this.testKey].noteOff(millis);
+                break;
+        }
+
         this.keyIndex++;
     }
 
+    // Simply press each key in succession
+    testEachKey() {
+        if (this.keyIndex >= this.numKeys) {
+            this.underTest = false;
+            clearInterval(this.myInterval);
+            return;
+        }
+
+        let millis = Date.now();
+        this.keys[this.keyIndex].noteOn(millis);
+        if (this.keyIndex > 0) {
+            this.keys[this.keyIndex - 1].noteOff(millis);
+        }
+
+        this.keyIndex++;
+    }
+
+    // Press each key on and off 5 times in quick succession
+    testEachKeyRapidly() {
+        let millis = Date.now();
+
+        let key = Math.floor(this.keyIndex / 10);
+        if (key >= this.numKeys) {
+            clearInterval(this.myInterval);
+            this.underTest = false;
+            return;
+        }
+
+        // Turn key on for odd, off for even
+        if (this.keyIndex % 2 === 1) {
+            this.keys[key].noteOn(millis);
+        } else {
+            this.keys[key].noteOff(millis);
+        }
+
+        this.keyIndex++;
+    }
+
+    // Press a key, then press it again without calling off()
+    testEachKeyOverlapping() {
+        let millis = Date.now();
+
+        let key = Math.floor(this.keyIndex / 10);
+        if (key >= this.numKeys) {
+            this.underTest = false;
+            clearInterval(this.myInterval);
+            return;
+        }
+
+        // If this is the first or 5th iteration for this key, press it
+        if (this.keyIndex % 5 === 0) {
+            this.keys[key].noteOn(millis);
+        }
+
+        // If this is the 1st iteration for this key, release the previous key
+        if (this.keyIndex % 10 === 0 && key > 0) {
+            this.keys[key-1].noteOff(millis);
+        }
+
+        this.keyIndex++;
+    }
+
+    /*
     runAllKeysTest() {
         this.keyIndex = 0;
         //this.keys.fill(0);
@@ -465,18 +588,16 @@ class PianoServer {
             clearInterval(this.myInterval);
         }
         this.myInterval = setInterval(this.testAllKeys.bind(this), KEY_TEST_DELAY);
-    }
+    }*/
 
+    // This just keeps pressing all the keys without releasing them
     testAllKeys() {
-        //this.keys[this.keyIndex] = 1;
-        this.keys[this.keyIndex].on(Date.now());
+        this.keys[this.keyIndex].noteOn(Date.now());
         if (this.keyIndex >= this.numKeys) {
-            //this.register.send(this.keys);
-            //this.io.emit('update keys', JSON.stringify(this.keys));
+            this.underTest = false;
             clearInterval(this.myInterval);
         }
-        //this.register.send(this.keys);
-        //this.io.emit('update keys', JSON.stringify(this.keys));
+
         this.keyIndex++;
     }
 }

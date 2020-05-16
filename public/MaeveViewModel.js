@@ -142,16 +142,23 @@ function MaeveViewModel() {
         self.socket.emit('next song');
     };
 
-    self.testEachKey = function() {
+    self.testKeys = function(testNumber) {
         self.isPlaying(false);
-        $("#optionspanel").panel( "close" ); // Songs can played from the search panel, so dismiss it
-        self.socket.emit('test each key');
-    }
+        // Get the test speed interval
+        let interval = parseInt($("#text-interval").val());
+        if (!interval) {
+            interval = 250;
+        }
+        //console.log("interval = " + interval);
 
-    self.testAllKeys = function() {
-        self.isPlaying(false);
+        let noteNumber = parseInt($("#select-key").val());
+        if (!noteNumber) {
+            noteNumber = 0;
+        }
+        //console.log("note = " + noteNumber);
+
         $("#optionspanel").panel( "close" ); // Songs can played from the search panel, so dismiss it
-        self.socket.emit('test all keys');
+        self.socket.emit('run test', testNumber, noteNumber, interval);
     }
 
     // =========================================================================
