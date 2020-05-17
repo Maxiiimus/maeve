@@ -664,6 +664,34 @@ const songList = {
             artist: "Tom Petty",
             path: "midis/Tom Petty/Free Fallin.mid",
             image: "images/artists/Tom Petty - Full Moon Fever.jpg"
+        },
+        {
+            id: 95,
+            title: "Lose Yourself",
+            artist: "Eminem",
+            path: "midis/Eminem/Lose Yourself.mid",
+            image: "images/artists/Eminem - Curtain Call.jpg"
+        },
+        {
+            id: 96,
+            title: "Budapest",
+            artist: "George Ezra",
+            path: "midis/George Ezra/Budapest.mid",
+            image: "images/artists/George Ezra.jpg"
+        },
+        {
+            id: 97,
+            title: "Riptide",
+            artist: "Vance Joy",
+            path: "midis/Vance Joy/Riptide.mid",
+            image: "images/artists/Vance Joy - Dream Your Life Away.jpg"
+        },
+        {
+            id: 98,
+            title: "Perfect",
+            artist: "Ed Sheeran",
+            path: "midis/Ed Sheeran/Perfect.mid",
+            image: "images/artists/Ed Sheeran - Divide.jpg"
         }
     ]
 };
