@@ -69,7 +69,12 @@ class PianoServer {
         // Initialize player and register event handler
         let p = new MidiPlayer.Player( (event) => {
             let keyIndex = 21;
-            let keyVal = 0; // Default to "Note off" with a 0
+            let keyOn = false; // Default to "Note off" with a 0
+
+            // Check for the sustain pedal
+            if (event.name && (event.name.toLowerCase() === "controller change" && event.number === 64)) {
+                console.log("Got sustain event: " + JSON.stringify(event));
+            }
 
             // When we get a "Note on" or "Note off" event, update the values in the shift register
             // Also, update the clients in case they are playing the audio locally
@@ -79,24 +84,24 @@ class PianoServer {
                 // "Note off" is also represented as a velocity of 0
                 // So, we default to 0, but change the value if velocity is not 0
                 if (event.velocity !== 0) {
-                    keyVal = 1;
+                    keyOn = true;
                 }
 
                 // Piano key midi notes start at 21
                 keyIndex = event.noteNumber - 21;
 
-                if (event.noteNumber < 0 || event.noteNumber >= 88) {
-                    console.log("event.noteNumber out of range! " + event.noteNumber);
+                if (keyIndex < 0 || keyIndex >= 88) {
+                    console.log("event.noteNumber out of range! " + keyIndex);
                     return;
                 }
 
                 // Check if the key is already being "played"
-                if (this.keys[keyIndex].isOn(millis) && keyVal === 1) {
+                if (this.keys[keyIndex].isOn(millis) && keyOn) {
                     console.log("KEY ALREADY ON: " + event.noteNumber);
                 }
 
                 // Turn on or off the key
-                if (keyVal === 1) {
+                if (keyOn) {
                     this.keys[keyIndex].noteOn(millis);
                 } else {
                     this.keys[keyIndex].noteOff(millis);
@@ -105,7 +110,9 @@ class PianoServer {
                 // Calculate time remaining using the current tick
                 let remainingTicks = this.currentSongTotalTicks - event.tick;
                 this.currentSongTimeRemaining = Math.floor(remainingTicks / this.currentSongTotalTicks * this.currentSongTime);
-            }
+            } //else {
+              //  console.log(JSON.stringify(event));
+            //}
         });
 
         // Listen for the end of a file

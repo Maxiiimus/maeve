@@ -367,7 +367,7 @@ const songList = {
         {
             id: 52,
             title: "Take on Me",
-            artist: "a-ha",
+            artist: "A-ha",
             path: "midis/a-ha/Take on Me.mid",
             image: "images/artists/a-ha - Take on Me.jpg"
         },
@@ -650,6 +650,13 @@ const songList = {
             artist: "Rick Astley",
             path: "midis/Rick Astley/Never Gonna Give You Up.mid",
             image: "images/artists/Rick Astley.jpg"
+        },
+        {
+            id: 93,
+            title: "Harvest Moon",
+            artist: "Neil Young",
+            path: "midis/Neil Young/Harvest Moon.mid",
+            image: "images/artists/Neil Young - Harvest Moon.jpg"
         }
     ]
 };
