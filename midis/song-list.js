@@ -657,6 +657,13 @@ const songList = {
             artist: "Neil Young",
             path: "midis/Neil Young/Harvest Moon.mid",
             image: "images/artists/Neil Young - Harvest Moon.jpg"
+        },
+        {
+            id: 94,
+            title: "Free Fallin'",
+            artist: "Tom Petty",
+            path: "midis/Tom Petty/Free Fallin.mid",
+            image: "images/artists/Tom Petty - Full Moon Fever.jpg"
         }
     ]
 };
