@@ -692,6 +692,34 @@ const songList = {
             artist: "Ed Sheeran",
             path: "midis/Ed Sheeran/Perfect.mid",
             image: "images/artists/Ed Sheeran - Divide.jpg"
+        },
+        {
+            id: 99,
+            title: "Let Her Go",
+            artist: "Passenger",
+            path: "midis/Passenger/Let Her Go.mid",
+            image: "images/artists/Passenger - All the Little Lights.jpg"
+        },
+        {
+            id: 100,
+            title: "Believer",
+            artist: "Imagine Dragons",
+            path: "midis/Imagine Dragons/Believer.mid",
+            image: "images/artists/Imagine Dragons - Evolve.jpg"
+        },
+        {
+            id: 101,
+            title: "All of Me",
+            artist: "John Legend",
+            path: "midis/John Legend/All Of Me.mid",
+            image: "images/artists/John Legend - All of Me.jpg"
+        },
+        {
+            id: 102,
+            title: "The Addams Family Theme",
+            artist: "The Addams Family",
+            path: "midis/Addams Family/The Addams Family Theme.mid",
+            image: "images/artists/TV Themes.jpg"
         }
     ]
 };
