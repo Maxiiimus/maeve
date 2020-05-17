@@ -85,13 +85,15 @@ class PianoServer {
                 // Piano key midi notes start at 21
                 keyIndex = event.noteNumber - 21;
 
+                if (event.noteNumber < 0 || event.noteNumber >= 88) {
+                    console.log("event.noteNumber out of range! " + event.noteNumber);
+                    return;
+                }
+
                 // Check if the key is already being "played"
                 if (this.keys[keyIndex].isOn(millis) && keyVal === 1) {
                     console.log("KEY ALREADY ON: " + event.noteNumber);
                 }
-                //this.keys[keyIndex] = keyVal;
-                //this.register.send(this.keys);
-                //this.io.emit('update keys', JSON.stringify(this.keys));
 
                 // Turn on or off the key
                 if (keyVal === 1) {
