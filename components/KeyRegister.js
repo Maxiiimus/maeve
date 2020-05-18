@@ -56,16 +56,16 @@ class KeyRegister {
         rpio.write(this.clockPin, rpio.LOW);
 
         // Serial in of all the data to shift register(s) memory
-        /*for (let i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             // Set the data pin to the 1 or 0 bit value
-            rpio.write(this.dataPin, data[i] ? rpio.HIGH : rpio.LOW)
+            rpio.write(this.dataPin, this.keyData[i] ? rpio.HIGH : rpio.LOW)
 
             // Cycle the clock pin to write to the shift register memory
             rpio.write(this.clockPin, rpio.HIGH);
             rpio.write(this.clockPin, rpio.LOW);
         }
-        */
-        rpio.writebuf(this.dataPin, this.keyData);
+
+        //rpio.writebuf(this.dataPin, this.keyData);
 
         // All bits are in shift register memory, now cycle the latch pin to push to outputs
         rpio.write(this.latchPin, rpio.HIGH);
