@@ -56,7 +56,7 @@ class KeyRegister {
         rpio.write(this.clockPin, rpio.LOW);
 
         // Serial in of all the data to shift register(s) memory
-        for (let i = 0; i < data.length; i++) {
+        for (let i = 0; i < this.keyData.length; i++) {
             // Set the data pin to the 1 or 0 bit value
             rpio.write(this.dataPin, this.keyData[i] ? rpio.HIGH : rpio.LOW)
 
