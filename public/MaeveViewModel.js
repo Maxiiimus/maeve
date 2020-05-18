@@ -96,7 +96,7 @@ function MaeveViewModel() {
     // Plays a specified song
     self.playSong = function(song) {
         console.log("Playing song: " + song.title);
-        self.socket.emit('set song', song);
+        //self.socket.emit('set song', song);
         self.currentSong(song);
         $("#searchpanel").panel( "close" ); // Songs can played from the search panel, so dismiss it
         console.log("Calling play song: " + song.title);
