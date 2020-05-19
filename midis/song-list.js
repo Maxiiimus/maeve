@@ -720,6 +720,90 @@ const songList = {
             artist: "The Addams Family",
             path: "midis/Addams Family/The Addams Family Theme.mid",
             image: "images/artists/TV Themes.jpg"
+        },
+        {
+            id: 103,
+            title: "Where Is My Mind",
+            artist: "Pixies",
+            path: "midis/Pixies/Where Is My Mind.mid",
+            image: "images/artists/Pixies.jpg"
+        },
+        {
+            id: 104,
+            title: "Roundabout",
+            artist: "Yes",
+            path: "midis/Yes/Roundabout.mid",
+            image: "images/artists/Yes - Fragile.jpg"
+        },
+        {
+            id: 105,
+            title: "The Final Countdown",
+            artist: "Europe",
+            path: "midis/Europe/The Final Countdown.mid",
+            image: "images/artists/Europe.jpg"
+        },
+        {
+            id: 106,
+            title: "High Hopes",
+            artist: "Panic! At The Disco",
+            path: "midis/Panic At The Disco/High Hopes.mid",
+            image: "images/artists/Panic at the Disco.jpg"
+        },
+        {
+            id: 107,
+            title: "What a Wonderful World",
+            artist: "Luis Armstrong",
+            path: "midis/Luis Armstrong/What a Wonderful World.mid",
+            image: "images/artists/Luis Armstrong.jpg"
+        },
+        {
+            id: 108,
+            title: "Light My Fire",
+            artist: "The Doors",
+            path: "midis/The Doors/Light My Fire.mid",
+            image: "images/artists/The Doors.jpg"
+        },
+        {
+            id: 109,
+            title: "Riders on the Storm",
+            artist: "The Doors",
+            path: "midis/The Doors/Riders on the Storm.mid",
+            image: "images/artists/The Doors - L.A. Woman.jpg"
+        },
+        {
+            id: 110,
+            title: "Roadhouse Blues",
+            artist: "The Doors",
+            path: "midis/The Doors/Roadhouse Blues.mid",
+            image: "images/artists/The Doors - Morrison Hotel.jpg"
+        },
+        {
+            id: 111,
+            title: "Seven Nation Army",
+            artist: "The White Stripes",
+            path: "midis/White Stripes/Seven Nation Army.mid",
+            image: "images/artists/The White Stripes - Elephant.jpg"
+        },
+        {
+            id: 112,
+            title: "Seven Nation Army",
+            artist: "We're Going To Be Friends",
+            path: "midis/White Stripes/Were Going to Be Friends.mid",
+            image: "images/artists/The White Strips - White Blood Cells.jpg"
+        },
+        {
+            id: 113,
+            title: "Stairway to Heaven",
+            artist: "Led Zeppelin",
+            path: "midis/Led Zeppelin/Stairway to Heaven.mid",
+            image: "images/artists/Led Zeppelin - IV.jpg"
+        },
+        {
+            id: 114,
+            title: "Space Oddity",
+            artist: "David Bowie",
+            path: "midis/David Bowie/Space Oddity.mid",
+            image: "images/artists/David Bowie - Space Oddity.jpg"
         }
     ]
 };
