@@ -804,6 +804,20 @@ const songList = {
             artist: "David Bowie",
             path: "midis/David Bowie/Space Oddity.mid",
             image: "images/artists/David Bowie - Space Oddity.jpg"
+        },
+        {
+            id: 115,
+            title: "Axel F",
+            artist: "Harold Faltermeyer",
+            path: "midis/Harold Faltermeyer/Axel F.mid",
+            image: "images/artists/Harold Faltermeyer.jpg"
+        },
+        {
+            id: 116,
+            title: "House Of The Rising Sun",
+            artist: "The Animals",
+            path: "midis/The Animals/House of the Rising Sun.mid",
+            image: "images/artists/The Animals.jpg"
         }
     ]
 };

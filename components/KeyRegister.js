@@ -27,7 +27,7 @@ class KeyRegister {
         this.clearPin = SRCLR_PIN; // clear;
         this.registerSize = registerSize;
         this.moduleCount = moduleCount;
-        this.keyData = Buffer.alloc(registerSize * moduleCount).fill(0);
+        //this.keyData = Buffer.alloc(registerSize * moduleCount).fill(0);
 
         console.log("data: "+ this.dataPin);
         console.log("clock: "+ this.clockPin);
@@ -47,8 +47,8 @@ class KeyRegister {
      */
     send(original_data) {
         //console.log("Incoming  Data: " + JSON.stringify(original_data));
-        //let data = this.reorderKeyData(original_data);
-        this.reorderKeyData(original_data);
+        let data = this.reorderKeyData(original_data);
+        //this.reorderKeyData(original_data);
         //console.log("Reordered Data: " + JSON.stringify(data));
 
         // Set data and clock pins to low to start
@@ -56,9 +56,9 @@ class KeyRegister {
         rpio.write(this.clockPin, rpio.LOW);
 
         // Serial in of all the data to shift register(s) memory
-        for (let i = 0; i < this.keyData.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             // Set the data pin to the 1 or 0 bit value
-            rpio.write(this.dataPin, this.keyData[i] ? rpio.HIGH : rpio.LOW)
+            rpio.write(this.dataPin, data[i] ? rpio.HIGH : rpio.LOW)
 
             // Cycle the clock pin to write to the shift register memory
             rpio.write(this.clockPin, rpio.HIGH);
@@ -78,10 +78,10 @@ class KeyRegister {
     // to load bits in the mapping to the keys on the piano.
     // If this has a measurable impact on performance, then will address in hardware.
     reorderKeyData(original_data) {
-        //let data = Buffer.from(original_data);
-        let i, j; //, offset, temp;
-        let registerStart, registerEnd;
-
+        let data = Buffer.from(original_data);
+        let i, j, offset, temp;
+        //let registerStart, registerEnd;
+        /*
         for (i = 0; i < this.moduleCount; i++) {
             registerStart = i * this.registerSize;
             registerEnd = registerStart + this.registerSize - 1;
@@ -89,10 +89,10 @@ class KeyRegister {
             for (j = 0; j < this.registerSize; j++) {
                 this.keyData[registerEnd-j] = original_data[registerStart+j];
             }
-        }
+        }*/
 
         // Loop through each module and swap the order
-        /*for (i = 0; i < this.moduleCount; i++) {
+        for (i = 0; i < this.moduleCount; i++) {
             offset = i * this.registerSize;
             for (j = 0; j < 4; j++) {
                 temp = data[offset+j];
@@ -100,7 +100,7 @@ class KeyRegister {
                 data[offset + this.registerSize - 1 - j] = temp;
             }
         }
-        return data;*/
+        return data;
     }
 
     /*

@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+    <title>Maeve</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type='text/javascript' src='knockout-latest.js'></script>
+</head>
+<body>
+
+<div data-role="page" class="ui-body-b">
+
+    <!-- Entry panel (custom) -->
+    <div class="box" id="box">
+        <div class="box-inner">
+            <!-- Playlist buttons -->
+            <a id="close" href="#" class="ui-btn ui-btn-icon-left ui-icon-carat-d">Playlist</a></li>
+            <div style="text-align: center">
+                <a id="playlistPlayButton" href="#" style="width: 80px" data-bind="click: $root.playPlaylist.bind($data, 0)"
+                   class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-play ui-btn-icon-left">Play</a>
+                <a id="playlistShuffleButton" href="#" style="width: 80px" data-bind="click: $root.shufflePlaylist"
+                   class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-shuffle ui-btn-icon-left">Shuffle</a>
+            </div>
+            <ul id="playlist" data-role="listview" data-bind="foreach: playlist">
+                <li>
+                    <a style="padding: .3em;" href="#">
+                        <div style="display: flex" data-bind="click: $root.playPlaylist.bind($data, $index())">
+                            <div><img height="40" width="40" data-bind="attr: { 'src': image }"></div>
+                            <div>
+                                <p data-bind="text: title" style="font-weight: bold; margin: 3px"></p>
+                                <p data-bind="text: artist" style="margin: 3px"></p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" data-bind="click: $root.removeSongFromPlaylist" class="ui-btn ui-icon-delete">Remove</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Options panel -->
+    <div data-display="overlay" data-role="panel" data-position="right" id="optionspanel">
+        <a href="#" class="ui-btn ui-icon-carat-r ui-btn-icon-left"
+           onclick="$('#optionspanel').panel('close');">Options</a>
+        <form>
+            <p>Enter a player name</p>
+            <label for="text-playername">Player Name:</label>
+            <input type="text" name="text-interval" id="text-playername" data-bind="text: $root.playerName()">
+
+            <p>Create or join a team</p>
+            <label for="text-teamname">Team Name:</label>
+            <input type="text" name="text-interval" id="text-teamname" data-bind="text: $root.teamName()">
+
+            <ul id="teamlist" data-inset="true" data-role="listview" data-bind="foreach: teams">
+                <li>
+                    <a style="padding: .3em;" href="#">
+                        <div style="display: flex">
+                            <div>
+                                <p data-bind="text: name" style="font-weight: bold; padding: 3px"></p>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+            <a href="#" class="ui-btn" data-bind="click: $root.joinGame">Play!</a>
+        </form>
+    </div><!-- /panel -->
+
+    <!-- Main Content -->
+    <div class="ui-content ui-page-theme-b" role="main">
+
+        <div class="ui-grid-a ui-corner-all">
+            <div class="ui-block-a">
+                <div class="ui-bar ui-bar-a">
+                    <h3>Team A</h3>
+                </div>
+                <div class="ui-body ui-body-a">
+                    <button data-role="none">Shelly</button>
+                    <button data-role="none">Matt</button>
+                    <button data-role="none">Jo</button>
+                    <button data-role="none">Longer Name Here</button>
+                    <button data-role="none">Very long name that is very wide</button>
+                    <button data-role="none">Player 6</button>
+                </div>
+            </div>
+            <div class="ui-block-b">
+                <div class="ui-bar ui-bar-a">
+                    <h3>Team B</h3>
+                </div>
+                <div class="ui-body ui-body-a">
+                    <span>Player 3</span>
+                    <span>Player 4</span>
+                </div>
+            </div>
+        </div><!-- /grid-a -->
+        <div style="text-align: center">
+            <ul id="answerlist" data-inset="true" data-role="listview" data-bind="foreach: answers">
+                <li>
+                    <a style="padding: .3em;" href="#">
+                        <div style="display: flex" data-bind="click: $root.guessSong">
+                            <img height="30" width="30" data-bind="attr: { 'src': image }">
+                            <div>
+                                <p data-bind="text: title" style="font-weight: bold; padding: 3px"></p>
+                                <p data-bind="text: artist, visible: false"></p>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div><!-- /content -->
+
+    <!-- footer -->
+    <div id="footer" data-role="footer">
+        <div data-role="navbar">
+            <ul>
+                <li><a href="#" id="openplaylist" data-icon="bullets">Playlist</a></li>
+                <li><a href="#optionspanel" data-icon="gear">Setup</a></li>
+            </ul>
+        </div><!-- /navbar -->
+    </div><!-- /footer -->
+
+</div><!-- /page -->
+<script src="soundfont-player.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="GameViewModel.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

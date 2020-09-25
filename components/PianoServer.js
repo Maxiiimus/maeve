@@ -5,7 +5,7 @@ const fs = require('fs');
 
 const CLIENT_INTERVAL = 250; // milliseconds between updates to client if needed
 const KEY_TEST_DELAY = 250; // The delay between playing each key during the tests
-const REGISTER_DELAY = 20; // The delay between updating the key register
+const REGISTER_DELAY = 50; // The delay between updating the key register
 
 class PianoServer {
     constructor() {
@@ -46,12 +46,8 @@ class PianoServer {
         this.register = register;
         this.vacuumController = vacuumController;
         this.numKeys = register.moduleCount * register.registerSize;
-        //this.keys = Buffer.alloc(this.numKeys).fill(0);
+        this.keys = Buffer.alloc(this.numKeys).fill(0);
         this.keyBits = Buffer.alloc(this.numKeys).fill(0);
-        this.keys = [];
-        for (let i = 0; i < this.numKeys; i++) {
-            this.keys.push(new Key());
-        }
 
         // Open connection to clients
         this.io = io; //require('socket.io')(server);
@@ -62,14 +58,14 @@ class PianoServer {
 
         // Update the clients every 250ms
         setInterval(this.updateClientsLoop.bind(this), CLIENT_INTERVAL);
-        setInterval(this.updateKeysLoop.bind(this), REGISTER_DELAY);
+        //setInterval(this.updateKeysLoop.bind(this), REGISTER_DELAY);
     }
 
     initializePlayer() {
         // Initialize player and register event handler
         let p = new MidiPlayer.Player( (event) => {
             let keyIndex = 21;
-            let keyOn = false; // Default to "Note off" with a 0
+            let keyOn = 0; // Default to "Note off" with a 0
 
             // Check for the sustain pedal
             if (event.name && (event.name.toLowerCase() === "controller change" && event.number === 64)) {
@@ -84,7 +80,7 @@ class PianoServer {
                 // "Note off" is also represented as a velocity of 0
                 // So, we default to 0, but change the value if velocity is not 0
                 if (event.velocity !== 0) {
-                    keyOn = true;
+                    keyOn = 1;
                 }
 
                 // Piano key midi notes start at 21
@@ -96,16 +92,20 @@ class PianoServer {
                 }
 
                 // Check if the key is already being "played"
-                if (this.keys[keyIndex].isOn(millis) && keyOn) {
+                if (this.keys[keyIndex] === keyOn && keyOn === 1) {
                     console.log("KEY ALREADY ON: " + event.noteNumber);
-                }
 
-                // Turn on or off the key
-                if (keyOn) {
-                    this.keys[keyIndex].noteOn(millis);
-                } else {
-                    this.keys[keyIndex].noteOff(millis);
+                    // If the note is already playing, then we want to strike it again
+                    // First, turn it off and then schedule it to be played in REGISTER_DELAY milliseconds
+                    keyOn = 0;
+
+                    setTimeout((i) => {
+                        this.keys[i] = 1;
+                        this.register.send(this.keys);
+                    }, REGISTER_DELAY, keyIndex);
                 }
+                this.keys[keyIndex] = keyOn;
+                this.register.send(this.keys);
 
                 // Calculate time remaining using the current tick
                 let remainingTicks = this.currentSongTotalTicks - event.tick;
@@ -131,16 +131,6 @@ class PianoServer {
 
             this.io.emit('load library', songLibrary.songs);
             this.io.emit('update playlist', this.playlist);
-
-            /*
-            socket.on("test each key", () => {
-                this.runEachKeyTest();
-            });
-
-            socket.on("test all keys", () => {
-                this.runAllKeysTest();
-            });
-            */
 
             socket.on("set song", (song) => {
                 this.setSong(song);
@@ -179,7 +169,7 @@ class PianoServer {
             });
 
             socket.on("run test", (testNumber, key, delay) => {
-                //this.play(false);
+                this.play(false);
                 this.testKey = key; // testKey is used when testing an individual key
                 this.runKeyTest(testNumber, delay); // Delay is used to adjust the speed of the test
             });
@@ -291,9 +281,10 @@ class PianoServer {
         //this.keys.fill(0);
         let millis = Date.now();
         for (let i = 0; i < this.numKeys; i++) {
-            this.keys[i].noteOff(millis);
+            //this.keys[i].noteOff(millis);
+            //this.keys[i] = 0;
         }
-        //this.register.send(this.keys);
+        this.register.send(this.keys);
     }
 
     // Plays the next song in the internalPlaylist
@@ -523,7 +514,7 @@ class PianoServer {
             case 44:
             case 46:
             case 48:
-                this.keys[this.testKey].noteOn(millis);
+                this.keys[this.testKey] = 1;
                 break;
             case 10:      // End of test #1
             case 21:
@@ -532,11 +523,12 @@ class PianoServer {
             case 27:
             case 29:      // End of test #2
             case 50:      // End of test #3
-                this.keys[this.testKey].noteOff(millis);
+                this.keys[this.testKey] = 0;
                 break;
         }
 
         this.keyIndex++;
+        this.register.send(this.keys);
     }
 
     // Simply press each key in succession
@@ -548,12 +540,13 @@ class PianoServer {
         }
 
         let millis = Date.now();
-        this.keys[this.keyIndex].noteOn(millis);
+        this.keys[this.keyIndex] = 1;
         if (this.keyIndex > 0) {
-            this.keys[this.keyIndex - 1].noteOff(millis);
+            this.keys[this.keyIndex - 1] = 0;
         }
 
         this.keyIndex++;
+        this.register.send(this.keys);
     }
 
     // Press each key on and off 5 times in quick succession
@@ -568,17 +561,18 @@ class PianoServer {
         }
 
         if (key > 0) {
-            this.keys[key-1].noteOff(millis);
+            this.keys[key-1] = 0;
         }
 
         // Turn key on for odd, off for even
         if (this.keyIndex % 2 === 1) {
-            this.keys[key].noteOn(millis);
+            this.keys[key] = 1;
         } else {
-            this.keys[key].noteOff(millis);
+            this.keys[key] = 0;
         }
 
         this.keyIndex++;
+        this.register.send(this.keys);
     }
 
     // Press a key, then press it again without calling off()
@@ -594,15 +588,16 @@ class PianoServer {
 
         // If this is the first or 5th iteration for this key, press it
         if (this.keyIndex % 5 === 0) {
-            this.keys[key].noteOn(millis);
+            this.keys[key] = 1;
         }
 
         // If this is the 1st iteration for this key, release the previous key
         if (this.keyIndex % 10 === 0 && key > 0) {
-            this.keys[key-1].noteOff(millis);
+            this.keys[key-1] = 0;
         }
 
         this.keyIndex++;
+        this.register.send(this.keys);
     }
 
     /*
@@ -618,13 +613,14 @@ class PianoServer {
 
     // This just keeps pressing all the keys without releasing them
     testAllKeys() {
-        this.keys[this.keyIndex].noteOn(Date.now());
+        this.keys[this.keyIndex] = 1;
         if (this.keyIndex >= this.numKeys) {
             this.underTest = false;
             clearInterval(this.myInterval);
         }
 
         this.keyIndex++;
+        this.register.send(this.keys);
     }
 }
 
