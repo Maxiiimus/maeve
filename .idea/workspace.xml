@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cecbee3d-ffb0-4882-b823-be158825c755" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/GameViewModel.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/game.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/game.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/KeyRegister.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/KeyRegister.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/PianoServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/PianoServer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/midis/song-list.js" beforeDir="false" afterPath="$PROJECT_DIR$/midis/song-list.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +60,7 @@
       <workItem from="1595001226054" duration="490000" />
       <workItem from="1600104864017" duration="2743000" />
       <workItem from="1601057254463" duration="226000" />
-      <workItem from="1601059848648" duration="2919000" />
+      <workItem from="1601059848648" duration="3846000" />
     </task>
     <servers />
   </component>

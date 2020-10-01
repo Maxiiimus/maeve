@@ -278,12 +278,12 @@ class PianoServer {
     }
 
     resetKeys() {
-        //this.keys.fill(0);
-        let millis = Date.now();
-        for (let i = 0; i < this.numKeys; i++) {
+        this.keys.fill(0);
+        //let millis = Date.now();
+        //for (let i = 0; i < this.numKeys; i++) {
             //this.keys[i].noteOff(millis);
             //this.keys[i] = 0;
-        }
+        //}
         this.register.send(this.keys);
     }
 
