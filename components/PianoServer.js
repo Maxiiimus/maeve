@@ -48,6 +48,7 @@ class PianoServer {
         this.numKeys = register.moduleCount * register.registerSize;
         this.keys = Buffer.alloc(this.numKeys).fill(0);
         this.keyBits = Buffer.alloc(this.numKeys).fill(0);
+        this.keysOff = Buffer.alloc(this.numKeys).fill(0);
 
         // Open connection to clients
         this.io = io; //require('socket.io')(server);
@@ -118,6 +119,7 @@ class PianoServer {
         // Listen for the end of a file
         p.on('endOfFile', () => {
             console.log("End of file reached: " + this.currentSong.title);
+            this.register.send(this.keysOff); // Sometimes keys are left on, turn them all off
             this.songEnded = true;
         });
 
