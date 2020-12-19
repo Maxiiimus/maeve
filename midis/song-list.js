@@ -408,10 +408,10 @@ const songList = {
         },
         {
             id: 58,
-            title: "She Talks to Angels",
-            artist: "The Black Crows",
-            path: "midis/Black Crows/She Talks To Angels.mid",
-            image: "images/artists/The Black Crows.jpg"
+            title: "Holy",
+            artist: "Justin Bieber Featuring Chance The Rapper",
+            path: "midis/Justin Bieber/Holy.mid",
+            image: "images/artists/Justin Bieber - Holy.jpg"
         },
         {
             id: 59,
