@@ -8,12 +8,27 @@ function Song(data) {
     self.image = data.image;
 }
 
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
 // ========================================================================================================
 // This is the ModelView for the data driving the UI it also receives updates from the server via Socket.IO
 // ========================================================================================================
 function GameViewModel() {
     let self = this;
     self.socket = io();
+
+    // Get (or create for first time) the userId
+    if (localStorage.getItem("userId") === null) {
+        self.userId = uuidv4();
+        localStorage.setItem("userId", self.userId);
+    } else {
+        self.userId = localStorage.getItem("userId");
+    }
 
     // Placeholder text when there is no currentSong from the server yet
     let welcomeSong = new Song({id: -1, title: "Hello Darling", artist: "Maeve",
@@ -24,11 +39,8 @@ function GameViewModel() {
     self.timeRemainingString = ko.observable("");
 
     self.isPlaying = ko.observable(false);
-
     self.playerName = ko.observable("");
-    self.teamName = ko.observable("");
     self.playerlist  = ko.observableArray([]);
-    self.teamlist  = ko.observableArray([]);
     self.answerlist = ko.observableArray([]);
 
     self.currentSongPercent = ko.observable(70);
@@ -93,11 +105,18 @@ function GameViewModel() {
         self.currentSong(song);
     });
 
-    // "start song" is called to begin a new song and provides a list of possible answers
-    self.socket.on('start song', function (songlist) {
+    // "update answers" is called to update the current song answer choices
+    self.socket.on('update answers', function (songlist) {
         self.answerlist(songlist);
         $("#answerlist").listview("refresh");
     });
+
+    // "update players" is called to update the list of people playing and their scores
+    self.socket.on('update players', function (playerlist) {
+        self.playerlist(playerlist);
+        $("#answerlist").listview("refresh");
+    });
+
 
     // "update song" is called to update the total song time and the time left
     self.socket.on('update song', function (song, isPlaying, songTime, timeRemaining) {

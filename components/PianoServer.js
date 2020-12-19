@@ -40,6 +40,13 @@ class PianoServer {
         this.songEnded = false;
         this.clientsConnected = false;
         this.underTest = false;
+
+        // Game Mode properties
+        this.gameMode = false;
+        this.answerChoices = [];
+        this.playedSongs = [];
+        this.gamePlayers = [];
+
     }
 
     start (http, io, port, register, vacuumController) {
@@ -128,6 +135,7 @@ class PianoServer {
         this.io.on('connection', (socket) => {
             this.clientsConnected = true;
             console.log('A user connected: ' + JSON.stringify(socket.id));
+            console.log('User cookies: ' + JSON.stringify(socket.handshake.headers.cookie));
 
             this.io.emit('load library', songLibrary.songs);
             this.io.emit('update playlist', this.playlist);
@@ -195,6 +203,13 @@ class PianoServer {
         // If a song has ended and we're playing a playlist, then play the next song
         if (this.songEnded && this.playlistMode) {
             this.playNextSong();
+        }
+
+        // If playing a game, update the answer list and the player list
+        if (this.gameMode === true)
+        {
+            this.io.emit('update answerlist', this.answerlist);
+            this.io.emit('update playerlist', this.playerlist)
         }
 
         // If a song isn't playing, then turn off the vacuum pump
