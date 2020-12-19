@@ -818,6 +818,55 @@ const songList = {
             artist: "The Animals",
             path: "midis/The Animals/House of the Rising Sun.mid",
             image: "images/artists/The Animals.jpg"
+        },
+        {
+            id: 117,
+            title: "Carol of the Bells",
+            artist: "Christmas",
+            path: "midis/Christmas/Carol of the Bells.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 118,
+            title: "Dance of the Sugar Plum Fairy",
+            artist: "Christmas",
+            path: "midis/Christmas/Dance of the Sugar Plum Fairy.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 119,
+            title: "Have Yourself A Merry Little Christmas",
+            artist: "Christmas",
+            path: "midis/Christmas/Have Yourself A Merry Little Christmas.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 120,
+            title: "Little Drummer Boy",
+            artist: "Christmas",
+            path: "midis/Christmas/Little Drummer Boy.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 121,
+            title: "Santa Clause is Coming to Town",
+            artist: "Christmas",
+            path: "midis/Christmas/Santa Clause is Coming to Town.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 122,
+            title: "Silent Night",
+            artist: "Christmas",
+            path: "midis/Christmas/Silent Night.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 123,
+            title: "Walking in the Air",
+            artist: "Christmas",
+            path: "midis/Christmas/Walking in the Air.mid",
+            image: "images/artists/Christmas Piano.jpg"
         }
     ]
 };
