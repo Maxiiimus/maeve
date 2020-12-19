@@ -1,6 +1,6 @@
 const MidiPlayer = require('midi-player-js');
 const songLibrary = require('../midis/song-list');
-const Key = require('./Key.js');
+//const Key = require('./Key.js');
 const fs = require('fs');
 
 const CLIENT_INTERVAL = 250; // milliseconds between updates to client if needed
