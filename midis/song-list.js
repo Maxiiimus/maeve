@@ -828,9 +828,9 @@ const songList = {
         },
         {
             id: 118,
-            title: "Dance of the Sugar Plum Fairy",
+            title: "Jingle Bells",
             artist: "Christmas",
-            path: "midis/Christmas/Dance of the Sugar Plum Fairy.mid",
+            path: "midis/Christmas/Jingle Bells.mid",
             image: "images/artists/Christmas Piano.jpg"
         },
         {
@@ -867,6 +867,132 @@ const songList = {
             artist: "Christmas",
             path: "midis/Christmas/Walking in the Air.mid",
             image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 124,
+            title: "The Christmas Song",
+            artist: "Christmas",
+            path: "midis/Christmas/The Christmas Song.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 125,
+            title: "Frosty The Snow Man",
+            artist: "Christmas",
+            path: "midis/Christmas/Frosty The Snow Man.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 126,
+            title: "Holly Jolly Christmas",
+            artist: "Christmas",
+            path: "midis/Christmas/Holly Jolly Christmas.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 127,
+            title: "Oh Holy Night",
+            artist: "Christmas",
+            path: "midis/Christmas/Oh Holy Night.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 128,
+            title: "Let It Snow",
+            artist: "Christmas",
+            path: "midis/Christmas/Let It Snow.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 129,
+            title: "We Wish You A Merry Christmas",
+            artist: "Christmas",
+            path: "midis/Christmas/We Wish You A Merry Christmas.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 130,
+            title: "Blue Christmas",
+            artist: "Christmas",
+            path: "midis/Christmas/Blue Christmas.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 131,
+            title: "The First Noel",
+            artist: "Christmas",
+            path: "midis/Christmas/The First Noel.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 132,
+            title: "O Christmas Tree",
+            artist: "Christmas",
+            path: "midis/Christmas/O Christmas Tree.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 133,
+            title: "It's Beginning to Look Like Christmas",
+            artist: "Christmas",
+            path: "midis/Christmas/Its Beginning to Look Like Christmas.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 134,
+            title: "Jingle Bell Rock",
+            artist: "Christmas",
+            path: "midis/Christmas/Jingle Bell Rock.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 135,
+            title: "Dance of the Sugar Plum Fairy",
+            artist: "Pyotr Ilyich Tchaikovsky",
+            path: "midis/Tchaikovsky/Dance of the Sugar Plum Fairy.mid",
+            image: "images/artists/Tchaikovsky - Nutcracker.jpg"
+        },
+        {
+            id: 136,
+            title: "Arabian Dance",
+            artist: "Pyotr Ilyich Tchaikovsky",
+            path: "midis/Christmas/Arabian Dance.mid",
+            image: "images/artists/Tchaikovsky - Nutcracker.jpg"
+        },
+        {
+            id: 137,
+            title: "Chinese Dance",
+            artist: "Pyotr Ilyich Tchaikovsky",
+            path: "midis/Christmas/Chinese Dance.mid",
+            image: "images/artists/Tchaikovsky - Nutcracker.jpg"
+        },
+        {
+            id: 138,
+            title: "Dance of the Reed Flutes",
+            artist: "Pyotr Ilyich Tchaikovsky",
+            path: "midis/Christmas/Dance of the Reed Flutes.mid",
+            image: "images/artists/Tchaikovsky - Nutcracker.jpg"
+        },
+        {
+            id: 139,
+            title: "Dance of the Reed Flutes",
+            artist: "Pyotr Ilyich Tchaikovsky",
+            path: "midis/Christmas/Dance of the Reed Flutes.mid",
+            image: "images/artists/Tchaikovsky - Nutcracker.jpg"
+        },
+        {
+            id: 140,
+            title: "Russian Dance",
+            artist: "Pyotr Ilyich Tchaikovsky",
+            path: "midis/Christmas/Russian Dance.mid",
+            image: "images/artists/Tchaikovsky - Nutcracker.jpg"
+        },
+        {
+            id: 141,
+            title: "Waltz of the Flowers",
+            artist: "Pyotr Ilyich Tchaikovsky",
+            path: "midis/Christmas/Waltz of the Flowers.mid",
+            image: "images/artists/Tchaikovsky - Nutcracker.jpg"
         }
     ]
 };
