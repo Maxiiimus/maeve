@@ -993,6 +993,69 @@ const songList = {
             artist: "Pyotr Ilyich Tchaikovsky",
             path: "midis/Christmas/Waltz of the Flowers.mid",
             image: "images/artists/Tchaikovsky - Nutcracker.jpg"
+        },
+        {
+            id: 142,
+            title: "Sloop John B",
+            artist: "The Beach Boys",
+            path: "midis/The Beach Boys/Sloop John B.mid",
+            image: "images/artists/The Beach Boys - Pet Sounds.jpg"
+        },
+        {
+            id: 143,
+            title: "Blackbird",
+            artist: "The Beatles",
+            path: "midis/Beatles/Blackbird.mid",
+            image: "images/artists/Beatles - White Album.jpg"
+        },
+        {
+            id: 144,
+            title: "Lady Madonna",
+            artist: "The Beatles",
+            path: "midis/Beatles/Lady Madonna.mid",
+            image: "images/artists/Beatles - 1.jpg"
+        },
+        {
+            id: 145,
+            title: "Always on My Mind",
+            artist: "Willie Nelson",
+            path: "midis/Willie Nelson/Always on My Mind.mid",
+            image: "images/artists/Willie Nelson - Always on My Mind.jpg"
+        },
+        {
+            id: 146,
+            title: "And I Love Her",
+            artist: "The Beatles",
+            path: "midis/Beatles/And I Love Her.mid",
+            image: "images/artists/Beatles - Hard Days Night.jpg"
+        },
+        {
+            id: 147,
+            title: "Nothing Else Matters",
+            artist: "Metallica",
+            path: "midis/Metallica/Nothing Else Matters.mid",
+            image: "images/artists/Metallica - Metallica.jpg"
+        },
+        {
+            id: 148,
+            title: "Hallelujah",
+            artist: "Leonard Cohen",
+            path: "midis/Leonard Cohen/Hallelujah.mid",
+            image: "images/artists/Leonard Cohen - Various Positions.jpg"
+        },
+        {
+            id: 149,
+            title: "12 Days of Christmas",
+            artist: "Christmas",
+            path: "midis/Christmas/12 Days of Christmas.mid",
+            image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 150,
+            title: "Feliz Navidad",
+            artist: "Christmas",
+            path: "midis/Christmas/Feliz Navidad.mid",
+            image: "images/artists/Christmas Piano.jpg"
         }
     ]
 };
