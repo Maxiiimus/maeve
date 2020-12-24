@@ -956,42 +956,42 @@ const songList = {
             id: 136,
             title: "Arabian Dance",
             artist: "Pyotr Ilyich Tchaikovsky",
-            path: "midis/Christmas/Arabian Dance.mid",
+            path: "midis/Tchaikovsky/Arabian Dance.mid",
             image: "images/artists/Tchaikovsky - Nutcracker.jpg"
         },
         {
             id: 137,
             title: "Chinese Dance",
             artist: "Pyotr Ilyich Tchaikovsky",
-            path: "midis/Christmas/Chinese Dance.mid",
+            path: "midis/Tchaikovsky/Chinese Dance.mid",
             image: "images/artists/Tchaikovsky - Nutcracker.jpg"
         },
         {
             id: 138,
             title: "Dance of the Reed Flutes",
             artist: "Pyotr Ilyich Tchaikovsky",
-            path: "midis/Christmas/Dance of the Reed Flutes.mid",
+            path: "midis/Tchaikovsky/Dance of the Reed Flutes.mid",
             image: "images/artists/Tchaikovsky - Nutcracker.jpg"
         },
         {
             id: 139,
             title: "Dance of the Reed Flutes",
             artist: "Pyotr Ilyich Tchaikovsky",
-            path: "midis/Christmas/Dance of the Reed Flutes.mid",
+            path: "midis/Tchaikovsky/Dance of the Reed Flutes.mid",
             image: "images/artists/Tchaikovsky - Nutcracker.jpg"
         },
         {
             id: 140,
             title: "Russian Dance",
             artist: "Pyotr Ilyich Tchaikovsky",
-            path: "midis/Christmas/Russian Dance.mid",
+            path: "midis/Tchaikovsky/Russian Dance.mid",
             image: "images/artists/Tchaikovsky - Nutcracker.jpg"
         },
         {
             id: 141,
             title: "Waltz of the Flowers",
             artist: "Pyotr Ilyich Tchaikovsky",
-            path: "midis/Christmas/Waltz of the Flowers.mid",
+            path: "midis/Tchaikovsky/Waltz of the Flowers.mid",
             image: "images/artists/Tchaikovsky - Nutcracker.jpg"
         },
         {
@@ -1056,6 +1056,76 @@ const songList = {
             artist: "Christmas",
             path: "midis/Christmas/Feliz Navidad.mid",
             image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 151,
+            title: "Take Five",
+            artist: "The Dave Brubeck Quartet",
+            path: "midis/The Dave Brubeck Quartet/Take Five.mid",
+            image: "images/artists/The Dave Brubeck Quartet - Time Out.jpg"
+        },
+        {
+            id: 152,
+            title: "California Dreamin",
+            artist: "The Mamas & The Papas",
+            path: "midis/The Mamas & The Papas/California Dreamin.mid",
+            image: "images/artists/Mamas and Papas - Eyes and Ears.jpg"
+        },
+        {
+            id: 153,
+            title: "One Way or Another",
+            artist: "Blondie",
+            path: "midis/Blondie/One Way or Another.mid",
+            image: "images/artists/Blondie - Parallel Lines.jpg"
+        },
+        {
+            id: 154,
+            title: "Son of a Preacher Man",
+            artist: "Dusty Springfield",
+            path: "midis/Dusty Springfield/Son of a Preacher Man.mid",
+            image: "images/artists/Dusty Springfield - Dusty in Memphis.jpg"
+        },
+        {
+            id: 155,
+            title: "Purple Rain",
+            artist: "Prince",
+            path: "midis/Prince/Purple Rain.mid",
+            image: "images/artists/Prince - Purple Rain.jpg"
+        },
+        {
+            id: 156,
+            title: "It's Not Unusual",
+            artist: "Tom Jones",
+            path: "midis/Tom Jones/Its Not Unusual.mid",
+            image: "images/artists/Tom Jones - Along Came Jones.jpg"
+        },
+        {
+            id: 157,
+            title: "Good Vibrations",
+            artist: "The Beach Boys",
+            path: "midis/The Beach Boys/Good Vibrations.mid",
+            image: "images/artists/The Beach Boys - Smiley Smile.jpg"
+        },
+        {
+            id: 158,
+            title: "I Shot the Sheriff",
+            artist: "Eric Clapton",
+            path: "midis/Eric Clapton/I Shot the Sheriff.mid",
+            image: "images/artists/Eric Clapton - 461 Ocean Blvd.jpg"
+        },
+        {
+            id: 159,
+            title: "Roy Orbison",
+            artist: "Oh1 Pretty Woman.jpg",
+            path: "midis/Roy Orbison/Oh Pretty Woman.mid",
+            image: "images/artists/Roy Orbison - Oh Pretty Woman.jpg"
+        },
+        {
+            id: 160,
+            title: "Eye of the Tiger",
+            artist: "Survivor",
+            path: "midis/Survivor/Eye of the Tiger.mid",
+            image: "images/artists/Survivor - Eye of the Tiger.jpg"
         }
     ]
 };
