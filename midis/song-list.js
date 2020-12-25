@@ -975,10 +975,10 @@ const songList = {
         },
         {
             id: 139,
-            title: "Dance of the Reed Flutes",
-            artist: "Pyotr Ilyich Tchaikovsky",
-            path: "midis/Tchaikovsky/Dance of the Reed Flutes.mid",
-            image: "images/artists/Tchaikovsky - Nutcracker.jpg"
+            title: "In the Mood",
+            artist: "Glenn Miller",
+            path: "midis/Glenn Miller/In the Mood.mid",
+            image: "images/artists/Glenn Miller - Ultimate Collection.jpg"
         },
         {
             id: 140,
@@ -1126,6 +1126,20 @@ const songList = {
             artist: "Survivor",
             path: "midis/Survivor/Eye of the Tiger.mid",
             image: "images/artists/Survivor - Eye of the Tiger.jpg"
+        },
+        {
+            id: 161,
+            title: "Minnie the Moocher",
+            artist: "Cab Calloway",
+            path: "midis/Cab Calloway/Minnie the Moocher.mid",
+            image: "images/artists/Cab Calloway - Best of Big Bands.jpg"
+        },
+        {
+            id: 162,
+            title: "Happy Xmas",
+            artist: "Christmas",
+            path: "midis/Christmas/Happy Xmas.mid",
+            image: "images/artists/Christmas Piano.jpg"
         }
     ]
 };
