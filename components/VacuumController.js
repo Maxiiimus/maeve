@@ -2,7 +2,7 @@ const rpio = require('rpio');
 const isPi = require('detect-rpi');
 
 // Set up Raspberry Pi
-const OUTPUT_PIN = 12;   // Pin used to turn on the High Voltage relay switch
+const OUTPUT_PIN = 36;   // Pin used to turn on the High Voltage relay switch
 
 class VacuumController {
     constructor(registerSize, moduleCount) {

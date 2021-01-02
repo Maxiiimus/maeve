@@ -1140,6 +1140,13 @@ const songList = {
             artist: "Christmas",
             path: "midis/Christmas/Happy Xmas.mid",
             image: "images/artists/Christmas Piano.jpg"
+        },
+        {
+            id: 163,
+            title: "Green Onions",
+            artist: "Booker T. & The M.G.s",
+            path: "midis/Booker T/Green Onions.mid",
+            image: "images/artists/Booker T and The MGs - Green Onions.jpg"
         }
     ]
 };
