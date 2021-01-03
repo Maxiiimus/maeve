@@ -120,6 +120,7 @@ class PianoServer {
         p.on('endOfFile', () => {
             console.log("End of file reached: " + this.currentSong.title);
             this.register.send(this.keysOff); // Sometimes keys are left on, turn them all off
+            this.vacuumController.turnOff();
             this.songEnded = true;
         });
 
@@ -199,12 +200,6 @@ class PianoServer {
             this.playNextSong();
         }
 
-        // If a song isn't playing, then turn off the vacuum pump
-        if (this.player && !this.player.isPlaying() && this.vacuumController.isOn())
-        {
-            this.vacuumController.turnOff();
-        }
-
         // Only update client playlist if it's changed
         if (this.playlistChanged) {
             if (this.clientsConnected) {
@@ -252,10 +247,14 @@ class PianoServer {
         }
 
         if (shouldPlay) {
-            if (!this.player.isPlaying()) {
-                this.vacuumController.turnOn();
-                this.player.play();
-            }
+            // If the vacuum pump is off, wait 2 seconds for it to spin up
+            let waitForPump = this.vacuumController.isOn() ? 0 : 2000;
+            this.vacuumController.turnOn();
+            setTimeout(() => {
+                if (!this.player.isPlaying()) {
+                    this.player.play();
+                }
+            }, waitForPump);
         } else {
             if (this.player.isPlaying()) {
                 this.player.pause();
@@ -429,11 +428,15 @@ class PianoServer {
     // Key Test Functions
     // =====================================================
     stopTests() {
-        // Stop anything that is currently playing
+        if (!this.underTest)
+            return;
+
+        // Stop test that is currently playing
         this.resetKeys();
         if (this.myInterval) {
             clearInterval(this.myInterval);
         }
+        this.vacuumController.turnOff();
         this.underTest = false;
     }
 
@@ -443,43 +446,52 @@ class PianoServer {
 
         console.log("Running Test #" + keyTest + ": delay = " + delay + ", key = " + this.testKey);
 
+        // If the vacuum pump is off, wait 2 seconds for it to spin up
+        let waitForPump = this.vacuumController.isOn() ? 0 : 2000;
+        this.vacuumController.turnOn();
         this.keyIndex = 0;
 
         // The key test interval shouldn't be less than 100ms. It's unlikely the keys can react that quickly.
         // Anything over 1 second is too long
         let testInterval = delay >= 100 && delay <=1000 ? delay : KEY_TEST_DELAY;
 
-        // Run the specified test
-        switch (keyTest) {
-            // All keys pressed and released, one at a time
-            case 0:
-                this.myInterval = setInterval(this.testEachKey.bind(this), testInterval);
-                break;
+        setTimeout(() => {
+            // Run the specified test
+            switch (keyTest) {
+                // All keys pressed and released, one at a time
+                case 0:
+                    this.myInterval = setInterval(this.testEachKey.bind(this), testInterval);
+                    break;
 
-            // All keys pressed and held, one at a time
-            case 1:
-                this.myInterval = setInterval(this.testAllKeys.bind(this), testInterval);
-                break;
+                // All keys pressed and held, one at a time
+                case 1:
+                    this.myInterval = setInterval(this.testAllKeys.bind(this), testInterval);
+                    break;
 
-            // Each key pressed 5 times rapidly, one at a time
-            // This helps calibrate and test how quickly each key can recover between presses
-            case 2:
-                this.myInterval = setInterval(this.testEachKeyRapidly.bind(this), testInterval);
-                break;
+                // Each key pressed 5 times rapidly, one at a time
+                // This helps calibrate and test how quickly each key can recover between presses
+                case 2:
+                    this.myInterval = setInterval(this.testEachKeyRapidly.bind(this), testInterval);
+                    break;
 
-            // Each key pressed and held, then pressed again while held
-            // This simulates a condition where two tracks are playing and the same key is struck
-            case 3:
-                this.myInterval = setInterval(this.testEachKeyOverlapping.bind(this), testInterval);
-                break;
+                // Each key pressed and held, then pressed again while held
+                // This simulates a condition where two tracks are playing and the same key is struck
+                case 3:
+                    this.myInterval = setInterval(this.testEachKeyOverlapping.bind(this), testInterval);
+                    break;
 
-            // Test one single key
-            // Runs a single key through a variety of tests
-            case 4:
-                this.myInterval = setInterval(this.testSingleKey.bind(this), testInterval);
-                break;
+                // Test one single key
+                // Runs a single key through a variety of tests
+                case 4:
+                    this.myInterval = setInterval(this.testSingleKey.bind(this), testInterval);
+                    break;
 
-        }
+                default:
+                    this.vacuumController.turnOff();
+                    this.underTest = false;
+                    break;
+            }
+        }, waitForPump);
     }
 
     /*
@@ -500,6 +512,7 @@ class PianoServer {
         let millis = Date.now();
 
         if (this.keyIndex > 50 || this.testKey < 0 || this.testKey >= this.numKeys) {
+            this.vacuumController.turnOff();
             this.underTest = false;
             clearInterval(this.myInterval);
             return;
@@ -536,6 +549,7 @@ class PianoServer {
     // Simply press each key in succession
     testEachKey() {
         if (this.keyIndex >= this.numKeys) {
+            this.vacuumController.turnOff();
             this.underTest = false;
             clearInterval(this.myInterval);
             return;
@@ -557,8 +571,9 @@ class PianoServer {
 
         let key = Math.floor(this.keyIndex / 10);
         if (key >= this.numKeys) {
-            clearInterval(this.myInterval);
+            this.vacuumController.turnOff();
             this.underTest = false;
+            clearInterval(this.myInterval);
             return;
         }
 
@@ -583,6 +598,7 @@ class PianoServer {
 
         let key = Math.floor(this.keyIndex / 10);
         if (key >= this.numKeys) {
+            this.vacuumController.turnOff();
             this.underTest = false;
             clearInterval(this.myInterval);
             return;
@@ -617,6 +633,7 @@ class PianoServer {
     testAllKeys() {
         this.keys[this.keyIndex] = 1;
         if (this.keyIndex >= this.numKeys) {
+            this.vacuumController.turnOff();
             this.underTest = false;
             clearInterval(this.myInterval);
         }
