@@ -5,7 +5,7 @@ const isPi = require('detect-rpi');
 const OUTPUT_PIN = 36;   // Pin used to turn on the High Voltage relay switch
 
 class VacuumController {
-    constructor(registerSize, moduleCount) {
+    constructor() {
 
         // If running on another OS, then just mock the RaspberryPi
         if (!isPi()) {

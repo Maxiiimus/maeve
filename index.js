@@ -6,6 +6,7 @@ const path = require('path');
 const keyRegister = require('./components/KeyRegister');
 const PianoServer = require('./components/PianoServer');
 const VacuumController = require('./components/VacuumController');
+const SustainController = require('./components/SustainController');
 
 // Set up client browser
 const port = process.env.PORT || "80";
@@ -17,7 +18,8 @@ const REGISTER_SIZE = 8;
 
 // The register is all of the shift registers representing the keys
 let register = new keyRegister(REGISTER_SIZE, MODULE_COUNT);
-let vacuumController = new VacuumController(REGISTER_SIZE, MODULE_COUNT);
+let vacuumController = new VacuumController();
+let sustainController = new SustainController();
 let pianoServer = new PianoServer();
 
-pianoServer.start(http, io, port, register, vacuumController);
+pianoServer.start(http, io, port, register, vacuumController, sustainController);

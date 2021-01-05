@@ -42,9 +42,10 @@ class PianoServer {
         this.underTest = false;
     }
 
-    start (http, io, port, register, vacuumController) {
+    start (http, io, port, register, vacuumController, sustainController) {
         this.register = register;
         this.vacuumController = vacuumController;
+        this.sustainController = sustainController;
         this.numKeys = register.moduleCount * register.registerSize;
         this.keys = Buffer.alloc(this.numKeys).fill(0);
         this.keyBits = Buffer.alloc(this.numKeys).fill(0);
@@ -59,7 +60,6 @@ class PianoServer {
 
         // Update the clients every 250ms
         setInterval(this.updateClientsLoop.bind(this), CLIENT_INTERVAL);
-        //setInterval(this.updateKeysLoop.bind(this), REGISTER_DELAY);
     }
 
     initializePlayer() {
@@ -70,7 +70,13 @@ class PianoServer {
 
             // Check for the sustain pedal
             if (event.name && (event.name.toLowerCase() === "controller change" && event.number === 64)) {
-                console.log("Got sustain event: " + JSON.stringify(event));
+                if (event.value > 0) {
+                    console.log("Got sustain ON");
+                    this.sustainController.pedalOn();
+                } else {
+                    console.log("Got sustain OFF");
+                    this.sustainController.pedalOff();
+                }
             }
 
             // When we get a "Note on" or "Note off" event, update the values in the shift register
@@ -111,17 +117,22 @@ class PianoServer {
                 // Calculate time remaining using the current tick
                 let remainingTicks = this.currentSongTotalTicks - event.tick;
                 this.currentSongTimeRemaining = Math.floor(remainingTicks / this.currentSongTotalTicks * this.currentSongTime);
-            } //else {
-              //  console.log(JSON.stringify(event));
-            //}
+            }
         });
 
         // Listen for the end of a file
         p.on('endOfFile', () => {
             console.log("End of file reached: " + this.currentSong.title);
-            this.register.send(this.keysOff); // Sometimes keys are left on, turn them all off
-            this.vacuumController.turnOff();
-            this.songEnded = true;
+            this.resetKeys();
+            //this.register.send(this.keysOff); // Sometimes keys are left on, turn them all off
+            //this.sustainController.pedalOff();
+            //this.songEnded = true;
+            if (this.playlistMode) {
+                //this.playNextSong(true); // Play the next song (if there is one to play) <= Deadlock
+                this.songEnded = true; // Set this to true and the next song will be started in updateClientsLoop()
+            } else {
+                this.vacuumController.turnOff();
+            }
         });
 
         return (p);
@@ -159,12 +170,12 @@ class PianoServer {
 
             socket.on("previous song", () => {
                 console.log("Previous song");
-                this.playPreviousSong();
+                this.playPreviousSong(this.player.isPlaying());
             });
 
             socket.on("next song", () => {
                 console.log("Next song");
-                this.playNextSong();
+                this.playNextSong(this.player.isPlaying());
             });
 
             socket.on("set time", (percent) => {
@@ -197,7 +208,8 @@ class PianoServer {
     updateClientsLoop() {
         // If a song has ended and we're playing a playlist, then play the next song
         if (this.songEnded && this.playlistMode) {
-            this.playNextSong();
+            this.playNextSong(true);
+            this.songEnded = false;
         }
 
         // Only update client playlist if it's changed
@@ -216,29 +228,11 @@ class PianoServer {
         }
     }
 
-    // This method runs on REGISTER_DELAY interval
-    updateKeysLoop() {
-        // Check to make sure we aren't trying to play a song and test at the same time
-        if (this.player.isPlaying() && this.underTest) {
-            this.stopTests();
-        }
-
-        // If a song isn't playing shut off all valves
-        if (!this.player.isPlaying() && !this.underTest) {
-            this.keyBits.fill(0);
-        } else {
-            for (let i = 0; i < this.numKeys; i++) {
-                this.keyBits[i] = this.keys[i].isOn(Date.now()) ? 1 : 0;
-            }
-        }
-        this.register.send(this.keyBits);
-    }
-
     // play() - plays or pauses the current song
     play(shouldPlay) {
         // This stops any tests that might be running
-        if (this.myInterval) {
-            clearInterval(this.myInterval);
+        if (this.testInterval) {
+            clearInterval(this.testInterval);
         }
 
         // If there is no song loaded, no point in playing or pausing
@@ -280,39 +274,38 @@ class PianoServer {
 
     resetKeys() {
         this.keys.fill(0);
-        //let millis = Date.now();
-        //for (let i = 0; i < this.numKeys; i++) {
-            //this.keys[i].noteOff(millis);
-            //this.keys[i] = 0;
-        //}
         this.register.send(this.keys);
+        this.sustainController.pedalOff();
     }
 
     // Plays the next song in the internalPlaylist
-    playNextSong() {
+    playNextSong(wasPlaying) {
         if (this.playlistMode && this.playlistIndex < this.internalPlaylist.length - 1) {
-            let wasPlaying = this.player.isPlaying();
+            //let wasPlaying = this.player.isPlaying();
             this.playlistIndex++;
             console.log("playing next song: " + this.playlistIndex);
             let song = this.internalPlaylist[this.playlistIndex];
             console.log("Playing next song: ", song.title);
             this.setSong(song);
+            console.log("wasPlaying: " + wasPlaying);
             if (wasPlaying) {
                 this.play(true);
             }
+        } else {
+            this.vacuumController.turnOff();
         }
     }
 
-    playPreviousSong() {
+    playPreviousSong(wasPlaying) {
         let song;
-        let wasPlaying = this.player.isPlaying();
+        //let wasPlaying = this.player.isPlaying();
         console.log("Song was playing: " + wasPlaying);
 
         // Check if we're in playlist mode and at the beginning of the current song
         // then we'll go to the previous song.
         // Otherwise, just restart the current song.
         console.log("play previous. Current index = " + this.playlistIndex);
-        console.log("current song time = " + this.currentSongTime - this.currentSongTimeRemaining);
+        console.log("current song time = " + (this.currentSongTime - this.currentSongTimeRemaining));
         if (this.playlistMode && this.currentSongTime - this.currentSongTimeRemaining < 10 && this.playlistIndex > 0) {
             this.playlistIndex--;
             song = this.internalPlaylist[this.playlistIndex];
@@ -340,8 +333,8 @@ class PianoServer {
     //            - Ignore the index and begin playing a shuffled version of the list
     startPlaylist(shuffle, index) {
         // Stop any tests
-        if (this.myInterval) {
-            clearInterval(this.myInterval);
+        if (this.testInterval) {
+            clearInterval(this.testInterval);
         }
 
         // Playlist is empty, so nothing to start
@@ -385,21 +378,22 @@ class PianoServer {
 
     setSong(song) {
         // Stop any tests
-        if (this.myInterval) {
-            clearInterval(this.myInterval);
+        if (this.testInterval) {
+            clearInterval(this.testInterval);
+        }
+
+        // Stop the player if it's playing
+        if (this.player.isPlaying()) {
+            this.player.stop();
         }
 
         // Reset all keys
         this.resetKeys();
 
-        // Load a MIDI file
-        if (this.player.isPlaying()) {
-            this.player.stop();
-        }
-
+        // Load the song MIDI file
         if (fs.existsSync(song.path)) {
             this.currentSong = song;
-            console.log("Received song: " + this.currentSong.title);
+            console.log("Received song: " + song.title);
             this.player.loadFile(song.path);
             this.songLoaded = true;
             this.songEnded = false;
@@ -427,14 +421,14 @@ class PianoServer {
     // =====================================================
     // Key Test Functions
     // =====================================================
+    // Stop test that is currently playing
     stopTests() {
+        this.resetKeys();
         if (!this.underTest)
             return;
 
-        // Stop test that is currently playing
-        this.resetKeys();
-        if (this.myInterval) {
-            clearInterval(this.myInterval);
+        if (this.testInterval) {
+            clearInterval(this.testInterval);
         }
         this.vacuumController.turnOff();
         this.underTest = false;
@@ -453,37 +447,37 @@ class PianoServer {
 
         // The key test interval shouldn't be less than 100ms. It's unlikely the keys can react that quickly.
         // Anything over 1 second is too long
-        let testInterval = delay >= 100 && delay <=1000 ? delay : KEY_TEST_DELAY;
+        let testDelay = delay >= 100 && delay <=1000 ? delay : KEY_TEST_DELAY;
 
         setTimeout(() => {
             // Run the specified test
             switch (keyTest) {
                 // All keys pressed and released, one at a time
                 case 0:
-                    this.myInterval = setInterval(this.testEachKey.bind(this), testInterval);
+                    this.testInterval = setInterval(this.testEachKey.bind(this), testDelay);
                     break;
 
                 // All keys pressed and held, one at a time
                 case 1:
-                    this.myInterval = setInterval(this.testAllKeys.bind(this), testInterval);
+                    this.testInterval = setInterval(this.testAllKeys.bind(this), testDelay);
                     break;
 
                 // Each key pressed 5 times rapidly, one at a time
                 // This helps calibrate and test how quickly each key can recover between presses
                 case 2:
-                    this.myInterval = setInterval(this.testEachKeyRapidly.bind(this), testInterval);
+                    this.testInterval = setInterval(this.testEachKeyRapidly.bind(this), testDelay);
                     break;
 
                 // Each key pressed and held, then pressed again while held
                 // This simulates a condition where two tracks are playing and the same key is struck
                 case 3:
-                    this.myInterval = setInterval(this.testEachKeyOverlapping.bind(this), testInterval);
+                    this.testInterval = setInterval(this.testEachKeyOverlapping.bind(this), testDelay);
                     break;
 
                 // Test one single key
                 // Runs a single key through a variety of tests
                 case 4:
-                    this.myInterval = setInterval(this.testSingleKey.bind(this), testInterval);
+                    this.testInterval = setInterval(this.testSingleKey.bind(this), testDelay);
                     break;
 
                 default:
@@ -493,16 +487,6 @@ class PianoServer {
             }
         }, waitForPump);
     }
-
-    /*
-    runEachKeyTest() {
-        this.keyIndex = 0;
-        this.resetKeys();
-        if (this.myInterval) {
-            clearInterval(this.myInterval);
-        }
-        this.myInterval = setInterval(this.testEachKey.bind(this), KEY_TEST_DELAY);
-    }*/
 
     // Runs a single key (this.testKey) through 3 tests:
     // 1) Just press and hold (iterations 0-9)
@@ -514,7 +498,7 @@ class PianoServer {
         if (this.keyIndex > 50 || this.testKey < 0 || this.testKey >= this.numKeys) {
             this.vacuumController.turnOff();
             this.underTest = false;
-            clearInterval(this.myInterval);
+            clearInterval(this.testInterval);
             return;
         }
 
@@ -551,7 +535,7 @@ class PianoServer {
         if (this.keyIndex >= this.numKeys) {
             this.vacuumController.turnOff();
             this.underTest = false;
-            clearInterval(this.myInterval);
+            clearInterval(this.testInterval);
             return;
         }
 
@@ -573,7 +557,7 @@ class PianoServer {
         if (key >= this.numKeys) {
             this.vacuumController.turnOff();
             this.underTest = false;
-            clearInterval(this.myInterval);
+            clearInterval(this.testInterval);
             return;
         }
 
@@ -600,7 +584,7 @@ class PianoServer {
         if (key >= this.numKeys) {
             this.vacuumController.turnOff();
             this.underTest = false;
-            clearInterval(this.myInterval);
+            clearInterval(this.testInterval);
             return;
         }
 
@@ -618,24 +602,13 @@ class PianoServer {
         this.register.send(this.keys);
     }
 
-    /*
-    runAllKeysTest() {
-        this.keyIndex = 0;
-        //this.keys.fill(0);
-        this.resetKeys();
-        if (this.myInterval) {
-            clearInterval(this.myInterval);
-        }
-        this.myInterval = setInterval(this.testAllKeys.bind(this), KEY_TEST_DELAY);
-    }*/
-
     // This just keeps pressing all the keys without releasing them
     testAllKeys() {
         this.keys[this.keyIndex] = 1;
         if (this.keyIndex >= this.numKeys) {
             this.vacuumController.turnOff();
             this.underTest = false;
-            clearInterval(this.myInterval);
+            clearInterval(this.testInterval);
         }
 
         this.keyIndex++;
