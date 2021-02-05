@@ -10,16 +10,6 @@ const SRCLR_PIN = 31;  // Shift_Register clear (SRCLR - 6 on chip) - Set to high
 class KeyRegister {
     constructor(registerSize, moduleCount) {
 
-        // If running on another OS, then just mock the RaspberryPi
-        if (!isPi()) {
-            console.log("Not running on Raspberry Pi - Mocking");
-            rpio.init({mock: 'raspi-3'});
-            /* Override default warn handler to avoid mock warnings */
-            rpio.on('warn', function() {});
-        } else {
-            console.log("Running on Raspberry Pi - RPIO Enabled");
-        }
-
         // Set class properties to use
         this.dataPin = SER_PIN; //data;
         this.clockPin = SRCK_PIN// clock;
@@ -27,12 +17,22 @@ class KeyRegister {
         this.clearPin = SRCLR_PIN; // clear;
         this.registerSize = registerSize;
         this.moduleCount = moduleCount;
-        //this.keyData = Buffer.alloc(registerSize * moduleCount).fill(0);
 
-        console.log("data: "+ this.dataPin);
-        console.log("clock: "+ this.clockPin);
-        console.log("latch: "+ this.latchPin);
-        console.log("clear: "+ this.clearPin);
+        // If running on another OS, then just mock the RaspberryPi
+        if (!isPi()) {
+            console.log("Not on Pi. Mocking the KeyRegister.");
+            rpio.init({mock: 'raspi-3'});
+            /* Override default warn handler to avoid mock warnings */
+            rpio.on('warn', function() {});
+        } else {
+            console.log("KeyRegister RPIO Enabled. OUTPUT PINS:");
+            console.log("   data: "+ this.dataPin);
+            console.log("   clock: "+ this.clockPin);
+            console.log("   latch: "+ this.latchPin);
+            console.log("   clear: "+ this.clearPin);
+        }
+
+        //this.keyData = Buffer.alloc(registerSize * moduleCount).fill(0);
 
         // Open the data, clock, and latch pins for writing
         rpio.open(this.dataPin, rpio.OUTPUT, rpio.LOW);

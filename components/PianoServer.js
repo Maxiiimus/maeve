@@ -1,7 +1,14 @@
 const MidiPlayer = require('midi-player-js');
-const songLibrary = require('../midis/song-list');
-//const Key = require('./Key.js');
+//const songLibrary = require('../midis/song-list');
 const fs = require('fs');
+const KeyRegister = require('./KeyRegister');
+const VacuumController = require('./VacuumController');
+const SustainController = require('./SustainController');
+const MusicLibrary = require('./MusicLibrary');
+
+// Key module settings
+const MODULE_COUNT = 11;
+const REGISTER_SIZE = 8;
 
 const CLIENT_INTERVAL = 250; // milliseconds between updates to client if needed
 const KEY_TEST_DELAY = 250; // The delay between playing each key during the tests
@@ -21,7 +28,7 @@ class PianoServer {
             image: "images/artists/Welcome Image.png"
         };
 
-        // This is the current playlist or queue. Currently, there is just one
+        // This is the current playlist or queue.
         // This is the playlist that appears in the UI
         this.playlist = [];
 
@@ -30,9 +37,11 @@ class PianoServer {
         // If a song is added to the queue while playing, it is added to this list too
         this.internalPlaylist = [];
         this.playlistChanged = false;
+        this.playlistNameChanged = false;
+        this.playlistsChanged = false;
+        this.newPlaylistName = "";
         this.playlistMode = false;
         this.playlistIndex = 0;
-
         this.currentSongTime = 0;
         this.currentSongTimeRemaining = 0;
         this.currentSongTotalTicks = 0;
@@ -40,16 +49,22 @@ class PianoServer {
         this.songEnded = false;
         this.clientsConnected = false;
         this.underTest = false;
+
+        // These arrays are an in memory updated by the library as they change and are passed by reference
+        this.allSongs = []; // The list of all songs in the database
+        this.playlists = []; // The list of all playlists in the database
     }
 
-    start (http, io, port, register, vacuumController, sustainController) {
-        this.register = register;
-        this.vacuumController = vacuumController;
-        this.sustainController = sustainController;
-        this.numKeys = register.moduleCount * register.registerSize;
+    start (http, io, port) {
+        this.vacuumController = new VacuumController();
+        this.sustainController = new SustainController();
+        this.register = new KeyRegister(REGISTER_SIZE, MODULE_COUNT);
+        this.numKeys = REGISTER_SIZE * MODULE_COUNT;
         this.keys = Buffer.alloc(this.numKeys).fill(0);
-        this.keyBits = Buffer.alloc(this.numKeys).fill(0);
-        this.keysOff = Buffer.alloc(this.numKeys).fill(0);
+
+        // Connect to the music library database
+        // Pass in the arrays for the songs, playlists, and current playlist (by reference)
+        this.musicLibrary = new MusicLibrary(this.allSongs, this.playlists, this.playlist);
 
         // Open connection to clients
         this.io = io; //require('socket.io')(server);
@@ -143,8 +158,9 @@ class PianoServer {
             this.clientsConnected = true;
             console.log('A user connected: ' + JSON.stringify(socket.id));
 
-            this.io.emit('load library', songLibrary.songs);
-            this.io.emit('update playlist', this.playlist);
+            this.io.emit('load library', this.allSongs);
+            this.io.emit('load playlists', this.playlists, this.musicLibrary.currentPlaylistID);
+            this.io.emit('update playlist', this.playlist, this.musicLibrary.currentPlaylistID);
 
             socket.on("set song", (song) => {
                 this.setSong(song);
@@ -188,7 +204,62 @@ class PianoServer {
                 this.runKeyTest(testNumber, delay); // Delay is used to adjust the speed of the test
             });
 
-            socket.on('update playlist',  (p) => {
+            // Adds a song by ID to the current playlist
+            socket.on('add to playlist', (songID) => {
+                this.musicLibrary.addSongToPlaylist(songID, (err) => {
+                    if (!err) {
+                        this.playlistChanged = true;
+                    }
+                });
+            });
+
+            // Removes a song from the current playlist by removing the entry in playlist_items by item_id
+            socket.on('remove from playlist', (itemID) => {
+                this.musicLibrary.removeSongFromPlaylist(itemID, (err) => {
+                    if (!err) {
+                        this.playlistChanged = true;
+                    }
+                });
+            });
+
+            // Deletes the current playlist
+            socket.on('delete playlist', () => {
+                this.musicLibrary.deletePlaylist((err) => {
+                    if (!err) {
+                        this.playlistsChanged = true;
+                    }
+                });
+            });
+
+            // Switches the current playlist to playlistID
+            socket.on('select playlist', (playlistID) => {
+                this.musicLibrary.getPlaylist(playlistID, (err) => {
+                    if (!err) {
+                        this.playlistChanged = true;
+                    }
+                });
+            });
+
+            // Creates a playlist with the given "name"
+            socket.on('create playlist', (name) => {
+                this.musicLibrary.createPlaylist(name,(err) => {
+                    if (!err) {
+                        this.playlistsChanged = true;
+                    }
+                });
+            });
+
+            // Changes the name for the current playlist
+            socket.on('rename playlist', (name) => {
+                this.musicLibrary.renamePlaylist(name,(err) => {
+                    if (!err) {
+                        this.newPlaylistName = name;
+                        this.playlistNameChanged = true;
+                    }
+                });
+            });
+
+            socket.on('update playlist', (p) => {
                 //console.log('incoming playlist: ' + p);
                 this.playlist = p;
                 this.playlistChanged = true; // Update all connected clients' playlist
@@ -215,14 +286,29 @@ class PianoServer {
         // Only update client playlist if it's changed
         if (this.playlistChanged) {
             if (this.clientsConnected) {
-                this.io.emit('update playlist', this.playlist);
+                this.io.emit('update playlist', this.playlist, this.musicLibrary.currentPlaylistID);
             }
             this.playlistChanged = false;
         }
 
+        // Update this list of playlists
+        if (this.playlistsChanged) {
+            if (this.clientsConnected) {
+                console.log("loading playlists, selecting playlist: " + this.musicLibrary.currentPlaylistID)
+                this.io.emit('load playlists', this.playlists, this.musicLibrary.currentPlaylistID);
+            }
+            this.playlistsChanged = false;
+        }
+
+        // This happens if a playlist is renamed. We only want to update the clients of a name change.
+        // But, not trigger reloading playlists
+        if (this.playlistNameChanged) {
+            this.io.emit('update playlist name', this.newPlaylistName);
+            this.playlistNameChanged = false;
+        }
+
         // Let the clients know what song is playing, update time and settings
         if (this.clientsConnected) {
-            //console.log("Updating song to clients: " + this.currentSong.title);
             this.io.emit("update song", this.currentSong, this.player.isPlaying(),
                 this.currentSongTime, this.currentSongTimeRemaining);
         }
@@ -281,13 +367,10 @@ class PianoServer {
     // Plays the next song in the internalPlaylist
     playNextSong(wasPlaying) {
         if (this.playlistMode && this.playlistIndex < this.internalPlaylist.length - 1) {
-            //let wasPlaying = this.player.isPlaying();
             this.playlistIndex++;
-            console.log("playing next song: " + this.playlistIndex);
             let song = this.internalPlaylist[this.playlistIndex];
             console.log("Playing next song: ", song.title);
             this.setSong(song);
-            console.log("wasPlaying: " + wasPlaying);
             if (wasPlaying) {
                 this.play(true);
             }
@@ -298,14 +381,12 @@ class PianoServer {
 
     playPreviousSong(wasPlaying) {
         let song;
-        //let wasPlaying = this.player.isPlaying();
         console.log("Song was playing: " + wasPlaying);
 
         // Check if we're in playlist mode and at the beginning of the current song
         // then we'll go to the previous song.
         // Otherwise, just restart the current song.
         console.log("play previous. Current index = " + this.playlistIndex);
-        console.log("current song time = " + (this.currentSongTime - this.currentSongTimeRemaining));
         if (this.playlistMode && this.currentSongTime - this.currentSongTimeRemaining < 10 && this.playlistIndex > 0) {
             this.playlistIndex--;
             song = this.internalPlaylist[this.playlistIndex];
@@ -342,7 +423,7 @@ class PianoServer {
             return;
         }
 
-        console.log("playist: " + JSON.stringify(this.playlist));
+        //console.log("playist: " + JSON.stringify(this.playlist));
 
         // First, make a copy of the playlist to use as the internal list
         // The copy is important, because we'll be popping the songs off the list until it is empty
@@ -360,7 +441,7 @@ class PianoServer {
             }
         }
 
-        console.log("internalPlaylist: " + JSON.stringify(this.internalPlaylist));
+        //console.log("internalPlaylist: " + JSON.stringify(this.internalPlaylist));
 
         // Put into playlist mode and start playing
         this.playlistMode = true;
@@ -391,10 +472,10 @@ class PianoServer {
         this.resetKeys();
 
         // Load the song MIDI file
-        if (fs.existsSync(song.path)) {
+        if (fs.existsSync(song.midi_path)) {
             this.currentSong = song;
             console.log("Received song: " + song.title);
-            this.player.loadFile(song.path);
+            this.player.loadFile(song.midi_path);
             this.songLoaded = true;
             this.songEnded = false;
             let lastTick = 0;
@@ -414,7 +495,7 @@ class PianoServer {
             this.currentSongTimeRemaining = this.currentSongTime;
             console.log("Song length: " + this.player.getSongTime() + ", Song Total Ticks: " + this.currentSongTotalTicks);
         } else {
-            console.log ("Received invalid song path: " + song.path);
+            console.log ("Received invalid song path: " + song.midi_path);
         }
     }
 

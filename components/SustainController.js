@@ -7,21 +7,19 @@ const OUTPUT_PIN = 35;   // Pin used to open the sustaining pedal valve
 class SustainController {
     constructor() {
 
-        // If running on another OS, then just mock the RaspberryPi
-        if (!isPi()) {
-            console.log("Not running on Raspberry Pi - Mocking");
-            rpio.init({mock: 'raspi-3'});
-            /* Override default warn handler to avoid mock warnings */
-            rpio.on('warn', function() {});
-        } else {
-            console.log("Running on Raspberry Pi - RPIO Enabled");
-        }
-
         // Set class properties to use
         this.outputPin = OUTPUT_PIN;
         this.sustainOn = false;
 
-        console.log("Sustain Controller Output pin: "+ this.outputPin);
+        // If running on another OS, then just mock the RaspberryPi
+        if (!isPi()) {
+            console.log("Not on Pi. Mocking the SustainController.");
+            rpio.init({mock: 'raspi-3'});
+            /* Override default warn handler to avoid mock warnings */
+            rpio.on('warn', function() {});
+        } else {
+            console.log("SustainController RPIO Enabled. OUTPUT PIN: " + this.outputPin);
+        }
 
         // Open the output pin for writing
         rpio.open(this.outputPin, rpio.OUTPUT, rpio.LOW);
@@ -53,13 +51,6 @@ class SustainController {
         rpio.write(this.outputPin, rpio.LOW);
         this.sustainOn = false;
         console.log("Sustain pedal off.")
-    }
-
-    /*
-        Check if the sustain is on or off
-    */
-    isSustained() {
-        return this.sustainOn;
     }
 }
 

@@ -15,7 +15,7 @@
     background-color: rgb(42, 42, 42);
     width: 100%;
     display: block;
-    z-index: 999999;
+    z-index: 900;
 }
 
 .box-inner {
@@ -68,6 +68,10 @@ div.ui-slider-track {
     padding: 4px !important;
 }
 
+.ui-select {
+    margin: 0px !important;
+}
+
 .ui-listview>li {
     padding-left: 5px;
     padding-right: 5px;
@@ -89,4 +93,8 @@ div.ui-slider-track {
 
 #timeremaining, #timeplayed {
     color: #555555;
+}
+
+.ui-dialog {
+    z-index: 1000 !important;
 }

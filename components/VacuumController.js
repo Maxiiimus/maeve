@@ -7,21 +7,19 @@ const OUTPUT_PIN = 36;   // Pin used to turn on the High Voltage relay switch
 class VacuumController {
     constructor() {
 
-        // If running on another OS, then just mock the RaspberryPi
-        if (!isPi()) {
-            console.log("Not running on Raspberry Pi - Mocking");
-            rpio.init({mock: 'raspi-3'});
-            /* Override default warn handler to avoid mock warnings */
-            rpio.on('warn', function() {});
-        } else {
-            console.log("Running on Raspberry Pi - RPIO Enabled");
-        }
-
         // Set class properties to use
         this.outputPin = OUTPUT_PIN;
         this.vacuumOn = false;
 
-        console.log("Vacuum Controller Output pin: "+ this.outputPin);
+        // If running on another OS, then just mock the RaspberryPi
+        if (!isPi()) {
+            console.log("Not on Pi. Mocking the VacuumController.");
+            rpio.init({mock: 'raspi-3'});
+            /* Override default warn handler to avoid mock warnings */
+            rpio.on('warn', function() {});
+        } else {
+            console.log("VacuumController RPIO Enabled. OUTPUT PIN: " + this.outputPin);
+        }
 
         // Open the output pin for writing
         rpio.open(this.outputPin, rpio.OUTPUT, rpio.LOW);

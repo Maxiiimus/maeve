@@ -21,7 +21,7 @@
             <li>
                 <a style="padding: .3em;" href="#">
                     <div style="display: flex" data-bind="click: $root.playSong">
-                        <img height="30" width="30" data-bind="attr: { 'src': image }">
+                        <img height="30" width="30" data-bind="attr: { 'src': image_path }">
                         <div>
                             <p data-bind="text: title" style="font-weight: bold; padding: 3px"></p>
                             <p data-bind="text: artist, visible: false"></p>
@@ -37,18 +37,56 @@
     <div class="box" id="box">
         <div class="box-inner">
             <!-- Playlist buttons -->
-            <a id="close" href="#" class="ui-btn ui-btn-icon-left ui-icon-carat-d">Playlist</a></li>
+            <div style="display: flex; background-color: black">
+                <a id="close" href="#" class="ui-btn ui-shadow ui-btn-inline ui-icon-home ui-btn-icon-notext">Close</a>
+                <div style="flex-grow: 1">
+                        <select name="select-choice-0" id="selectPlaylist"
+                                data-bind="options: $root.playlists, optionsText: 'name', optionsValue: 'playlist_id', value: $root.selectedPlaylist">
+                        </select>
+                </div>
+            </div>
             <div style="text-align: center">
-                <a id="playlistPlayButton" href="#" style="width: 80px" data-bind="click: $root.playPlaylist.bind($data, 0)"
-                   class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-play ui-btn-icon-left">Play</a>
-                <a id="playlistShuffleButton" href="#" style="width: 80px" data-bind="click: $root.shufflePlaylist"
-                   class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-shuffle ui-btn-icon-left">Shuffle</a>
+                <a id="playlistPlayButton" href="#" data-bind="click: $root.playPlaylist.bind($data, 0)"
+                   class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-play ui-btn-icon-notext">Play</a>
+                <a id="playlistShuffleButton" href="#" data-bind="click: $root.shufflePlaylist"
+                   class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-shuffle ui-btn-icon-notext">Shuffle</a>
+                <a id="playlistEditButton" href="#" data-bind="click: $root.openPlaylistPopup" data-rel="popup" data-transition="pop"
+                   class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-edit ui-btn-icon-notext">Edit</a>
+                <div data-role="popup" style="padding: 20px" id="popupEditPlaylist" class="ui-corner-all">
+                    <p>Edit Playlist Name:</p>
+                    <input type="text" id="editPlaylistNameInput"
+                           data-bind="value: $root.playlistNameEditText(), valueUpdate: 'input'" placeholder="name">          
+                    <a id="cancelUpdatePlaylistButton" href="#" data-rel="back"
+                       class="ui-btn ui-shadow ui-corner-all ui-btn-inline">Cancel</a>
+                    <a id="updatePlaylistButton" href="#" data-bind="click: $root.renamePlaylistName"
+                       class="ui-btn ui-shadow ui-corner-all ui-btn-inline">Update</a>
+                </div>
+                <a id="playlistAddButton" href="#popupCreatePlaylist" data-rel="popup" data-transition="pop"
+                   class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-plus ui-btn-icon-notext">Edit</a>
+                <div data-role="popup" style="padding: 20px" id="popupCreatePlaylist" class="ui-corner-all">
+                    <p>New Playlist Name:</p>
+                    <input type="text" id="createPlaylistNameInput" placeholder="enter name">
+                    <a id="cancelCreatePlaylistButton" href="#" data-rel="back"
+                       class="ui-btn ui-shadow ui-corner-all ui-btn-inline">Cancel</a>   
+                    <a id="createPlaylistButton" href="#" data-bind="click: $root.createPlaylist"
+                       class="ui-btn ui-shadow ui-corner-all ui-btn-inline">Create</a>
+                </div>
+                <a id="playlistDeleteButton" href="#" data-bind="click: $root.openDeletePlaylistPopup"
+                   data-rel="popup" data-transition="pop"
+                   class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-delete ui-btn-icon-notext">Delete</a>
+                <div data-role="popup" style="padding: 20px" id="popupDeletePlaylist" class="ui-corner-all">
+                    <p>Delete current playlist?</p>
+                    <a id="cancelDeletePlaylistButton" href="#" data-rel="back"
+                       class="ui-btn ui-shadow ui-corner-all ui-btn-inline">Cancel</a>   
+                    <a id="deletePlaylistButton" href="#" data-bind="click: $root.deletePlaylist"
+                       class="ui-btn ui-shadow ui-corner-all ui-btn-inline">Delete</a>
+                </div>
             </div>
             <ul id="playlist" data-role="listview" data-bind="foreach: playlist">
                 <li>
                     <a style="padding: .3em;" href="#">
                         <div style="display: flex" data-bind="click: $root.playPlaylist.bind($data, $index())">
-                            <div><img height="40" width="40" data-bind="attr: { 'src': image }"></div>
+                            <div><img height="40" width="40" data-bind="attr: { 'src': image_path }"></div>
                             <div>
                                 <p data-bind="text: title" style="font-weight: bold; margin: 3px"></p>
                                 <p data-bind="text: artist" style="margin: 3px"></p>
@@ -193,7 +231,7 @@
     <!-- Main Content -->
     <div class="ui-content ui-page-theme-b" role="main">
         <div style="text-align: center">
-            <img height="200" id="artistImage" data-bind="attr: { 'src': currentSong().image }">
+            <img height="200" id="artistImage" data-bind="attr: { 'src': currentSong().image_path }">
             <form class="full-width-slider">
                 <input id="timeslider" name="timeslider" type="range" max="100" min="0" value="0" data-highlight="true"
                      data-mini="true" class="ui-hidden-accessible">

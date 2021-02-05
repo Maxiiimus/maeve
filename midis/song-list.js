@@ -864,9 +864,9 @@ const songList = {
         {
             id: 123,
             title: "Walking in the Air",
-            artist: "Christmas",
+            artist: "Howard Blake",
             path: "midis/Christmas/Walking in the Air.mid",
-            image: "images/artists/Christmas Piano.jpg"
+            image: "images/artists/Howard Blake - The Snowman.jpg"
         },
         {
             id: 124,
@@ -885,9 +885,9 @@ const songList = {
         {
             id: 126,
             title: "Holly Jolly Christmas",
-            artist: "Christmas",
+            artist: "Burl Ives",
             path: "midis/Christmas/Holly Jolly Christmas.mid",
-            image: "images/artists/Christmas Piano.jpg"
+            image: "images/artists/Burl Ives - Have a Holly Jolly Christmas.jpg"
         },
         {
             id: 127,
@@ -913,9 +913,9 @@ const songList = {
         {
             id: 130,
             title: "Blue Christmas",
-            artist: "Christmas",
+            artist: "Elvis Presley",
             path: "midis/Christmas/Blue Christmas.mid",
-            image: "images/artists/Christmas Piano.jpg"
+            image: "images/artists/Elvis Presley - Elvis Christmas Album.jpg"
         },
         {
             id: 131,
@@ -941,9 +941,9 @@ const songList = {
         {
             id: 134,
             title: "Jingle Bell Rock",
-            artist: "Christmas",
+            artist: "Bobby Helms",
             path: "midis/Christmas/Jingle Bell Rock.mid",
-            image: "images/artists/Christmas Piano.jpg"
+            image: "images/artists/Bobby Helms - Jingle Bell Rock.jpg"
         },
         {
             id: 135,
@@ -1053,9 +1053,9 @@ const songList = {
         {
             id: 150,
             title: "Feliz Navidad",
-            artist: "Christmas",
+            artist: "José Feliciano",
             path: "midis/Christmas/Feliz Navidad.mid",
-            image: "images/artists/Christmas Piano.jpg"
+            image: "images/artists/José Feliciano - Feliz Navidad.jpg"
         },
         {
             id: 151,
@@ -1115,8 +1115,8 @@ const songList = {
         },
         {
             id: 159,
-            title: "Roy Orbison",
-            artist: "Oh1 Pretty Woman.jpg",
+            title: "Oh Pretty Woman",
+            artist: "Roy Orbison",
             path: "midis/Roy Orbison/Oh Pretty Woman.mid",
             image: "images/artists/Roy Orbison - Oh Pretty Woman.jpg"
         },
@@ -1136,10 +1136,10 @@ const songList = {
         },
         {
             id: 162,
-            title: "Happy Xmas",
-            artist: "Christmas",
+            title: "Happy Xmas (War Is Over)",
+            artist: "John Lennon & Yoko Ono",
             path: "midis/Christmas/Happy Xmas.mid",
-            image: "images/artists/Christmas Piano.jpg"
+            image: "images/artists/Happy Xmas (War is Over).jpg"
         },
         {
             id: 163,

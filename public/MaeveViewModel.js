@@ -1,11 +1,12 @@
 // Class to represent a single song
 function Song(data) {
     let self = this;
-    self.id = data.id;
+    self.item_id = data.item_id;
+    self.song_id = data.song_id;
     self.title = data.title;
     self.artist = data.artist;
-    self.path = data.path;
-    self.image = data.image;
+    self.midi_path = data.midi_path;
+    self.image_path = data.image_path;
 }
 
 // ========================================================================================================
@@ -23,8 +24,8 @@ function MaeveViewModel() {
     //});
 
     // Placeholder text when there is no currentSong from the server yet
-    let welcomeSong = new Song({id: -1, title: "Hello Darling", artist: "Maeve",
-        path: "", image: "images/artists/Welcome Image.png"});
+    let welcomeSong = new Song({song_id: -1, title: "Hello Darling", artist: "Maeve",
+        midi_path: "", image_path: "images/artists/Welcome Image.png"});
     self.currentSong = ko.observable(welcomeSong);
 
     self.timePlayedString = ko.observable("");
@@ -34,7 +35,18 @@ function MaeveViewModel() {
     self.isPlaying = ko.observable(false);
 
     self.library = ko.observableArray([]);
+
+    self.playlists = ko.observableArray([]);
+    self.selectedPlaylist = ko.observable();
+    self.selectedPlaylist.subscribe(function() {
+        self.selectPlaylist();
+    });
+
+    self.currentPlaylistID = -1; // Keep track of current playlistID. -1 means first load
     self.playlist = ko.observableArray([]);
+    //self.playlistPopupButtonText = ko.observable("Update");
+
+    self.playlistNameEditText = ko.observable("");
 
     self.currentSongPercent = ko.observable(70);
     self.values = ko.computed({
@@ -49,7 +61,7 @@ function MaeveViewModel() {
 
     self.pauseSliderMoves = false;
     $(function () {
-        // Implement event hanlder for when the timeslider stops
+        // Implement event handler for when the timeslider stops
         // This way we only call the server after the drag is done.
         $("#timeslider").on("slidestop", () => {
             let val =  $("#timeslider").val();
@@ -72,10 +84,102 @@ function MaeveViewModel() {
         //let val =  $("#timeslider").val();
         console.log ("slider = " + val);
         self.socket.emit("set time", val);
-    }
+    };
+
+    // Create a new playlist
+    self.createPlaylist = function() {
+        let name = $("#createPlaylistNameInput").val().trim();
+        if (name === "") {
+            self.toast("Playlist name cannot be empty.");
+        } else {
+            self.socket.emit("create playlist", name);
+            console.log("New playlist created named " + name);
+            self.toast("\"" + name + "\" created.");
+            $("#createPlaylistNameInput").val("");
+            $("#popupCreatePlaylist").popup("close");
+        }
+    };
+
+    self.openDeletePlaylistPopup = function() {
+        let playlistID = $("#selectPlaylist").val();
+        if (playlistID == 1) { // We don't want === (strict) equality check
+            self.toast("The playlist '" + $("#selectPlaylist").find(":selected").text() + "' cannot be deleted.");
+        } else {
+            $("#popupDeletePlaylist").popup("open");
+        }
+    };
+
+    // Create a new playlist (basically, just empty the current list and popup the name dialog)
+    self.deletePlaylist = function() {
+        $("#popupDeletePlaylist").popup("close");
+        let playlistID = $("#selectPlaylist").val();
+        let playlistName = $("#selectPlaylist").find(":selected").text();
+
+        console.log("Deleting playlist: " + playlistName);
+
+        // Cannot delete the first playlist
+        if (playlistID == 1) { // We don't want === (strict) equality check
+            self.toast("The playlist '" + playlistName + "' cannot be deleted.");
+        } else {
+            // Delete the playlist
+            self.toast("Deleting playlist '" + playlistName + "'.");
+            self.socket.emit('delete playlist');
+        }
+    };
+
+    self.openPlaylistPopup = function() {
+        self.playlistNameEditText($("#selectPlaylist").find(":selected").text());
+        //self.playlistNameEditText(self.selectedPlaylist().name);
+        console.log("self.playlistNameEditText() = " + self.playlistNameEditText());
+        //console.log("self.selectedPlaylist().name = " + self.selectedPlaylist().name);
+
+        //$("#editPlaylistNameInput").textContent("refresh");
+        $("#popupEditPlaylist").popup("open");
+    };
+
+    // Update the name of the current playlist
+    self.renamePlaylistName = function() {
+        //let oldName = self.selectedPlaylist().name;
+        let oldName = $("#selectPlaylist").find(":selected").text();
+        //let newName = $("#editPlaylistNameInput").value();
+        //let newName = self.playlistNameEditText();
+        let newName = $("#editPlaylistNameInput").val().trim();
+
+        if (newName === "") {
+            self.toast("Playlist name cannot be empty.");
+        } else if (newName !== oldName) {
+            console.log("Renaming '" + oldName + "' to '" + newName + "'");
+            self.toast("\"" + oldName + "\" renamed.");
+
+            // If we have an existing playlist, then just rename it
+            self.socket.emit('rename playlist', newName);
+        }
+
+        $("#popupEditPlaylist").popup("close");
+    };
+
+    self.selectPlaylist = function() {
+        // If currentPlaylistID is -1, then we don't want to do anything because it's the first load
+        // The server will call and tell the client which playlist to select when the client connects.
+        if (self.currentPlaylistID != -1) {
+            console.log("Switching to playlist: " + $("#selectPlaylist").val());
+            self.socket.emit('select playlist', $("#selectPlaylist").val());
+        }
+    };
+
+    //self.playlistChanged = function(newValue) {
+    //    console.log(newValue);
+    //    if (newValue) {
+    //        self.toast("\"" + newValue.name + "\" selected.");
+    //    }
+    //};
 
     // Adds a song from the library to the current playlist
     self.addSongToPlaylist = function(song) {
+        // Call the server to add the selected song to the current playlist
+        self.socket.emit('add to playlist', song.song_id);
+
+        /*
         let songCopy = {...song}; // copy the song so there could be duplicates in a playlist
         console.log("adding song to playlist: " + songCopy.title);
         self.playlist.push(songCopy);
@@ -83,14 +187,20 @@ function MaeveViewModel() {
         console.log("Sending playlist to server: " + self.playlist());
         self.socket.emit('update playlist', self.playlist());  // Update the server with the playlist change
         self.toast("\"" + song.title + "\" added to playlist.");
+        */
     };
 
     // Removes the selected song from the playlist
-    self.removeSongFromPlaylist = function(song) {
+    self.removeSongFromPlaylist = function(playlistSong) {
+        //console.log("removing song: " + JSON.stringify(playlistSong));
+        self.socket.emit('remove from playlist', playlistSong.item_id);
+
+        /*
         console.log("Removing song: " + song.id);
         self.toast("\"" + song.title + "\" removed.");
         self.playlist.remove(song);
         self.socket.emit('update playlist', self.playlist());  // Update the server with the playlist change
+        */
     };
 
     // Plays a specified song
@@ -212,23 +322,49 @@ function MaeveViewModel() {
         //console.log("loaded songs into library: " + self.library().length);
     });
 
+    // "load playlists" is called when a client connects to provide the list of playlists
+    self.socket.on('load playlists', function (allPlaylists, selectedPlaylistID) {
+        self.playlists(allPlaylists);
+
+        self.currentPlaylistID = selectedPlaylistID;
+        $("#selectPlaylist").val(selectedPlaylistID).trigger('change');
+        $("#selectPlaylist").selectmenu("refresh", true);
+    });
+
+    // "update playlist name" is called to rename the current selected playlist name
+    // This is different than 'load playlists' since this keeps the current playlist selected.
+    self.socket.on('update playlist name', function (name) {
+        let playlist = document.getElementById("selectPlaylist");
+        playlist.options[playlist.selectedIndex].text = name;
+        $("#selectPlaylist").selectmenu( "refresh", true );
+    });
+
     // "set song" is called to update the client with the current song that is playing
     self.socket.on('set song', function (song) {
-        if (song.id === self.currentSong.id) return; // If we're already playing the song, just return
+        if (song.song_id === self.currentSong.song_id) return; // If we're already playing the song, just return
         self.currentSong(song);
     });
 
     // "update playlist" called to update the current playlist
-    self.socket.on('update playlist', function (playlistSongs) {
+    self.socket.on('update playlist', function (playlistSongs, selectedPlaylistID) {
         let playlist = playlistSongs;
         let mappedSongs = $.map(playlist, function(item) { return new Song(item) });
+
+        //console.log("updating playlist: " + JSON.stringify(playlist));
+        // Select the correct playlist (in case this is called because it was changed)
+        if (self.currentPlaylistID != selectedPlaylistID) {
+            self.currentPlaylistID = selectedPlaylistID;
+            $("#selectPlaylist").val(selectedPlaylistID).trigger('change');
+        }
+
+        // Update the playlist songs
         self.playlist(mappedSongs);
-        $("#playlist").listview( "refresh" );
+        $("#playlist").listview( "refresh", true);
     });
 
     // "update song" is called to update the total song time and the time left
     self.socket.on('update song', function (song, isPlaying, songTime, timeRemaining) {
-        if (song.id !== self.currentSong.id) {
+        if (song.song_id !== self.currentSong.song_id) {
             self.currentSong(song); // If the song has changed, update currentSong
         }
 
