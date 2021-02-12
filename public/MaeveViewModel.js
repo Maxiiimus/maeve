@@ -44,8 +44,6 @@ function MaeveViewModel() {
 
     self.currentPlaylistID = -1; // Keep track of current playlistID. -1 means first load
     self.playlist = ko.observableArray([]);
-    //self.playlistPopupButtonText = ko.observable("Update");
-
     self.playlistNameEditText = ko.observable("");
 
     self.currentSongPercent = ko.observable(70);
@@ -139,10 +137,7 @@ function MaeveViewModel() {
 
     // Update the name of the current playlist
     self.renamePlaylistName = function() {
-        //let oldName = self.selectedPlaylist().name;
         let oldName = $("#selectPlaylist").find(":selected").text();
-        //let newName = $("#editPlaylistNameInput").value();
-        //let newName = self.playlistNameEditText();
         let newName = $("#editPlaylistNameInput").val().trim();
 
         if (newName === "") {
@@ -167,64 +162,41 @@ function MaeveViewModel() {
         }
     };
 
-    //self.playlistChanged = function(newValue) {
-    //    console.log(newValue);
-    //    if (newValue) {
-    //        self.toast("\"" + newValue.name + "\" selected.");
-    //    }
-    //};
-
     // Adds a song from the library to the current playlist
     self.addSongToPlaylist = function(song) {
         // Call the server to add the selected song to the current playlist
         self.socket.emit('add to playlist', song.song_id);
-
-        /*
-        let songCopy = {...song}; // copy the song so there could be duplicates in a playlist
-        console.log("adding song to playlist: " + songCopy.title);
-        self.playlist.push(songCopy);
-        $("#playlist").listview( "refresh" ); // Refresh updates the CSS for the elements
-        console.log("Sending playlist to server: " + self.playlist());
-        self.socket.emit('update playlist', self.playlist());  // Update the server with the playlist change
+        console.log("Adding song to playlist: " + song.title);
         self.toast("\"" + song.title + "\" added to playlist.");
-        */
     };
 
     // Removes the selected song from the playlist
     self.removeSongFromPlaylist = function(playlistSong) {
         //console.log("removing song: " + JSON.stringify(playlistSong));
         self.socket.emit('remove from playlist', playlistSong.item_id);
-
-        /*
-        console.log("Removing song: " + song.id);
-        self.toast("\"" + song.title + "\" removed.");
-        self.playlist.remove(song);
-        self.socket.emit('update playlist', self.playlist());  // Update the server with the playlist change
-        */
+        self.toast("\"" + playlistSong.title + "\" removed.");
     };
 
     // Plays a specified song
     self.playSong = function(song) {
         console.log("Playing song: " + song.title);
-        //self.socket.emit('set song', song);
         self.currentSong(song);
         $("#searchpanel").panel( "close" ); // Songs can played from the search panel, so dismiss it
-        console.log("Calling play song: " + song.title);
         self.socket.emit('play song', song);
     };
 
     // Starts playing the playlist. Called by either clicking on song in the playlist (index)
     // or by the "play" button on the playlist panel (same as index = 0)
     self.playPlaylist = function(index) {
-        console.log("playPlaylist() called with index = " + index);
-        $( "#box").animate({'bottom': '-100%'}, 300) // Dismiss the panel when starting to play
+        //console.log("playPlaylist() called with index = " + index);
+        $("#box").animate({'bottom': '-100%'}, 300) // Dismiss the panel when starting to play
         self.socket.emit('play playlist', false, index);
     };
 
     // Starts playing the playlist. Called by either clicking on song in the playlist (index)
     // or by the "play" button on the playlist panel (same as index = 0)
     self.shufflePlaylist = function() {
-        console.log("shufflePlaylist() called.");
+        //console.log("shufflePlaylist() called.");
         $( "#box").animate({'bottom': '-100%'}, 300) // Dismiss the panel when starting to play
         self.socket.emit('play playlist', true, 0); // Index will be ignored
     };

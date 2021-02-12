@@ -30,13 +30,13 @@ class SustainController {
      */
     pedalOn() {
         if (this.sustainOn) {
-            console.log("Sustain pedal is already on. Returning.")
+            //console.log("Sustain pedal is already on. Returning.")
             return;
         }
         // Set pin to HIGH
         rpio.write(this.outputPin, rpio.HIGH);
         this.sustainOn = true;
-        console.log("Sustain pedal on.")
+        //console.log("Sustain pedal on.")
     }
 
     /*
@@ -44,13 +44,13 @@ class SustainController {
     */
     pedalOff() {
         if (!this.sustainOn) {
-            console.log("Sustain pedal is already off. Returning.")
+            //console.log("Sustain pedal is already off. Returning.")
             return;
         }
         // Set pin to LOW
         rpio.write(this.outputPin, rpio.LOW);
         this.sustainOn = false;
-        console.log("Sustain pedal off.")
+        //console.log("Sustain pedal off.")
     }
 }
 

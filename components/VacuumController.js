@@ -33,7 +33,7 @@ class VacuumController {
         rpio.write(this.outputPin, rpio.HIGH);
         this.vacuumOn = true;
 
-        console.log("Turned on Vacuum pump.")
+        //console.log("Turned on Vacuum pump.")
     }
 
     /*
@@ -44,11 +44,11 @@ class VacuumController {
         // Wait a bit, then turn off the pump (pin to LOW)
         // If a turn on call is made, then we won't turn it off
         // This keeps the pump from cycling on and off too much between tests or songs
-        console.log("setting 2 second timeout to turn off pump")
+        //console.log("setting 2 second timeout to turn off pump")
         setTimeout(() => {
             if (!this.vacuumOn) {
                 rpio.write(this.outputPin, rpio.LOW);
-                console.log("Turned off Vacuum pump.")
+                //console.log("Turned off Vacuum pump.")
             }
         }, 2000); // Wait 2 seconds, then turn off
     }

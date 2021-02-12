@@ -1147,6 +1147,55 @@ const songList = {
             artist: "Booker T. & The M.G.s",
             path: "midis/Booker T/Green Onions.mid",
             image: "images/artists/Booker T and The MGs - Green Onions.jpg"
+        },
+        {
+            id: 164,
+            title: "Dance Monkey",
+            artist: "Tones and I",
+            path: "midis/Tones and I/Dance Monkey.mid",
+            image: "images/artists/Tones and I.jpg"
+        },
+        {
+            id: 165,
+            title: "Ghostbusters",
+            artist: "Ray Parker Jr.",
+            path: "midis/Ray Parker Jr./Ghostbusters.mid",
+            image: "images/artists/Ghostbusters.jpg"
+        },
+        {
+            id: 166,
+            title: "Horse with No Name",
+            artist: "America",
+            path: "midis/America/Horse with No Name.mid",
+            image: "images/artists/America - America.jpg"
+        },
+        {
+            id: 167,
+            title: "Looking Out My Back Door",
+            artist: "Creedence Clearwater Revival",
+            path: "midis/Creedence Clearwater Revival/Looking Out My Back Door.mid",
+            image: "images/artists/CCR - Cosmos Factory.jpg"
+        },
+        {
+            id: 168,
+            title: "The Tide Is High",
+            artist: "Blondie",
+            path: "midis/Blondie/The Tide Is High.mid",
+            image: "images/artists/Blondie - The Tide Is High.jpg"
+        },
+        {
+            id: 169,
+            title: "The Unforgiven",
+            artist: "Metallica",
+            path: "midis/Metallica/The Unforgiven.mid",
+            image: "images/artists/Metallica - Metallica.jpg"
+        },
+        {
+            id: 170,
+            title: "Have You Ever Seen The Rain",
+            artist: "Creedence Clearwater Revival",
+            path: "midis/Creedence Clearwater Revival/Have You Ever Seen The Rain.mid",
+            image: "images/artists/CCR - Willy And The Poor Boys.jpg"
         }
     ]
 };
