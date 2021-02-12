@@ -39,6 +39,7 @@ class PianoServer {
         this.playlistChanged = false;
         this.playlistNameChanged = false;
         this.playlistsChanged = false;
+        this.libraryChanged = false;
         this.newPlaylistName = "";
         this.playlistMode = false;
         this.playlistIndex = 0;
@@ -162,6 +163,16 @@ class PianoServer {
             this.io.emit('load playlists', this.playlists, this.musicLibrary.currentPlaylistID);
             this.io.emit('update playlist', this.playlist, this.musicLibrary.currentPlaylistID);
 
+            socket.on("reload library", () => {
+                this.musicLibrary.rebuildLibrary( (err) => {
+                    if (!err) {
+                        this.playlistChanged = true;
+                        this.playlistsChanged = true;
+                        this.libraryChanged = true;
+                    }
+                });
+            });
+
             socket.on("set song", (song) => {
                 this.setSong(song);
             });
@@ -281,6 +292,13 @@ class PianoServer {
         if (this.songEnded && this.playlistMode) {
             this.playNextSong(true);
             this.songEnded = false;
+        }
+
+        if (this.libraryChanged) {
+            if (this.clientsConnected) {
+                this.io.emit('load library', this.allSongs);
+            }
+            this.libraryChanged = false;
         }
 
         // Only update client playlist if it's changed

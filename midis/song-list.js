@@ -1196,6 +1196,13 @@ const songList = {
             artist: "Creedence Clearwater Revival",
             path: "midis/Creedence Clearwater Revival/Have You Ever Seen The Rain.mid",
             image: "images/artists/CCR - Willy And The Poor Boys.jpg"
+        },
+        {
+            id: 171,
+            title: "Piano Major Scales Fingerings",
+            artist: "Tests",
+            path: "midis/Tests/Piano Major Scales Fingerings.mid",
+            image: "images/artists/High Tech Piano.jpg"
         }
     ]
 };

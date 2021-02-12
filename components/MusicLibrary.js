@@ -58,7 +58,7 @@ class MusicLibrary {
     }
 
     // Loads in songs from the json file. Only needs to be called to initialize the songs database
-    rebuildLibrary() {
+    rebuildLibrary(callback) {
         this.removeLibrary((err) => {
             this.createLibrary((err) => {
                 this.loadSongs((err) => {
@@ -72,6 +72,7 @@ class MusicLibrary {
                                 console.log("Loaded playlist: " + this.currentPlaylistID);
                             });
                             console.log("Loaded all playlists");
+                            callback(err);
                         });
                     });
                 });
@@ -104,6 +105,11 @@ class MusicLibrary {
     }
 
     loadSongs(callback) {
+        // Clear the array of songs (but don't loose the reference)
+        while(this.songs.length > 0) {
+            this.songs.pop();
+        }
+
         for (let i = 0; i < songLibrary.songs.length; i++) {
             this.addSong(songLibrary.songs[i]['title'], songLibrary.songs[i]['artist'],
                 songLibrary.songs[i]['path'], songLibrary.songs[i]['image'], (err) => {

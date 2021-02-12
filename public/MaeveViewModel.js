@@ -224,6 +224,11 @@ function MaeveViewModel() {
         self.socket.emit('next song');
     };
 
+    self.reloadLibrary = function() {
+        self.socket.emit('reload library');
+        $("#optionspanel").panel( "close" );
+    };
+
     self.testKeys = function(testNumber) {
         self.isPlaying(false);
         // Get the test speed interval
