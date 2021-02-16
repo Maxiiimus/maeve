@@ -534,7 +534,10 @@ class PianoServer {
     }
 
     runKeyTest(keyTest, delay) {
-        this.stopTests();
+        if (keyTest != 5) {
+            // Don't call this for the toggle on/off test so more than one key can be toggled at a time
+            this.stopTests();
+        }
         this.underTest = true;
 
         console.log("Running Test #" + keyTest + ": delay = " + delay + ", key = " + this.testKey);
@@ -579,6 +582,11 @@ class PianoServer {
                     this.testInterval = setInterval(this.testSingleKey.bind(this), testDelay);
                     break;
 
+                // Toggle on or off a single key
+                case 5:
+                    this.toggleSingleKey();
+                    break;
+
                 default:
                     this.vacuumController.turnOff();
                     this.underTest = false;
@@ -587,12 +595,36 @@ class PianoServer {
         }, waitForPump);
     }
 
+    toggleSingleKey() {
+        if (this.testKey < 0 || this.testKey >= this.numKeys) {
+            this.stopTests();
+            return;
+        }
+
+        this.keys[this.testKey] = (this.keys[this.testKey] ? 0 : 1);
+        console.log("Testing key #" + this.testKey + ", turning " + (this.keys[this.testKey] ? "on." : "off."));
+        this.register.send(this.keys);
+
+        // Check if all keys are off
+        let keyOn = false;
+        for (let i = 0; i < this.numKeys; i++)
+        {
+            if (this.keys[i]) {
+                keyOn = true;
+            }
+        }
+        if (!keyOn) {
+            console.log("All keys off, turning off vacuum.");
+            this.stopTests();
+        }
+    }
+
     // Runs a single key (this.testKey) through 3 tests:
     // 1) Just press and hold (iterations 0-9)
     // 2) Press in quick succession 5 times (iterations 20 - 29)
     // 3) Press an hold then press it again 3 times (iterations 40 - 50)
     testSingleKey() {
-        let millis = Date.now();
+        //let millis = Date.now();
 
         if (this.keyIndex > 50 || this.testKey < 0 || this.testKey >= this.numKeys) {
             this.vacuumController.turnOff();
@@ -638,13 +670,15 @@ class PianoServer {
             return;
         }
 
-        let millis = Date.now();
+        //console.log("Testing key: " + this.keyIndex);
+
         this.keys[this.keyIndex] = 1;
         if (this.keyIndex > 0) {
             this.keys[this.keyIndex - 1] = 0;
         }
 
         this.keyIndex++;
+        //console.log(JSON.stringify(this.keys));
         this.register.send(this.keys);
     }
 
