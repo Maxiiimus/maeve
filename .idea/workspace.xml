@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="AUTOSCROLL_TO_SOURCE" value="true" />
+    <option name="GROUP_BY_SEVERITY" value="true" />
+    <option name="SHOW_STRUCTURE" value="true" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="cecbee3d-ffb0-4882-b823-be158825c755" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/PianoServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/PianoServer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/midis/song-list.js" beforeDir="false" afterPath="$PROJECT_DIR$/midis/song-list.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +67,8 @@
       <workItem from="1600104864017" duration="2743000" />
       <workItem from="1601057254463" duration="226000" />
       <workItem from="1601059848648" duration="3846000" />
-      <workItem from="1609801553783" duration="142097000" />
+      <workItem from="1609801553783" duration="143908000" />
+      <workItem from="1614097371219" duration="1456000" />
     </task>
     <servers />
   </component>
@@ -75,6 +80,10 @@
       <screen x="0" y="23" width="1440" height="797" />
     </state>
     <state x="416" y="231" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.797@0.23.1440.797" timestamp="1609894992929" />
+    <state x="465" y="285" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1613682743062">
+      <screen x="0" y="23" width="1440" height="797" />
+    </state>
+    <state x="465" y="285" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.23.1440.797@0.23.1440.797" timestamp="1613682743062" />
     <state width="1419" height="204" key="GridCell.Tab.0.bottom" timestamp="1609959524535">
       <screen x="0" y="23" width="1440" height="797" />
     </state>

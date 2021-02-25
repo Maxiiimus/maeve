@@ -444,14 +444,14 @@ const songList = {
         {
             id: 63,
             title: "Sweet Child O Mine",
-            artist: "Guns N Roses",
+            artist: "Guns N' Roses",
             path: "midis/Guns N Roses/Sweet Child O Mine.mid",
             image: "images/artists/Guns N Roses - Appetite for Destruction.jpg"
         },
         {
             id: 64,
             title: "Welcome to the Jungle",
-            artist: "Guns N Roses",
+            artist: "Guns N' Roses",
             path: "midis/Guns N Roses/Welcome to the Jungle.mid",
             image: "images/artists/Guns N Roses - Appetite for Destruction.jpg"
         },
@@ -1199,10 +1199,38 @@ const songList = {
         },
         {
             id: 171,
-            title: "Piano Major Scales Fingerings",
-            artist: "Tests",
-            path: "midis/Tests/Piano Major Scales Fingerings.mid",
-            image: "images/artists/High Tech Piano.jpg"
+            title: "I Don't Care",
+            artist: "Ed Sheeran and Justin Bieber",
+            path: "midis/Ed Sheeran/I Dont Care.mid",
+            image: "images/artists/Justin Bieber and Ed Sheeran - I Dont Care.jpg"
+        },
+        {
+            id: 172,
+            title: "Wish You Were Here",
+            artist: "Pink Floyd",
+            path: "midis/Pink Floyd/Wish You Were Here.mid",
+            image: "images/artists/Pink Floyd - Wish You Were Here.jpg.jpg"
+        },
+        {
+            id: 173,
+            title: "November Rain",
+            artist: "Guns N' Roses",
+            path: "midis/Guns N Roses/November Rain.mid",
+            image: "images/artists/Guns N Roses - Use Your Illusion I.jpg"
+        },
+        {
+            id: 174,
+            title: "The Office Theme",
+            artist: "Jay Ferguson",
+            path: "midis/The Office/The Office Theme.mid",
+            image: "images/artists/The Office Theme.jpg"
+        },
+        {
+            id: 175,
+            title: "drivers license",
+            artist: "Olivia Rodrigo",
+            path: "midis/Olivia Rodrigo/drivers license.mid",
+            image: "images/artists/Olivia Rodrigo - drivers license.jpg"
         }
     ]
 };
