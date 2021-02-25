@@ -1209,7 +1209,7 @@ const songList = {
             title: "Wish You Were Here",
             artist: "Pink Floyd",
             path: "midis/Pink Floyd/Wish You Were Here.mid",
-            image: "images/artists/Pink Floyd - Wish You Were Here.jpg.jpg"
+            image: "images/artists/Pink Floyd - Wish You Were Here.jpg"
         },
         {
             id: 173,
