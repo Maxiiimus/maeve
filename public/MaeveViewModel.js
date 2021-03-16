@@ -16,12 +16,7 @@ function MaeveViewModel() {
     let self = this;
     self.socket = io();
 
-    //let ac = new AudioContext();
-    // This is used to hear audio playing on the client. Useful for testing, but doesn't sound great
-    //self.piano = null;
-    //Soundfont.instrument(ac, 'acoustic_grand_piano').then(function (p) {
-    //    self.piano = p;
-    //});
+    self.callStart = 0; // variable to test roundtrip call
 
     // Placeholder text when there is no currentSong from the server yet
     let welcomeSong = new Song({song_id: -1, title: "Hello Darling", artist: "Maeve",
@@ -246,6 +241,13 @@ function MaeveViewModel() {
 
         $("#optionspanel").panel( "close" ); // Songs can played from the search panel, so dismiss it
         self.socket.emit('run test', testNumber, noteNumber, interval);
+    };
+
+    self.testRoundTrip = function() {
+        // Output time to the console:
+        self.callStart = Date.now()
+        console.log("Current time: " + self.callStart);
+        self.socket.emit('test roundtrip', self.callStart);
     }
 
     // =========================================================================
@@ -360,6 +362,12 @@ function MaeveViewModel() {
             $("#timeslider").val(percent); // Could not get binding to the percent to work to change the slider
             $("#timeslider").slider("refresh"); // Explicitly update the slider
         }
+    });
+
+    self.socket.on('roundtrip return', function(startTime) {
+        let callEnd = Date.now();
+        console.log("End time: " + callEnd);
+        console.log("Round trip ms: " + (callEnd - self.callStart));
     });
 
     // Method: 'update keys'

@@ -1,10 +1,10 @@
 const MidiPlayer = require('midi-player-js');
-//const songLibrary = require('../midis/song-list');
 const fs = require('fs');
 const KeyRegister = require('./KeyRegister');
 const VacuumController = require('./VacuumController');
 const SustainController = require('./SustainController');
 const MusicLibrary = require('./MusicLibrary');
+const NotePlayer = require('../synth/NotePlayer');
 
 // Key module settings
 const MODULE_COUNT = 11;
@@ -59,6 +59,7 @@ class PianoServer {
     start (http, io, port) {
         this.vacuumController = new VacuumController();
         this.sustainController = new SustainController();
+        this.notePlayer = new NotePlayer();
         this.register = new KeyRegister(REGISTER_SIZE, MODULE_COUNT);
         this.numKeys = REGISTER_SIZE * MODULE_COUNT;
         this.keys = Buffer.alloc(this.numKeys).fill(0);
@@ -68,7 +69,7 @@ class PianoServer {
         this.musicLibrary = new MusicLibrary(this.allSongs, this.playlists, this.playlist);
 
         // Open connection to clients
-        this.io = io; //require('socket.io')(server);
+        this.io = io;
         this.listen(http, port);
 
         // Start up the player
@@ -99,6 +100,9 @@ class PianoServer {
             // Also, update the clients in case they are playing the audio locally
             if (event.name && (event.name.toLowerCase() === "note on" || event.name.toLowerCase() === "note off")) {
                 let millis = Date.now();
+
+                // Send this to note player client(s) only
+                this.io.to('note players').emit('play note', event);
 
                 // "Note off" is also represented as a velocity of 0
                 // So, we default to 0, but change the value if velocity is not 0
@@ -171,6 +175,12 @@ class PianoServer {
                         this.libraryChanged = true;
                     }
                 });
+            });
+
+            // This is called from player.html so we only send notes to that client using a room, 'note players'
+            socket.on("register player", () => {
+                console.log("A note player has registered: " + socket.id);
+                socket.join("note players");
             });
 
             socket.on("set song", (song) => {
@@ -278,6 +288,15 @@ class PianoServer {
 
             socket.on('disconnect', (reason) => {
                 console.log('User disconnected: ' + reason);
+            });
+
+            socket.on('test roundtrip', (callStart) => {
+                let currentTime = Date.now();
+                console.log("Current time: " + currentTime);
+                console.log('MS since call:  ' + (currentTime - callStart));
+                this.io.emit('roundtrip return', callStart);
+
+                this.notePlayer.screenShot();
             });
         });
 
@@ -497,16 +516,24 @@ class PianoServer {
             this.songLoaded = true;
             this.songEnded = false;
             let lastTick = 0;
+            let channels = [];
             // Try to estimate the song length in ticks by finding the largest tick value
             this.player.tracks.forEach(function(track){
+                //console.log(track.getStringData(1));
                 track.events.forEach(function(event){
                     if(event.name && (event.name.toLowerCase() === "note on" || event.name.toLowerCase() === "note off")) {
                         if (event.tick > lastTick) {
                             lastTick = event.tick;
                         }
+                    } //else {
+                    if (event.name && (event.name.toLowerCase() === "program change")) {
+                        channels.push({channelNumber: event.channel, instrumentNumber: event.value});
+                        console.log(JSON.stringify(event));
                     }
                 });
             });
+            console.log(JSON.stringify(channels));
+            this.io.to('note players').emit('load channel instruments', channels);
             this.currentSongTotalTicks = lastTick;
             //this.currentSongTotalTicks = this.player.getTotalTicks(); // Doesn't seem to work
             this.currentSongTime = this.player.getSongTime();

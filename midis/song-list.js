@@ -1231,6 +1231,90 @@ const songList = {
             artist: "Olivia Rodrigo",
             path: "midis/Olivia Rodrigo/drivers license.mid",
             image: "images/artists/Olivia Rodrigo - drivers license.jpg"
+        },
+        {
+            id: 176,
+            title: "Highway to Hell",
+            artist: "AC/DC",
+            path: "midis/AC DC/Highway to Hell.mid",
+            image: "images/artists/AC DC - Highway to Hell.jpg"
+        },
+        {
+            id: 177,
+            title: "Just Give Me a Reason",
+            artist: "P!nk",
+            path: "midis/Pink/Just Give Me a Reason.mid",
+            image: "images/artists/Pink - The Truth About Love.jpg"
+        },
+        {
+            id: 178,
+            title: "Something",
+            artist: "The Beatles",
+            path: "midis/Beatles/Something.mid",
+            image: "images/artists/Beatles - Abbey Road.jpg"
+        },
+        {
+            id: 179,
+            title: "Kokomo",
+            artist: "The Beach Boys",
+            path: "midis/The Beach Boys/Kokomo.mid",
+            image: "images/artists/The Beach Boys - Made in California.jpg"
+        },
+        {
+            id: 180,
+            title: "Last Kiss",
+            artist: "Pearl Jam",
+            path: "midis/Pearl Jam/Last Kiss.mid",
+            image: "images/artists/Pearl Jam - Last Kiss.jpg"
+        },
+        {
+            id: 181,
+            title: "Blinding Lights",
+            artist: "The Weeknd",
+            path: "midis/The Weeknd/Blinding Lights.mid",
+            image: "images/artists/The Weeknd - After Hours.jpg"
+        },
+        {
+            id: 182,
+            title: "Highway to Hell (ensemble)",
+            artist: "AC/DC",
+            path: "midis/AC DC/Highway to Hell (ensemble).mid",
+            image: "images/artists/AC DC - Highway to Hell.jpg"
+        },
+        {
+            id: 183,
+            title: "Just Give Me a Reason (ensemble)",
+            artist: "P!nk",
+            path: "midis/Pink/Just Give Me a Reason (ensemble).mid",
+            image: "images/artists/Pink - The Truth About Love.jpg"
+        },
+        {
+            id: 184,
+            title: "Come Sail Away (ensemble)",
+            artist: "Styx",
+            path: "midis/Styx/Come Sail Away (ensemble).mid",
+            image: "images/artists/Styx - Come Sail Away.jpg"
+        },
+        {
+            id: 185,
+            title: "Take Five (ensemble)",
+            artist: "The Dave Brubeck Quartet",
+            path: "midis/The Dave Brubeck Quartet/Take Five (ensemble).mid",
+            image: "images/artists/The Dave Brubeck Quartet - Time Out.jpg"
+        },
+        {
+            id: 186,
+            title: "Clint Eastwood",
+            artist: "Gorillaz",
+            path: "midis/Gorillaz/Clint Eastwood.mid",
+            image: "images/artists/Gorillaz - Gorillaz.jpg"
+        },
+        {
+            id: 187,
+            title: "Clint Eastwood (ensemble)",
+            artist: "Gorillaz",
+            path: "midis/Gorillaz/Clint Eastwood (ensemble).mid",
+            image: "images/artists/Gorillaz - Gorillaz.jpg"
         }
     ]
 };
