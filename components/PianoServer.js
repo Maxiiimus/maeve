@@ -4,7 +4,8 @@ const KeyRegister = require('./KeyRegister');
 const VacuumController = require('./VacuumController');
 const SustainController = require('./SustainController');
 const MusicLibrary = require('./MusicLibrary');
-const NotePlayer = require('../synth/NotePlayer');
+//const NotePlayer = require('../synth/NotePlayer');
+const Synthesizer = require('./Synthesizer');
 
 // Key module settings
 const MODULE_COUNT = 11;
@@ -50,6 +51,7 @@ class PianoServer {
         this.songEnded = false;
         this.clientsConnected = false;
         this.underTest = false;
+        this.pianoChannel = 1; // Used to keep track of which channel is used for the piano
 
         // These arrays are an in memory updated by the library as they change and are passed by reference
         this.allSongs = []; // The list of all songs in the database
@@ -59,7 +61,8 @@ class PianoServer {
     start (http, io, port) {
         this.vacuumController = new VacuumController();
         this.sustainController = new SustainController();
-        this.notePlayer = new NotePlayer();
+        this.synthesizer = new Synthesizer();
+        //this.notePlayer = new NotePlayer();
         this.register = new KeyRegister(REGISTER_SIZE, MODULE_COUNT);
         this.numKeys = REGISTER_SIZE * MODULE_COUNT;
         this.keys = Buffer.alloc(this.numKeys).fill(0);
@@ -96,43 +99,49 @@ class PianoServer {
                 }
             }
 
+            if (event.channel && event.channel !== this.pianoChannel) {
+                this.synthesizer.playMidiEvent(event);
+            }
+
             // When we get a "Note on" or "Note off" event, update the values in the shift register
             // Also, update the clients in case they are playing the audio locally
             if (event.name && (event.name.toLowerCase() === "note on" || event.name.toLowerCase() === "note off")) {
                 let millis = Date.now();
 
-                // Send this to note player client(s) only
-                this.io.to('note players').emit('play note', event);
+                if (event.channel && event.channel === this.pianoChannel) {
+                    // Send this to note player client(s) only
+                    //this.io.to('note players').emit('play note', event);
 
-                // "Note off" is also represented as a velocity of 0
-                // So, we default to 0, but change the value if velocity is not 0
-                if (event.velocity !== 0) {
-                    keyOn = 1;
+                    // "Note off" is also represented as a velocity of 0
+                    // So, we default to 0, but change the value if velocity is not 0
+                    if (event.velocity !== 0) {
+                        keyOn = 1;
+                    }
+
+                    // Piano key midi notes start at 21
+                    keyIndex = event.noteNumber - 21;
+
+                    if (keyIndex < 0 || keyIndex >= 88) {
+                        console.log("event.noteNumber out of range! " + keyIndex);
+                        return;
+                    }
+
+                    // Check if the key is already being "played"
+                    if (this.keys[keyIndex] === keyOn && keyOn === 1) {
+                        console.log("KEY ALREADY ON: " + event.noteNumber);
+
+                        // If the note is already playing, then we want to strike it again
+                        // First, turn it off and then schedule it to be played in REGISTER_DELAY milliseconds
+                        keyOn = 0;
+
+                        setTimeout((i) => {
+                            this.keys[i] = 1;
+                            this.register.send(this.keys);
+                        }, REGISTER_DELAY, keyIndex);
+                    }
+                    this.keys[keyIndex] = keyOn;
+                    this.register.send(this.keys);
                 }
-
-                // Piano key midi notes start at 21
-                keyIndex = event.noteNumber - 21;
-
-                if (keyIndex < 0 || keyIndex >= 88) {
-                    console.log("event.noteNumber out of range! " + keyIndex);
-                    return;
-                }
-
-                // Check if the key is already being "played"
-                if (this.keys[keyIndex] === keyOn && keyOn === 1) {
-                    console.log("KEY ALREADY ON: " + event.noteNumber);
-
-                    // If the note is already playing, then we want to strike it again
-                    // First, turn it off and then schedule it to be played in REGISTER_DELAY milliseconds
-                    keyOn = 0;
-
-                    setTimeout((i) => {
-                        this.keys[i] = 1;
-                        this.register.send(this.keys);
-                    }, REGISTER_DELAY, keyIndex);
-                }
-                this.keys[keyIndex] = keyOn;
-                this.register.send(this.keys);
 
                 // Calculate time remaining using the current tick
                 let remainingTicks = this.currentSongTotalTicks - event.tick;
@@ -376,6 +385,7 @@ class PianoServer {
             if (this.player.isPlaying()) {
                 this.player.pause();
                 this.vacuumController.turnOff();
+                this.synthesizer.stop();
             }
         }
     }
@@ -399,6 +409,7 @@ class PianoServer {
         this.keys.fill(0);
         this.register.send(this.keys);
         this.sustainController.pedalOff();
+        this.synthesizer.stop();
     }
 
     // Plays the next song in the internalPlaylist
@@ -516,7 +527,9 @@ class PianoServer {
             this.songLoaded = true;
             this.songEnded = false;
             let lastTick = 0;
-            let channels = [];
+            let channel = 1;
+            let foundPiano = false;
+            //let channels = [];//0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; // Array of 16 possible channels (default to piano, 0)
             // Try to estimate the song length in ticks by finding the largest tick value
             this.player.tracks.forEach(function(track){
                 //console.log(track.getStringData(1));
@@ -525,15 +538,23 @@ class PianoServer {
                         if (event.tick > lastTick) {
                             lastTick = event.tick;
                         }
-                    } //else {
-                    if (event.name && (event.name.toLowerCase() === "program change")) {
-                        channels.push({channelNumber: event.channel, instrumentNumber: event.value});
-                        console.log(JSON.stringify(event));
+                    } else if (event.name && (event.name.toLowerCase() === "program change")
+                        && event.channel !== 10 && event.value === 0) {
+
+                        //channels[event.channel-1] = event.value; // Save the instrument name
+                        //channels.push({channelNumber: event.channel, instrumentNumber: event.value});
+                        channel = event.channel;
+                        foundPiano = true;
+                        console.log("Found piano: " + JSON.stringify(event));
                     }
                 });
             });
-            console.log(JSON.stringify(channels));
-            this.io.to('note players').emit('load channel instruments', channels);
+            if (!foundPiano) {
+                console.log("No piano channel found.");
+            }
+            this.pianoChannel = channel;
+            //console.log(JSON.stringify(channels));
+            //this.io.to('note players').emit('load channel instruments', channels);
             this.currentSongTotalTicks = lastTick;
             //this.currentSongTotalTicks = this.player.getTotalTicks(); // Doesn't seem to work
             this.currentSongTime = this.player.getSongTime();

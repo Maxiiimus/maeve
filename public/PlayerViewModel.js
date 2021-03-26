@@ -19,28 +19,46 @@ function Channel(channelNumber, instrument) {
     self.notes = new Array(128);
 }
 
+// Class to hold a instrument and notes being played
+function Instrument(instrument) {
+    let self = this;
+    self.instrument = instrument;
+    self.notes = new Array(128);
+}
+
+const NUM_CHANNELS = 16;
+const NUM_INSTRUMENTS = 128;
+
 // ========================================================================================================
 // This is the ModelView for the data driving the UI it also receives updates from the server via Socket.IO
 // ========================================================================================================
 function PlayerViewModel() {
     let self = this;
     self.socket = io();
-    self.instruments = [];
-    self.channels = [];
+    //self.instruments = [];
+    //self.channels = [];
+
+    //self.instruments = new Array(CHANNEL_COUNT);
+    //self.channels = new Array(NUM_CHANNELS); // Contains the instrument numbers for each channel
+    self.instruments = new Array(NUM_CHANNELS);
 
     let ac = new AudioContext();
-    // This is used to hear audio playing on the client. Useful for testing, but doesn't sound great
-    self.piano = null;
-    Soundfont.instrument(ac, 'accordion').then(function (p) {
-        self.piano = p;
+
+    // Drums are treated different from the rest of the instruments, so create a specific drums instrument
+    /*self.drums = null;
+    Soundfont.instrument(ac, 'instruments/synth_drum-mp3.js').then(function (instrument) {
+        self.drums = new Instrument(instrument);
+        console.log("Loaded Drums");
     });
 
-    // Create an array for instruments midiInstruments
-    //for (let i = 0; i < midiInstruments.length; i++) {
-    //    Soundfont.instrument(ac, midiInstruments[i]).then(function (instrument) {
-    //        self.instruments.push(instrument);
-    //    });
-    //}
+    // Fill the array of instruments from midiInstruments
+    for (let i = 0; i < NUM_INSTRUMENTS; i++) {
+        Soundfont.instrument(ac, 'instruments/'+ midiInstruments[i] +
+                                        '-mp3.js').then(function (instrument) {
+            self.instruments[i] = new Instrument(instrument);
+            console.log("Loaded instrument [" + i + "]:" + midiInstruments[i]);
+        });
+    }*/
 
     // Placeholder text when there is no currentSong from the server yet
     let welcomeSong = new Song({item_id: -1, song_id: -1, title: "Hello Darling", artist: "Maeve",
@@ -50,7 +68,6 @@ function PlayerViewModel() {
     self.timePlayedString = ko.observable("");
     self.timeRemainingString = ko.observable("");
 
-    //self.audioOn = ko.observable(false);
     self.isPlaying = ko.observable(false);
 
     self.library = ko.observableArray([]);
@@ -70,27 +87,18 @@ function PlayerViewModel() {
 
     // Method: 'load instruments'
     //
-    // channels: An array of channel numbers with corresponding instrument to play the current song
+    // channels: An array of 16 channels with the instrument number
     self.socket.on('load channel instruments', function (channels) {
-        // Clear the current instruments
-        self.channels = [];
-        //console.log("Loading instruments: " + JSON.stringify(channels));
+        //self.channels = channels; // Save the list of which channel is playing which instrument
         // Load instruments for all the channels
         for (let i = 0; i < channels.length; i++) {
-            if (channels[i].channelNumber === 10) {
-                // Channel 10 is typically drums, so load "percussion"
-                Soundfont.instrument(ac, 'percussion-mp3.js').then(function (instrument) {
-                    let channel = new Channel(channels[i].channelNumber, instrument);
-                    self.channels.push(channel);
-                    //console.log("Loaded instrument: " + JSON.stringify(channels[i]));
-                });
-            } else {
-                Soundfont.instrument(ac, midiInstruments[channels[i].instrumentNumber]).then(function (instrument) {
-                    let channel = new Channel(channels[i].channelNumber, instrument);
-                    self.channels.push(channel);
-                    //console.log("Loaded instrument: " + JSON.stringify(channels[i]));
-                });
-            }
+            // Channel 10 is typically drums, so load "percussion"
+            let instrumentPath = channels[i].channelNumber === 10 ? 'instruments/percussion/standard_set-mp3.js'
+                : 'instruments/'+ midiInstruments[channels[i].instrumentNumber] + '-mp3.js'; //midiInstruments[channels[i]];
+            console.log("Loading instrument[" + (channels[i].instrumentNumber) + "]: " + instrumentPath);
+            Soundfont.instrument(ac, instrumentPath).then(function (instrument) {
+                self.instruments[channels[i].channelNumber-1] = new Instrument(instrument);
+            });
         }
     });
 
@@ -102,31 +110,36 @@ function PlayerViewModel() {
         if (event == null) return;
 
         if (event.name.toLowerCase() === "note on" || event.name.toLowerCase() === "note off") {
-            // Select the instrument
-            let instrument = null;
-            let channel = null;
-            for (let i = 0; i < self.channels.length; i++) {
-                if (self.channels[i].channelNumber === event.channel) {
-                    instrument = self.channels[i].instrument;
-                    channel = self.channels[i];
-                    break;
-                }
-            }
-            if (instrument === null) return;
+
+            if (event.channel < 1 || event.channel > NUM_CHANNELS || self.instruments[event.channel-1] === null) return;
+            let currentInstrument = self.instruments[event.channel-1];
+
+            //if (event.channel < 1 || event.channel > self.channels.length) return;
+            //let instrumentNum = self.channels[event.channel-1]; // Get the instrument number for the channel
+            //if (instrumentNum < 0 || instrumentNum >= self.instruments.length) return;
+
+            // Set the instrument to drums if this note is on channel 10, otherwise, pick the instrument by number
+            //let currentInstrument = event.channel === 10 ? self.drums : self.instruments[instrumentNum];
+
+            //console.log("playing note on channel: " + event.channel);
+
             if (event.name.toLowerCase() === "note on" && event.velocity !== 0) {
                 // Start playing note and save the note so it can be stopped
-                let note = instrument.play(event.noteName, ac.currentTime, {gain: event.velocity / 100});
+                let note = (event.channel === 10) ? currentInstrument.instrument.play(event.noteName, ac.currentTime)
+                     : currentInstrument.instrument.play(event.noteName, ac.currentTime, {gain: event.velocity / 100});
                 //console.log("Event: " + JSON.stringify(event));
                 //console.log("Note: " + JSON.stringify(note));
+                // Save the note so it can be stopped
                 if (event.noteNumber < 128) {
-                    channel.notes[event.noteNumber] = note;
+                    currentInstrument.notes[event.noteNumber] = note;
                 }
             } else if (event.name.toLowerCase() === "note off" || event.velocity === 0) {
                 //instrument.play(event.noteName).stop(ac.currentTime + 0.5);
                 //console.log("Channel: " + JSON.stringify(channel));
-                if (event.noteNumber < 128 && channel.notes[event.noteNumber] != null) {
-                    channel.notes[event.noteNumber].stop();
-                    console.log(JSON.stringify(channel.notes[event.noteNumber]));
+                // Stop the note
+                if (event.noteNumber < 128 && currentInstrument.notes[event.noteNumber] != null) {
+                    currentInstrument.notes[event.noteNumber].stop();
+                    //console.log(JSON.stringify(channel.notes[event.noteNumber]));
                 }
                 //instrument.play(event.noteName).stop();
             }
