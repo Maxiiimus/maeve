@@ -1276,10 +1276,10 @@ const songList = {
         },
         {
             id: 182,
-            title: "Highway to Hell (ensemble)",
-            artist: "AC/DC",
-            path: "midis/AC DC/Highway to Hell (ensemble).mid",
-            image: "images/artists/AC DC - Highway to Hell.jpg"
+            title: "Long As I Can See the Light (ensemble)",
+            artist: "Creedence Clearwater Revival",
+            path: "midis/Creedence Clearwater Revival/Long As I Can See the Light (ensemble).mid",
+            image: "images/artists/CCR - Cosmos Factory.jpg"
         },
         {
             id: 183,

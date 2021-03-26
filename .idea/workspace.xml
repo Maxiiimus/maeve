@@ -7,16 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cecbee3d-ffb0-4882-b823-be158825c755" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/components/Synthesizer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/PianoServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/PianoServer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/music_library.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/music_library.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/PlayerViewModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/PlayerViewModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/Gorillaz - Gorillaz.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/artists/Gorillaz - Gorillaz.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/percussion-mp3.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/instruments/percussion/percussion-mp3.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/synth/NotePlayer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/midis/song-list.js" beforeDir="false" afterPath="$PROJECT_DIR$/midis/song-list.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +74,7 @@
       <workItem from="1609801553783" duration="143908000" />
       <workItem from="1614097371219" duration="34527000" />
       <workItem from="1615916854881" duration="556000" />
-      <workItem from="1615927901652" duration="26839000" />
+      <workItem from="1615927901652" duration="27811000" />
     </task>
     <servers />
   </component>
