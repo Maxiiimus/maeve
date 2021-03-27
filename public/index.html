@@ -116,7 +116,20 @@
             <input type="checkbox" name="audio" id="audio" data-bind="checked: $root.audioOn()">
             <label for="audio">Audio</label>
                         -->
-            <a href="#" class="ui-btn" data-bind="click: $root.reloadLibrary">Reload Library</a>
+
+            <label>
+                <input type="checkbox" name="realpianocheck"
+                       data-bind="event: { change: $root.togglePiano }, checked: pianoOn">Enable Piano
+            </label>
+            <label>
+                <input type="checkbox" name="synthpianocheck"
+                       data-bind="event: { change: $root.toggleSynthPiano }, checked: synthPianoOn">Enable Synth Piano
+            </label>
+            <label for="volumeslider">Synth Volume:</label>
+            <input type="range" name="volumeslider" id="volumeslider" min="0" max="10" value="5" data-popup-enabled="true"
+                   data-bind="value: volume, valueUpdate: 'change'">
+
+            <!--
             <label for="text-interval">Key Test Interval:</label>
             <input type="text" name="text-interval" id="text-interval" value="250">
             <a href="#" class="ui-btn" data-bind="click: $root.testKeys.bind($data, 0)">Keys In Sequence</a>
@@ -227,6 +240,7 @@
             <a href="#" class="ui-btn" data-bind="click: $root.testKeys.bind($data, 4)">Test One Key</a>
             <a href="#" class="ui-btn" data-bind="click: $root.testKeys.bind($data, 5)">Toggle One Key</a>
             <a href="#" class="ui-btn" data-bind="click: $root.testRoundTrip">Roundtrip Test</a>
+            -->
         </form>
     </div><!-- /panel -->
 
