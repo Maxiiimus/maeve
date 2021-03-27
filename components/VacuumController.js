@@ -10,6 +10,8 @@ class VacuumController {
         // Set class properties to use
         this.outputPin = OUTPUT_PIN;
         this.vacuumOn = false;
+        this.enabled = true; // Override to not actually turn on/off the vacuum. This is for when the piano is off
+                             // and the synth piano is being used instead.
 
         // If running on another OS, then just mock the RaspberryPi
         if (!isPi()) {
@@ -25,10 +27,19 @@ class VacuumController {
         rpio.open(this.outputPin, rpio.OUTPUT, rpio.LOW);
     }
 
+    setEnabled(enabled) {
+        this.enabled = enabled;
+        if (!enabled) {
+            this.vacuumOn = false;
+            rpio.write(this.outputPin, rpio.LOW);
+        }
+    }
+
     /*
         Turn on the vacuum pump.
      */
     turnOn() {
+        if (!this.enabled) return; // override if the vaccum isn't enabled
         // Set pin to HIGH
         rpio.write(this.outputPin, rpio.HIGH);
         this.vacuumOn = true;

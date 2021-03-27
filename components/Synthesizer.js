@@ -19,7 +19,7 @@ class Synthesizer {
                 soundFonts: ['soundfonts/MuseScore_General.sf3']
             });
         }
-        this.fluid.setGain(1.0);
+        this.fluid.setGain(2.5);
     }
 
     playMidiEvent(event) {
@@ -29,6 +29,7 @@ class Synthesizer {
             this.fluid.noteOff(event.channel-1, event.noteNumber);
         } else if (event.name && event.name.toLowerCase() === "program change") {
             this.fluid.programChange(event.channel-1, event.value);
+            console.log("Synthesizer loading channel [" + event.channel +"] with instrument " + event.value);
         }
     }
 
@@ -40,6 +41,10 @@ class Synthesizer {
                 this.fluid.noteOff(i, j);
             }
         }
+    }
+
+    setVolume(volume) {
+        this.fluid.setGain(volume);
     }
 }
 

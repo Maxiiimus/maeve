@@ -7,9 +7,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cecbee3d-ffb0-4882-b823-be158825c755" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/public/tests.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/music_library.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/music_library.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/midis/song-list.js" beforeDir="false" afterPath="$PROJECT_DIR$/midis/song-list.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/PianoServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/PianoServer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Synthesizer.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Synthesizer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/VacuumController.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/VacuumController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaeveViewModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/MaeveViewModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/PlayerViewModel.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/instruments/get_soundfonts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/instruments/percussion/TR-808-Drums-mp3.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/instruments/percussion/Yamaha_RX7_Drums-mp3.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/instruments/percussion/percussion-mp3.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/player.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +84,7 @@
       <workItem from="1609801553783" duration="143908000" />
       <workItem from="1614097371219" duration="34527000" />
       <workItem from="1615916854881" duration="556000" />
-      <workItem from="1615927901652" duration="27811000" />
+      <workItem from="1615927901652" duration="34461000" />
     </task>
     <servers />
   </component>
@@ -86,10 +96,10 @@
       <screen x="0" y="23" width="1440" height="797" />
     </state>
     <state x="416" y="231" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.797@0.23.1440.797" timestamp="1609894992929" />
-    <state x="458" y="175" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1614293342522">
+    <state x="458" y="175" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1616771116915">
       <screen x="0" y="23" width="1440" height="797" />
     </state>
-    <state x="458" y="175" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.797@0.23.1440.797" timestamp="1614293342522" />
+    <state x="458" y="175" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.797@0.23.1440.797" timestamp="1616771116915" />
     <state x="465" y="285" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1613682743062">
       <screen x="0" y="23" width="1440" height="797" />
     </state>
@@ -118,9 +128,9 @@
       <screen x="0" y="23" width="1440" height="797" />
     </state>
     <state x="385" y="144" width="670" height="676" key="search.everywhere.popup/0.23.1440.797@0.23.1440.797" timestamp="1610561550057" />
-    <state x="450" y="340" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1616725484628">
+    <state x="450" y="340" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1616771177676">
       <screen x="0" y="23" width="1440" height="797" />
     </state>
-    <state x="450" y="340" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.23.1440.797@0.23.1440.797" timestamp="1616725484628" />
+    <state x="450" y="340" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.23.1440.797@0.23.1440.797" timestamp="1616771177676" />
   </component>
 </project>

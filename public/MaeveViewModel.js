@@ -27,7 +27,10 @@ function MaeveViewModel() {
     self.timeRemainingString = ko.observable("");
 
     self.audioOn = ko.observable(false);
+    self.pianoOn = ko.observable(true);
+    self.synthPianoOn = ko.observable(false);
     self.isPlaying = ko.observable(false);
+    self.volume = ko.observable(5);
 
     self.library = ko.observableArray([]);
 
@@ -66,6 +69,15 @@ function MaeveViewModel() {
         // until the user stops sliding
         $("#timeslider").on("slidestart", () => {
             self.pauseSliderMoves = true;
+        });
+
+        // If the user starts moving the slider, then pause the adjusting from the server
+        // until the user stops sliding
+        $("#volumeslider").on("slidestop", () => {
+            let val =  $("#volumeslider").val();
+            self.volume(val);
+            //console.log("Volume = " + self.volume());
+            self.socket.emit("set volume", val);
         });
     });
 
@@ -248,6 +260,18 @@ function MaeveViewModel() {
         self.callStart = Date.now()
         console.log("Current time: " + self.callStart);
         self.socket.emit('test roundtrip', self.callStart);
+    }
+
+    self.togglePiano = function() {
+        // Output time to the console:
+        //console.log("Toggling piano to: " + self.pianoOn());
+        self.socket.emit('toggle piano', self.pianoOn());
+    }
+
+    self.toggleSynthPiano = function() {
+        // Output time to the console:
+        console.log("Toggling synth piano to: " + self.synthPianoOn());
+        self.socket.emit('toggle synth piano', self.synthPianoOn());
     }
 
     // =========================================================================

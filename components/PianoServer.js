@@ -51,7 +51,9 @@ class PianoServer {
         this.songEnded = false;
         this.clientsConnected = false;
         this.underTest = false;
-        this.pianoChannel = 1; // Used to keep track of which channel is used for the piano
+        this.pianoChannel = -1; // Used to keep track of which channel is used for the piano
+        this.pianoOn = true;
+        this.synthPianoOn = false;
 
         // These arrays are an in memory updated by the library as they change and are passed by reference
         this.allSongs = []; // The list of all songs in the database
@@ -99,7 +101,7 @@ class PianoServer {
                 }
             }
 
-            if (event.channel && event.channel !== this.pianoChannel) {
+            if (event.channel && (event.channel !== this.pianoChannel || this.synthPianoOn)) {
                 this.synthesizer.playMidiEvent(event);
             }
 
@@ -108,7 +110,7 @@ class PianoServer {
             if (event.name && (event.name.toLowerCase() === "note on" || event.name.toLowerCase() === "note off")) {
                 let millis = Date.now();
 
-                if (event.channel && event.channel === this.pianoChannel) {
+                if (event.channel && event.channel === this.pianoChannel && this.pianoOn) {
                     // Send this to note player client(s) only
                     //this.io.to('note players').emit('play note', event);
 
@@ -194,6 +196,10 @@ class PianoServer {
 
             socket.on("set song", (song) => {
                 this.setSong(song);
+            });
+
+            socket.on("set volume", (volume) => {
+                this.synthesizer.setVolume(volume/2.0);
             });
 
             // Play a specific song. This is when a user just clicks a song from the Library.
@@ -306,6 +312,17 @@ class PianoServer {
                 this.io.emit('roundtrip return', callStart);
 
                 this.notePlayer.screenShot();
+            });
+
+            socket.on('toggle piano', (enabled) => {
+                console.log('Toggling piano to: ' + enabled);
+                this.pianoOn = enabled;
+                this.vacuumController.setEnabled(enabled);
+            });
+
+            socket.on('toggle synth piano', (enabled) => {
+                console.log('Toggling synth piano to: ' + enabled);
+                this.synthPianoOn = enabled;
             });
         });
 
