@@ -1336,6 +1336,20 @@ const songList = {
             artist: "Britney Spears",
             path: "midis/Britney Spears/Toxic (ensemble).mid",
             image: "images/artists/Britney Spears - In The Zone.jpg"
+        },
+        {
+            id: 191,
+            title: "The Sound of Silence (ensemble)",
+            artist: "Simon & Garfunkel",
+            path: "midis/Simon & Garfunkel/The Sound of Silence (ensemble).mid",
+            image: "images/artists/Simon & Garfunkel - Wednesday.jpg"
+        },
+        {
+            id: 192,
+            title: "House Of The Rising Sun (ensemble)",
+            artist: "The Animals",
+            path: "midis/The Animals/House of the Rising Sun (ensemble).mid",
+            image: "images/artists/The Animals.jpg"
         }
     ]
 };

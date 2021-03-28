@@ -7,6 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cecbee3d-ffb0-4882-b823-be158825c755" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/music_library.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/music_library.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/midis/song-list.js" beforeDir="false" afterPath="$PROJECT_DIR$/midis/song-list.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
