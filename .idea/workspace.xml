@@ -6,21 +6,7 @@
     <option name="SHOW_STRUCTURE" value="true" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cecbee3d-ffb0-4882-b823-be158825c755" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/tests.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/PianoServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/PianoServer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Synthesizer.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Synthesizer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/VacuumController.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/VacuumController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/MaeveViewModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/MaeveViewModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/PlayerViewModel.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/instruments/get_soundfonts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/instruments/percussion/TR-808-Drums-mp3.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/instruments/percussion/Yamaha_RX7_Drums-mp3.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/instruments/percussion/percussion-mp3.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/player.html" beforeDir="false" />
-    </list>
+    <list default="true" id="cecbee3d-ffb0-4882-b823-be158825c755" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
