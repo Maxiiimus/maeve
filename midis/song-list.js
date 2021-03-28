@@ -1315,6 +1315,13 @@ const songList = {
             artist: "Gorillaz",
             path: "midis/Gorillaz/Clint Eastwood (ensemble).mid",
             image: "images/artists/Gorillaz - Gorillaz.jpg"
+        },
+        {
+            id: 188,
+            title: "The Way It Is (ensemble)",
+            artist: "Bruce Hornsby",
+            path: "midis/Bruce Hornsby/The Way It Is (ensemble).mid",
+            image: "images/artists/Bruce Hornsby - The Way It Is.jpg"
         }
     ]
 };
