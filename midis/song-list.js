@@ -1322,6 +1322,20 @@ const songList = {
             artist: "Bruce Hornsby",
             path: "midis/Bruce Hornsby/The Way It Is (ensemble).mid",
             image: "images/artists/Bruce Hornsby - The Way It Is.jpg"
+        },
+        {
+            id: 189,
+            title: "Dream On (ensemble)",
+            artist: "Aerosmith",
+            path: "midis/Aerosmith/Dream On (ensemble).mid",
+            image: "images/artists/Aerosmith - Aerosmith.jpg"
+        },
+        {
+            id: 190,
+            title: "Toxic (ensemble)",
+            artist: "Britney Spears",
+            path: "midis/Britney Spears/Toxic (ensemble).mid",
+            image: "images/artists/Britney Spears - In The Zone.jpg"
         }
     ]
 };
