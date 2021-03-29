@@ -1350,6 +1350,13 @@ const songList = {
             artist: "The Animals",
             path: "midis/The Animals/House of the Rising Sun (ensemble).mid",
             image: "images/artists/The Animals.jpg"
+        },
+        {
+            id: 193,
+            title: "Stolen Dance",
+            artist: "Milky Chance",
+            path: "midis/Milky Chance/Stolen Dance.mid",
+            image: "images/artists/Milky Chance - Sadnecessary.jpg"
         }
     ]
 };

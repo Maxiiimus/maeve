@@ -23,7 +23,7 @@ coverage
 *.lcov
 
 #library database
-db/music_library.db
+db/
 
 # nyc test coverage
 .nyc_output

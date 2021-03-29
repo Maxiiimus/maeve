@@ -28,6 +28,7 @@ function MaeveViewModel() {
 
     self.audioOn = ko.observable(false);
     self.pianoOn = ko.observable(true);
+    self.synthOn = ko.observable(true);
     self.synthPianoOn = ko.observable(false);
     self.isPlaying = ko.observable(false);
     self.volume = ko.observable(5);
@@ -71,8 +72,7 @@ function MaeveViewModel() {
             self.pauseSliderMoves = true;
         });
 
-        // If the user starts moving the slider, then pause the adjusting from the server
-        // until the user stops sliding
+        // Adjust the synth volume. Values are 0 - 200, which correlates to 0.0 - 2.0 for FluidSynth
         $("#volumeslider").on("slidestop", () => {
             let val =  $("#volumeslider").val();
             self.volume(val);
@@ -266,6 +266,12 @@ function MaeveViewModel() {
         // Output time to the console:
         //console.log("Toggling piano to: " + self.pianoOn());
         self.socket.emit('toggle piano', self.pianoOn());
+    }
+
+    self.toggleSynth = function() {
+        // Output time to the console:
+        //console.log("Toggling piano to: " + self.pianoOn());
+        self.socket.emit('toggle synth', self.synthOn());
     }
 
     self.toggleSynthPiano = function() {

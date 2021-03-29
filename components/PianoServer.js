@@ -53,6 +53,7 @@ class PianoServer {
         this.underTest = false;
         this.pianoChannel = -1; // Used to keep track of which channel is used for the piano
         this.pianoOn = true;
+        this.synthOn = true;
         this.synthPianoOn = false;
 
         // These arrays are an in memory updated by the library as they change and are passed by reference
@@ -101,7 +102,7 @@ class PianoServer {
                 }
             }
 
-            if (event.channel && (event.channel !== this.pianoChannel || this.synthPianoOn)) {
+            if (event.channel && (event.channel !== this.pianoChannel || this.synthPianoOn) && this.synthOn) {
                 this.synthesizer.playMidiEvent(event);
             }
 
@@ -199,7 +200,7 @@ class PianoServer {
             });
 
             socket.on("set volume", (volume) => {
-                this.synthesizer.setVolume(volume/2.0);
+                this.synthesizer.setVolume(volume/100.0);
             });
 
             // Play a specific song. This is when a user just clicks a song from the Library.
@@ -318,6 +319,11 @@ class PianoServer {
                 console.log('Toggling piano to: ' + enabled);
                 this.pianoOn = enabled;
                 this.vacuumController.setEnabled(enabled);
+            });
+
+            socket.on('toggle synth', (enabled) => {
+                console.log('Toggling piano to: ' + enabled);
+                this.synthOn = enabled;
             });
 
             socket.on('toggle synth piano', (enabled) => {

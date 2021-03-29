@@ -19,7 +19,7 @@ class Synthesizer {
                 soundFonts: ['soundfonts/MuseScore_General.sf3']
             });
         }
-        this.fluid.setGain(2.5);
+        this.fluid.setGain(1.0);
     }
 
     playMidiEvent(event) {
