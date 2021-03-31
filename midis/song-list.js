@@ -1357,6 +1357,90 @@ const songList = {
             artist: "Milky Chance",
             path: "midis/Milky Chance/Stolen Dance.mid",
             image: "images/artists/Milky Chance - Sadnecessary.jpg"
+        },
+        {
+            id: 194,
+            title: "What's Up",
+            artist: "4 Non Blonds",
+            path: "midis/4 Non Blonds/Whats Up.mid",
+            image: "images/artists/4 Non Blonds.jpg"
+        },
+        {
+            id: 195,
+            title: "Wicked Game",
+            artist: "Chris Isaak",
+            path: "midis/Chris Isaak/Wicked Game.mid",
+            image: "images/artists/Chris Isaak - Best of Chris Isaak.jpg"
+        },
+        {
+            id: 196,
+            title: "Hit the Road Jack",
+            artist: "Ray Charles",
+            path: "midis/Ray Charles/Hit the Road Jack.mid",
+            image: "images/artists/Ray Charles - Hit the Road Jack.png"
+        },
+        {
+            id: 197,
+            title: "Hey Soul Sister",
+            artist: "Train",
+            path: "midis/Train/Hey Soul Sister.mid",
+            image: "images/artists/Train - Save Me San Francisco.jpg"
+        },
+        {
+            id: 198,
+            title: "Hey Soul Sister (ensemble)",
+            artist: "Train",
+            path: "midis/Train/Hey Soul Sister (ensemble).mid",
+            image: "images/artists/Train - Save Me San Francisco.jpg"
+        },
+        {
+            id: 199,
+            title: "Hips Don't Lie Etudes Op. 1",
+            artist: "Shakira",
+            path: "midis/Shakira/Hips Dont Lie (etude).mid",
+            image: "images/artists/Shakira - Oral Fixation.jpg"
+        },
+        {
+            id: 200,
+            title: "Should I Stay or Should I Go (ensemble)",
+            artist: "The Clash",
+            path: "midis/The Clash/Should I Stay or Should I Go (ensemble).mid",
+            image: "images/artists/The Clash - Combat Rock.jpg"
+        },
+        {
+            id: 201,
+            title: "Gnossienne No. 1",
+            artist: "Erik Satie",
+            path: "midis/Erik Satie/Gnossienne No. 1.mid",
+            image: "images/artists/Satie - Gnossienne.jpg"
+        },
+        {
+            id: 202,
+            title: "Moonlight Sonata 1st Movement",
+            artist: "Ludwig van Beethoven",
+            path: "midis/Beethoven/Moonlight Sonata 1st Movement.mid",
+            image: "images/artists/Beethoven - Greatest Hits.jpg"
+        },
+        {
+            id: 203,
+            title: "Also sprach Zarathustra (ensemble)",
+            artist: "Richard Strauss",
+            path: "midis/Richard Strauss/Also sprach Zarathustra (ensemble).mid",
+            image: "images/artists/Richard Strauss - Also sprach Zarathustra.jpg"
+        },
+        {
+            id: 204,
+            title: "Lovesong",
+            artist: "The Cure",
+            path: "midis/The Cure/Lovesong.mid",
+            image: "images/artists/The Cure - Disintegration.jpg"
+        },
+        {
+            id: 205,
+            title: "Lovesong (ensemble)",
+            artist: "The Cure",
+            path: "midis/The Cure/Lovesong (ensemble).mid",
+            image: "images/artists/The Cure - Disintegration.jpg"
         }
     ]
 };

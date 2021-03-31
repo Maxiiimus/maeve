@@ -28,7 +28,7 @@
                         </div>
                     </div>
                 </a>
-                <a href="#" data-bind="click: $root.addSongToPlaylist" class="ui-btn ui-icon-plus">Add</a>
+                <a href="#" data-bind="click: $root.addSongToPlaylist" class="ui-btn ui-btn-inline ui-icon-plus ui-btn-icon-notext">Add</a>
             </li>
         </ul>
     </div><!-- /panel -->
@@ -150,6 +150,8 @@
                class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-pause ui-btn-icon-notext">play</a>
             <a id="nextbutton" href="#" data-bind="click: $root.next"
                class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-carat-r ui-btn-icon-notext">next</a>
+            <a id="editbutton" data-bind="click: $root.editSongInfo"
+               class="ui-btn ui-btn-inline ui-icon-edit ui-btn-icon-notext">edit</a>
         </div>
     </div><!-- /content -->
 

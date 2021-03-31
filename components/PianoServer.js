@@ -102,7 +102,8 @@ class PianoServer {
                 }
             }
 
-            if (event.channel && (event.channel !== this.pianoChannel || this.synthPianoOn) && this.synthOn) {
+            // Send all program change events to the synthesizer to load instruments
+            if (event.channel && event.name.toLowerCase() === "program change") {
                 this.synthesizer.playMidiEvent(event);
             }
 
@@ -111,6 +112,12 @@ class PianoServer {
             if (event.name && (event.name.toLowerCase() === "note on" || event.name.toLowerCase() === "note off")) {
                 let millis = Date.now();
 
+                // Send to synthesizer
+                if (event.channel && (event.channel !== this.pianoChannel || this.synthPianoOn) && this.synthOn) {
+                    this.synthesizer.playMidiEvent(event);
+                }
+
+                // Send to piano
                 if (event.channel && event.channel === this.pianoChannel && this.pianoOn) {
                     // Send this to note player client(s) only
                     //this.io.to('note players').emit('play note', event);
@@ -190,10 +197,10 @@ class PianoServer {
             });
 
             // This is called from player.html so we only send notes to that client using a room, 'note players'
-            socket.on("register player", () => {
-                console.log("A note player has registered: " + socket.id);
-                socket.join("note players");
-            });
+            //socket.on("register player", () => {
+            //    console.log("A note player has registered: " + socket.id);
+            //    socket.join("note players");
+            //});
 
             socket.on("set song", (song) => {
                 this.setSong(song);
@@ -319,6 +326,11 @@ class PianoServer {
                 console.log('Toggling piano to: ' + enabled);
                 this.pianoOn = enabled;
                 this.vacuumController.setEnabled(enabled);
+
+                // Start up the vacuum pump if needed
+                if (enabled && this.player.isPlaying()) {
+                    this.vacuumController.turnOn();
+                }
             });
 
             socket.on('toggle synth', (enabled) => {

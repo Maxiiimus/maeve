@@ -7,11 +7,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cecbee3d-ffb0-4882-b823-be158825c755" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Key.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Key.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/KeyRegister.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/KeyRegister.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/PianoServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/PianoServer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/SustainController.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/SustainController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Synthesizer.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Synthesizer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/music_library.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/music_library.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/midis/song-list.js" beforeDir="false" afterPath="$PROJECT_DIR$/midis/song-list.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/MaeveViewModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/MaeveViewModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -78,6 +83,7 @@
       <workItem from="1614097371219" duration="34527000" />
       <workItem from="1615916854881" duration="556000" />
       <workItem from="1615927901652" duration="34461000" />
+      <workItem from="1617112928232" duration="4401000" />
     </task>
     <servers />
   </component>

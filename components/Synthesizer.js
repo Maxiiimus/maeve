@@ -7,12 +7,14 @@ const NUM_NOTES = 128;
 class Synthesizer {
     constructor() {
         if (isPi()) { // On Raspberry Pi
+            console.log("Initializing FluidSynth on Raspberry Pi.");
             this.fluid = new Fluid({
                 libs: ['/usr/lib/arm-linux-gnueabihf/libfluidsynth.so.1'],
                 drivers: ['alsa'],
                 soundFonts: ['soundfonts/MuseScore_General.sf3']
             });
         } else { // MacOS
+            console.log("Initializing FluidSynth on MacOS.");
             this.fluid = new Fluid({
                 libs: ['/usr/local/Cellar/fluid-synth/2.1.1/lib/libfluidsynth.2.3.1.dylib'],
                 drivers: ['coreaudio'],
@@ -20,6 +22,7 @@ class Synthesizer {
             });
         }
         this.fluid.setGain(1.0);
+        console.log("FluidSynth initialized.");
     }
 
     playMidiEvent(event) {
