@@ -25,7 +25,7 @@ class Synthesizer {
         console.log("FluidSynth initialized.");
     }
 
-    playMidiEvent(event) {
+    handleMidiEvent(event) {
         if (event.name && event.name.toLowerCase() === "note on" && event.velocity !== 0) {
             this.fluid.noteOn(event.channel-1, event.noteNumber, event.velocity);
         } else if (event.name && event.name.toLowerCase() === "note off" || event.velocity === 0) {
@@ -34,6 +34,18 @@ class Synthesizer {
             this.fluid.programChange(event.channel-1, event.value);
             console.log("Synthesizer loading channel [" + event.channel +"] with instrument " + event.value);
         }
+    }
+
+    loadInstrument(channel, instrument) {
+        this.fluid.programChange(channel, instrument);
+    }
+
+    playNote(channel, noteNumber, velocity) {
+        this.fluid.noteOn(channel, noteNumber, velocity);
+    }
+
+    stopNote(channel, noteNumber) {
+        this.fluid.noteOff(channel, noteNumber);
     }
 
     stop() {

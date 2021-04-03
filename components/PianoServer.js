@@ -104,7 +104,7 @@ class PianoServer {
 
             // Send all program change events to the synthesizer to load instruments
             if (event.channel && event.name.toLowerCase() === "program change") {
-                this.synthesizer.playMidiEvent(event);
+                this.synthesizer.handleMidiEvent(event);
             }
 
             // When we get a "Note on" or "Note off" event, update the values in the shift register
@@ -114,7 +114,7 @@ class PianoServer {
 
                 // Send to synthesizer
                 if (event.channel && (event.channel !== this.pianoChannel || this.synthPianoOn) && this.synthOn) {
-                    this.synthesizer.playMidiEvent(event);
+                    this.synthesizer.handleMidiEvent(event);
                 }
 
                 // Send to piano
@@ -242,12 +242,6 @@ class PianoServer {
                 this.setCurrentSongTime(percent);
             });
 
-            socket.on("run test", (testNumber, key, delay) => {
-                this.play(false);
-                this.testKey = key; // testKey is used when testing an individual key
-                this.runKeyTest(testNumber, delay); // Delay is used to adjust the speed of the test
-            });
-
             // Adds a song by ID to the current playlist
             socket.on('add to playlist', (songID) => {
                 this.musicLibrary.addSongToPlaylist(songID, (err) => {
@@ -313,15 +307,6 @@ class PianoServer {
                 console.log('User disconnected: ' + reason);
             });
 
-            socket.on('test roundtrip', (callStart) => {
-                let currentTime = Date.now();
-                console.log("Current time: " + currentTime);
-                console.log('MS since call:  ' + (currentTime - callStart));
-                this.io.emit('roundtrip return', callStart);
-
-                this.notePlayer.screenShot();
-            });
-
             socket.on('toggle piano', (enabled) => {
                 console.log('Toggling piano to: ' + enabled);
                 this.pianoOn = enabled;
@@ -341,6 +326,21 @@ class PianoServer {
             socket.on('toggle synth piano', (enabled) => {
                 console.log('Toggling synth piano to: ' + enabled);
                 this.synthPianoOn = enabled;
+            });
+
+            socket.on('test roundtrip', (callStart) => {
+                let currentTime = Date.now();
+                console.log("Current time: " + currentTime);
+                console.log('MS since call:  ' + (currentTime - callStart));
+                this.io.emit('roundtrip return', callStart);
+
+                this.notePlayer.screenShot();
+            });
+
+            socket.on("run test", (testNumber, key, delay) => {
+                this.play(false);
+                this.testKey = key; // testKey is used when testing an individual key
+                this.runKeyTest(testNumber, delay); // Delay is used to adjust the speed of the test
             });
         });
 
@@ -670,12 +670,43 @@ class PianoServer {
                     this.toggleSingleKey();
                     break;
 
+                case 6:
+                    this.testNoteTiming(testDelay);
+                    break;
+
                 default:
                     this.vacuumController.turnOff();
                     this.underTest = false;
                     break;
             }
         }, waitForPump);
+    }
+
+    testNoteTiming(delay) {
+        if (this.testKey < 0 || this.testKey >= this.numKeys) {
+            this.stopTests();
+            return;
+        }
+        this.keys.fill(0);
+        this.keys[this.testKey] = 1;
+
+        // Load piano on channel 0
+        this.synthesizer.loadInstrument(0, 0);
+
+        let startTime = Date.now();
+        console.log("Note Timing Test Starting.")
+        this.register.send(this.keys);
+        console.log("MS after sending keys to piano:         " + (Date.now() - startTime));
+        this.synthesizer.playNote(0, this.testKey + 21, 100);
+        console.log("MS after sending keys to synthesizer:   " + (Date.now() - startTime));
+
+        setTimeout((startTime) => {
+            this.keys[this.testKey] = 0;
+            this.register.send(this.keys);
+            console.log("MS after sending off to piano:       " + (Date.now() - startTime));
+            this.synthesizer.stopNote(0, this.testKey + 21);
+            console.log("MS after sending off to synthesizer: " + (Date.now() - startTime));
+        }, delay, startTime);
     }
 
     toggleSingleKey() {
