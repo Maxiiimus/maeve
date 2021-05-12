@@ -59,6 +59,7 @@ class PianoServer {
         // These arrays are an in memory updated by the library as they change and are passed by reference
         this.allSongs = []; // The list of all songs in the database
         this.playlists = []; // The list of all playlists in the database
+        this.pianoDelay = 500;
     }
 
     start (http, io, port) {
@@ -137,7 +138,7 @@ class PianoServer {
                     }
 
                     // Check if the key is already being "played"
-                    if (this.keys[keyIndex] === keyOn && keyOn === 1) {
+                    /*if (this.keys[keyIndex] === keyOn && keyOn === 1) {
                         console.log("KEY ALREADY ON: " + event.noteNumber);
 
                         // If the note is already playing, then we want to strike it again
@@ -148,9 +149,14 @@ class PianoServer {
                             this.keys[i] = 1;
                             this.register.send(this.keys);
                         }, REGISTER_DELAY, keyIndex);
-                    }
+                    }*/
                     this.keys[keyIndex] = keyOn;
-                    this.register.send(this.keys);
+                    //this.register.send(this.keys);
+
+                    // Delay the piano to sync with the synthesizer which is slower to play
+                    setTimeout((keys) => {
+                        this.register.send(keys);
+                    }, this.pianoDelay, this.keys);
                 }
 
                 // Calculate time remaining using the current tick
@@ -208,6 +214,11 @@ class PianoServer {
 
             socket.on("set volume", (volume) => {
                 this.synthesizer.setVolume(volume/100.0);
+            });
+
+            socket.on("set delay", (delay) => {
+                console.log("Setting piano delay to: " + delay);
+                this.pianoDelay = delay;
             });
 
             // Play a specific song. This is when a user just clicks a song from the Library.
@@ -695,10 +706,15 @@ class PianoServer {
 
         let startTime = Date.now();
         console.log("Note Timing Test Starting.")
-        this.register.send(this.keys);
-        console.log("MS after sending keys to piano:         " + (Date.now() - startTime));
+
         this.synthesizer.playNote(0, this.testKey + 21, 100);
         console.log("MS after sending keys to synthesizer:   " + (Date.now() - startTime));
+
+        setTimeout( (keys, startTime) => {
+            this.register.send(keys);
+            console.log("MS after sending keys to piano:         " + (Date.now() - startTime));
+        }, this.pianoDelay, this.keys);
+
 
         setTimeout((startTime) => {
             this.keys[this.testKey] = 0;
@@ -706,7 +722,11 @@ class PianoServer {
             console.log("MS after sending off to piano:       " + (Date.now() - startTime));
             this.synthesizer.stopNote(0, this.testKey + 21);
             console.log("MS after sending off to synthesizer: " + (Date.now() - startTime));
+
+            this.stopTests();
         }, delay, startTime);
+
+
     }
 
     toggleSingleKey() {

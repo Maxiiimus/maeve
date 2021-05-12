@@ -1441,6 +1441,13 @@ const songList = {
             artist: "The Cure",
             path: "midis/The Cure/Lovesong (ensemble).mid",
             image: "images/artists/The Cure - Disintegration.jpg"
+        },
+        {
+            id: 206,
+            title: "Stay",
+            artist: "Rihanna",
+            path: "midis/Rihanna/Stay.mid",
+            image: "images/artists/Rihanna - Unapologetic.jpg"
         }
     ]
 };

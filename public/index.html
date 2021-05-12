@@ -126,6 +126,10 @@
             <label for="volumeslider">Synth Volume:</label>
             <input type="range" name="volumeslider" id="volumeslider" min="0" max="200" value="100"
                    data-bind="value: volume, valueUpdate: 'change'" class="ui-hidden-accessible">
+            <label for="delayslider">Piano Delay:</label>
+            <input type="range" name="delayslider" id="delayslider" min="0" max="1000" value="500"
+                   data-bind="value: pianoDelay, valueUpdate: 'change'">
+
         </form>
     </div><!-- /panel -->
 
@@ -150,8 +154,9 @@
                class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-pause ui-btn-icon-notext">play</a>
             <a id="nextbutton" href="#" data-bind="click: $root.next"
                class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-icon-carat-r ui-btn-icon-notext">next</a>
+            <!--
             <a id="editbutton" data-bind="click: $root.editSongInfo"
-               class="ui-btn ui-btn-inline ui-icon-edit ui-btn-icon-notext">edit</a>
+               class="ui-btn ui-btn-inline ui-icon-edit ui-btn-icon-notext">edit</a> -->
         </div>
     </div><!-- /content -->
 

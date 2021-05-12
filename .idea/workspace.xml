@@ -9,8 +9,10 @@
     <list default="true" id="cecbee3d-ffb0-4882-b823-be158825c755" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/PianoServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/PianoServer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Synthesizer.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Synthesizer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/tests.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/tests.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/music_library.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/music_library.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/midis/song-list.js" beforeDir="false" afterPath="$PROJECT_DIR$/midis/song-list.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaeveViewModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/MaeveViewModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +78,9 @@
       <workItem from="1614097371219" duration="34527000" />
       <workItem from="1615916854881" duration="556000" />
       <workItem from="1615927901652" duration="34461000" />
-      <workItem from="1617112928232" duration="8658000" />
+      <workItem from="1617112928232" duration="11004000" />
+      <workItem from="1619045888075" duration="1560000" />
+      <workItem from="1620769460291" duration="252000" />
     </task>
     <servers />
   </component>
@@ -116,10 +120,11 @@
       <screen x="0" y="23" width="1440" height="797" />
     </state>
     <state x="378" y="178" width="683" height="486" key="find.popup/0.23.1440.797@0.23.1440.797" timestamp="1610464815172" />
-    <state x="385" y="144" width="670" height="676" key="search.everywhere.popup" timestamp="1610561550057">
-      <screen x="0" y="23" width="1440" height="797" />
+    <state x="385" y="144" width="670" height="679" key="search.everywhere.popup" timestamp="1617419718849">
+      <screen x="0" y="23" width="1440" height="800" />
     </state>
     <state x="385" y="144" width="670" height="676" key="search.everywhere.popup/0.23.1440.797@0.23.1440.797" timestamp="1610561550057" />
+    <state x="385" y="144" width="670" height="679" key="search.everywhere.popup/0.23.1440.800@0.23.1440.800" timestamp="1617419718849" />
     <state x="450" y="340" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1616771177676">
       <screen x="0" y="23" width="1440" height="797" />
     </state>

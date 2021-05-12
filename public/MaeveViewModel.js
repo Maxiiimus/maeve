@@ -32,6 +32,7 @@ function MaeveViewModel() {
     self.synthPianoOn = ko.observable(false);
     self.isPlaying = ko.observable(false);
     self.volume = ko.observable(5);
+    self.pianoDelay = ko.observable(500);
 
     self.library = ko.observableArray([]);
 
@@ -78,6 +79,13 @@ function MaeveViewModel() {
             self.volume(val);
             //console.log("Volume = " + self.volume());
             self.socket.emit("set volume", val);
+        });
+
+        // Adjust the delay in milliseconds to sync the synth and piano
+        $("#delayslider").on("slidestop", () => {
+            let val =  $("#delayslider").val();
+            self.pianoDelay(val);
+            self.socket.emit("set delay", val);
         });
     });
 
