@@ -284,7 +284,7 @@ const songList = {
             id: 40,
             title: "Funkytown",
             artist: "Lipps, Inc.",
-            path: "midis/Lipps, Inc./FUNKYTOWN.mid",
+            path: "midis/Lipps Inc/FUNKYTOWN.mid",
             image: "images/artists/Lipps - Funkytown.jpg"
         },
         {
@@ -1159,7 +1159,7 @@ const songList = {
             id: 165,
             title: "Ghostbusters",
             artist: "Ray Parker Jr.",
-            path: "midis/Ray Parker Jr./Ghostbusters.mid",
+            path: "midis/Ray Parker Jr/Ghostbusters.mid",
             image: "images/artists/Ghostbusters.jpg"
         },
         {
