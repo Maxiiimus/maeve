@@ -1448,6 +1448,20 @@ const songList = {
             artist: "Rihanna",
             path: "midis/Rihanna/Stay.mid",
             image: "images/artists/Rihanna - Unapologetic.jpg"
+        },
+        {
+            id: 207,
+            title: "Superstition (ensemble)",
+            artist: "Stevie Wonder",
+            path: "midis/Stevie Wonder/Superstition.mid",
+            image: "images/artists/Stevie Wonder - Talking Book.jfif"
+        },
+        {
+            id: 208,
+            title: "Isn't She Lovely",
+            artist: "Stevie Wonder",
+            path: "midis/Stevie Wonder/Isnt She Lovely.mid",
+            image: "images/artists/Stevie Wonder - Songs In The Key Of Life.jfif"
         }
     ]
 };
