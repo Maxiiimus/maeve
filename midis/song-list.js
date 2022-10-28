@@ -1462,6 +1462,13 @@ const songList = {
             artist: "Stevie Wonder",
             path: "midis/Stevie Wonder/Isnt She Lovely.mid",
             image: "images/artists/Stevie Wonder - Songs In The Key Of Life.jfif"
+        },
+        {
+            id: 209,
+            title: "Mammas Don't Let Your Babies Grow Up to Be Cowboys",
+            artist: "Waylon & Willie",
+            path: "midis/Waylon and Willie/Mammas Dont Let Your Babies Grow Up to Be Cowboys.mid",
+            image: "images/artists/Waylon and Willie.jpg"
         }
     ]
 };

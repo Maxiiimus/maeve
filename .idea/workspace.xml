@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AnalysisUIOptions">
-    <option name="AUTOSCROLL_TO_SOURCE" value="true" />
-    <option name="GROUP_BY_SEVERITY" value="true" />
-    <option name="SHOW_STRUCTURE" value="true" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="cecbee3d-ffb0-4882-b823-be158825c755" name="Default Changelist" comment="">
+    <list default="true" id="d9181590-2a1f-42ec-b88a-eb7d90a55697" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/midis/Lipps, Inc./FUNKYTOWN.mid" beforeDir="false" afterPath="$PROJECT_DIR$/midis/Lipps Inc/FUNKYTOWN.mid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/midis/Lipps, Inc./FUNKYTOWN.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/midis/Lipps Inc/FUNKYTOWN.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/midis/Ray Parker Jr./Ghostbusters.mid" beforeDir="false" afterPath="$PROJECT_DIR$/midis/Ray Parker Jr/Ghostbusters.mid" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/midis/song-list.js" beforeDir="false" afterPath="$PROJECT_DIR$/midis/song-list.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,113 +13,53 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1aaq2VXDcy8kSMlQGELJXWa3N7L" />
+  <component name="ProjectId" id="1t4uFqoqvIrhzxB6iHVeE9KVbUX" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/components" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
-    <property name="node.js.path.for.package.eslint" value="project" />
-    <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/components" />
-      <recent name="$PROJECT_DIR$/public" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/public/instruments/percussion" />
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/public/instruments" />
-      <recent name="$PROJECT_DIR$/public/images/artists" />
-      <recent name="$PROJECT_DIR$/midis/Tones and I" />
-    </key>
-  </component>
-  <component name="SvnConfiguration">
-    <configuration />
-  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="cecbee3d-ffb0-4882-b823-be158825c755" name="Default Changelist" comment="" />
-      <created>1586983846082</created>
+      <changelist id="d9181590-2a1f-42ec-b88a-eb7d90a55697" name="Default Changelist" comment="" />
+      <created>1622040583696</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1586983846082</updated>
-      <workItem from="1586983848420" duration="10512000" />
-      <workItem from="1587184198920" duration="2000" />
-      <workItem from="1587184273810" duration="7092000" />
-      <workItem from="1588701478565" duration="49600000" />
-      <workItem from="1591639256195" duration="463000" />
-      <workItem from="1591987250886" duration="2759000" />
-      <workItem from="1595001226054" duration="490000" />
-      <workItem from="1600104864017" duration="2743000" />
-      <workItem from="1601057254463" duration="226000" />
-      <workItem from="1601059848648" duration="3846000" />
-      <workItem from="1609801553783" duration="143908000" />
-      <workItem from="1614097371219" duration="34527000" />
-      <workItem from="1615916854881" duration="556000" />
-      <workItem from="1615927901652" duration="34461000" />
-      <workItem from="1617112928232" duration="11004000" />
-      <workItem from="1619045888075" duration="1560000" />
-      <workItem from="1620769460291" duration="478000" />
-      <workItem from="1620918663450" duration="706000" />
+      <updated>1622040583696</updated>
+      <workItem from="1622040585712" duration="635000" />
+      <workItem from="1634323859719" duration="1755000" />
+      <workItem from="1657898924694" duration="701000" />
+      <workItem from="1666562731114" duration="20000" />
+      <workItem from="1666991004152" duration="329000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
-  <component name="WindowStateProjectService">
-    <state x="416" y="231" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1609894992929">
-      <screen x="0" y="23" width="1440" height="797" />
-    </state>
-    <state x="416" y="231" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.797@0.23.1440.797" timestamp="1609894992929" />
-    <state x="458" y="175" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1616771116915">
-      <screen x="0" y="23" width="1440" height="797" />
-    </state>
-    <state x="458" y="175" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.797@0.23.1440.797" timestamp="1616771116915" />
-    <state x="465" y="285" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1613682743062">
-      <screen x="0" y="23" width="1440" height="797" />
-    </state>
-    <state x="465" y="285" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.23.1440.797@0.23.1440.797" timestamp="1613682743062" />
-    <state width="1419" height="204" key="GridCell.Tab.0.bottom" timestamp="1609959524535">
-      <screen x="0" y="23" width="1440" height="797" />
-    </state>
-    <state width="1419" height="204" key="GridCell.Tab.0.bottom/0.23.1440.797@0.23.1440.797" timestamp="1609959524535" />
-    <state width="1419" height="204" key="GridCell.Tab.0.center" timestamp="1609959524535">
-      <screen x="0" y="23" width="1440" height="797" />
-    </state>
-    <state width="1419" height="204" key="GridCell.Tab.0.center/0.23.1440.797@0.23.1440.797" timestamp="1609959524535" />
-    <state width="1419" height="204" key="GridCell.Tab.0.left" timestamp="1609959524534">
-      <screen x="0" y="23" width="1440" height="797" />
-    </state>
-    <state width="1419" height="204" key="GridCell.Tab.0.left/0.23.1440.797@0.23.1440.797" timestamp="1609959524534" />
-    <state width="1419" height="204" key="GridCell.Tab.0.right" timestamp="1609959524535">
-      <screen x="0" y="23" width="1440" height="797" />
-    </state>
-    <state width="1419" height="204" key="GridCell.Tab.0.right/0.23.1440.797@0.23.1440.797" timestamp="1609959524535" />
-    <state x="378" y="178" width="683" height="486" key="find.popup" timestamp="1610464815172">
-      <screen x="0" y="23" width="1440" height="797" />
-    </state>
-    <state x="378" y="178" width="683" height="486" key="find.popup/0.23.1440.797@0.23.1440.797" timestamp="1610464815172" />
-    <state x="385" y="144" width="670" height="679" key="search.everywhere.popup" timestamp="1617419718849">
-      <screen x="0" y="23" width="1440" height="800" />
-    </state>
-    <state x="385" y="144" width="670" height="676" key="search.everywhere.popup/0.23.1440.797@0.23.1440.797" timestamp="1610561550057" />
-    <state x="385" y="144" width="670" height="679" key="search.everywhere.popup/0.23.1440.800@0.23.1440.800" timestamp="1617419718849" />
-    <state x="450" y="340" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1616771177676">
-      <screen x="0" y="23" width="1440" height="797" />
-    </state>
-    <state x="450" y="340" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.23.1440.797@0.23.1440.797" timestamp="1616771177676" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
