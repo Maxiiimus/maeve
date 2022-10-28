@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d9181590-2a1f-42ec-b88a-eb7d90a55697" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/midis/song-list.js" beforeDir="false" afterPath="$PROJECT_DIR$/midis/song-list.js" afterDir="false" />
-    </list>
+    <list default="true" id="d9181590-2a1f-42ec-b88a-eb7d90a55697" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,7 +40,7 @@
       <workItem from="1634323859719" duration="1755000" />
       <workItem from="1657898924694" duration="701000" />
       <workItem from="1666562731114" duration="20000" />
-      <workItem from="1666991004152" duration="329000" />
+      <workItem from="1666991004152" duration="1167000" />
     </task>
     <servers />
   </component>
