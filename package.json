@@ -24,7 +24,7 @@
   "dependencies": {
     "audio-context": "^1.0.3",
     "detect-rpi": "^1.4.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "fluid4node": "^0.2.1",
     "knockout": "^3.5.1",
     "midi-player-js": "^2.0.13",
